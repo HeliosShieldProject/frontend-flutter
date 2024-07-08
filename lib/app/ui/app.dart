@@ -24,19 +24,19 @@ class HomeScreen extends StatelessWidget {
     MyTheme theme = AppTheme.of(context, listen: true);
     
     return Scaffold(
-      backgroundColor: theme.theme?.colorScheme.background,
+      backgroundColor: theme.theme!.colorScheme.background,
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            if (theme.isLight ?? false) {
+            if (theme.isLight!) {
               AppTheme.update(context, darkTheme);
             } else {
               AppTheme.update(context, lightTheme);
             }
           },
-          style: theme.theme?.elevatedButtonTheme.style,
+          style: theme.theme!.elevatedButtonTheme.style,
           child: Text("Press me!",
-            style: theme.theme?.textTheme.displayMedium,
+            style: theme.theme!.textTheme.displayMedium,
           )
         ),
       ),

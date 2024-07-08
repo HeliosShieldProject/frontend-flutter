@@ -53,8 +53,8 @@ class _ThemeInheritedWidget extends InheritedWidget {
   final MyTheme theme;
   final _AppThemeState state;
   
-  static _ThemeInheritedWidget? maybeof(BuildContext context, {bool listen = false}) => 
-    listen ? 
+  static _ThemeInheritedWidget? maybeof(BuildContext context, {bool listen = false}) => listen 
+    ? 
     context.dependOnInheritedWidgetOfExactType<_ThemeInheritedWidget>() 
     : context.getInheritedWidgetOfExactType<_ThemeInheritedWidget>();
 
