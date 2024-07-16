@@ -16,24 +16,29 @@ class App extends StatelessWidget {
     );
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late MyTheme theme;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    theme = AppTheme.of(context, listen: true);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    MyTheme theme = AppTheme.of(context, listen: true);
-    
     return Scaffold(
       backgroundColor: theme.theme!.colorScheme.background,
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            if (theme.isLight!) {
-              AppTheme.update(context, darkTheme);
-            } else {
-              AppTheme.update(context, lightTheme);
-            }
-          },
+          onPressed: () => changeTheme(context),
           style: theme.theme!.elevatedButtonTheme.style,
           child: Text("Press me!",
             style: theme.theme!.textTheme.displayMedium,
@@ -43,3 +48,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

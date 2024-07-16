@@ -4,11 +4,12 @@ abstract interface class User {
   String? name;
   String? email;
   String? password;
+
   String? deviceName;
   String? deviceType;
+  
   String? jwtToken;
   String? jwtRefreshToken;
-  SubscriptionType? subscriptionType;
 
   User();
 
@@ -35,9 +36,6 @@ class UserImpl implements User {
   @override
   String? jwtToken;
 
-  @override
-  SubscriptionType? subscriptionType = SubscriptionType.free;
-
   UserImpl();
 
   @override
@@ -61,12 +59,6 @@ class UserImpl implements User {
     return UserValidity.notValid;
   }
 
-}
-
-enum SubscriptionType {
-  free, 
-  premium,
-  superPremium, 
 }
 
 enum UserValidity {
