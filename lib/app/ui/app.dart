@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:helios/common/common.dart';
 
 class App extends StatelessWidget {
@@ -7,13 +8,41 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-    AppTheme(
-      theme: lightTheme,
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
-      ),
+    const AppUser( 
+      child: AppUserSettings( 
+        child: AppTheme(
+          child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: SplashScreen(),
+            ),
+        )
+      )
     );
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    bool isSettingsBoxOpen = AppUserSettings.isBoxOpen(context, listen: true);
+    if(isSettingsBoxOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: 
+        (context) => const HomeScreen()
+      )));
+    }
+    return const Scaffold(
+      backgroundColor: Colors.black,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Welcome",),
+          CircularProgressIndicator.adaptive()
+        ],  
+      )
+    );
+  }
 }
 
 class HomeScreen extends StatefulWidget {
@@ -26,24 +55,30 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late MyTheme theme;
 
-  @override
-  void didChangeDependencies() {
+  @override void didChangeDependencies() {
     super.didChangeDependencies();
-    theme = AppTheme.of(context, listen: true);
+    theme = getTheme(AppUserSettings.of(context, listen: true)!.selectedTheme);
+    print("HomeScreen didChangeDependencies");
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-      backgroundColor: theme.theme!.colorScheme.background,
+      backgroundColor: theme.themeData.colorScheme.background,
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => changeTheme(context),
-          style: theme.theme!.elevatedButtonTheme.style,
-          child: Text("Press me!",
-            style: theme.theme!.textTheme.displayMedium,
-          )
-        ),
+        child: DropdownMenu<SelectedTheme>(
+          dropdownMenuEntries: SelectedTheme.values.map<DropdownMenuEntry<SelectedTheme>>(
+            (SelectedTheme selectedTheme) {
+              return DropdownMenuEntry<SelectedTheme>(
+                value: selectedTheme,
+                label: selectedTheme.name,
+              );
+            }
+          ).toList(),
+          initialSelection: (AppUserSettings.of(context) ?? UserSettingsImpl()).selectedTheme,
+          onSelected: (value) => AppUserSettings.changeTheme(context, value!),
+        )
       ),
     );
   }

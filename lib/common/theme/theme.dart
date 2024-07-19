@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import '../common.dart';
 
 class MyTheme {
   const MyTheme({
-    required this.theme,
+    required this.themeData,
     required this.isLight,
   });
 
-  final ThemeData? theme; 
-  final bool? isLight;
+  final ThemeData themeData; 
+  final bool isLight;
 }
 
+MyTheme getTheme(SelectedTheme? theme) => switch(theme) {
+    (SelectedTheme.system) => SchedulerBinding.instance.platformDispatcher.platformBrightness == Brightness.dark ? darkTheme : lightTheme,
+    (SelectedTheme.dark) => darkTheme,
+    (SelectedTheme.light) => lightTheme,
+    (null) => throw("Unknown behaviour"),
+};
+
 final MyTheme darkTheme = MyTheme(
-  theme: ThemeData(
+  themeData: ThemeData(
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFFACB823),
       secondary: Color(0xFF83847D), 
@@ -41,7 +50,7 @@ final MyTheme darkTheme = MyTheme(
 );
 
 final MyTheme lightTheme = MyTheme(
-  theme: ThemeData(
+  themeData: ThemeData(
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFFACB823),
       secondary: Color(0xFF83847D), 

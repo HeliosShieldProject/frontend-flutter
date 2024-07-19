@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
-import "package:hive/hive.dart";
-import 'user_settings.dart';
+import 'package:hive/hive.dart';
 
 class AppUserSettings extends StatefulWidget {
   const AppUserSettings({
@@ -11,33 +10,59 @@ class AppUserSettings extends StatefulWidget {
 
   final Widget child;
 
-  static UserSettings? of(BuildContext context, {bool listen = true}) => 
+  static UserSettings? of(BuildContext context, {bool listen = false}) => 
     _AppUserSettingsInheritedWidget.of(context, listen: listen).userSettings; 
+  
+  static bool isBoxOpen(BuildContext context, {bool listen = false}) => 
+    _AppUserSettingsInheritedWidget.of(context, listen: listen).state.boxOpen;
 
   static void update(BuildContext context, UserSettings userSettings) {
     _AppUserSettingsInheritedWidget.of(context).state._update(userSettings);
   }
+  static void changeTheme(BuildContext context, SelectedTheme theme) {
+    _AppUserSettingsInheritedWidget.of(context).state._changeTheme(theme);
+  }
 
-  static void changeTheme(BuildContext context, SelectedTheme? selectedTheme) {
-    final userSettings = _AppUserSettingsInheritedWidget.of(context).userSettings;
-    userSettings!.selectedTheme = selectedTheme;
-    update(context, userSettings);
-    AppTheme.update(context, userSettings.theme);
-  }   
-
+  static void changeSubscription(BuildContext context, SubscriptionType subscriptionType) {
+    _AppUserSettingsInheritedWidget.of(context).state._changeSubscription(subscriptionType);
+  }
+  
   @override
   State<AppUserSettings> createState() => _AppUserSettingsState();
 }
 
-class _AppUserSettingsState extends State<AppUserSettings> { //can be done using streams, because for now it is hot pile of shit
+class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingObserver {
   UserSettings? userSettings;
+  bool boxOpen = false;
+
+  void _update(UserSettings userSettings) { 
+    setState(() {
+      this.userSettings = userSettings;
+    });
+    if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
+  }
+
+  void _changeTheme(SelectedTheme? selectedTheme) {
+    setState(() {
+      userSettings?.selectedTheme = selectedTheme;
+    });
+    if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
+  }
+
+  void _changeSubscription(SubscriptionType? subscriptionType) {
+    setState(() {
+      userSettings?.subscriptionType = subscriptionType;
+    });
+    if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
+  }
 
   @override
   void initState() {
     super.initState();
-    Hive.openBox<UserSettings>("UserSettings") 
+    Hive.openBox("UserSettings") 
       .then(
         (value) {
+          boxOpen = true;
           setState(() {
             userSettings = value.get(
               "userSettings", 
@@ -52,19 +77,23 @@ class _AppUserSettingsState extends State<AppUserSettings> { //can be done using
   void dispose() {
     super.dispose();
     try {
-      Hive.box("UserSettings")
-        ..put("userSettings", userSettings)
-        ..close();
+      if (Hive.isBoxOpen("UserSettings")) {
+        Hive.box("UserSettings")
+          ..put("userSettings", userSettings)
+          ..close();
+      }
     } on HiveError catch(error) {
       print(error.message);
     }
   }
 
-  void _update(UserSettings userSettings) { 
-    Hive.box("UserSettings").put("userSettings", userSettings);
-    setState(() {
-      this.userSettings = userSettings;
-    });
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.detached) {
+      dispose();
+    }
   }
 
   @override
@@ -97,6 +126,6 @@ class _AppUserSettingsInheritedWidget extends InheritedWidget {
   )!;
 
   @override
-  bool updateShouldNotify(_AppUserSettingsInheritedWidget oldWidget) => 
-    userSettings != oldWidget.userSettings;
+  bool updateShouldNotify(_AppUserSettingsInheritedWidget oldWidget) =>
+    (userSettings?.selectedTheme != oldWidget.userSettings?.selectedTheme) || (userSettings?.subscriptionType != oldWidget.userSettings?.subscriptionType);
 }
