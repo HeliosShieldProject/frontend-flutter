@@ -17,24 +17,23 @@ class AppTheme extends StatefulWidget {
 }
 
 class _AppThemeState extends State<AppTheme> {
-  late MyTheme theme;
+  MyTheme? theme;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var appSettings = AppUserSettings.of(context, listen: true);
-    print("AppTheme didChangeDependencies");
-    setState(() {
-      theme = getTheme((appSettings ?? UserSettingsImpl()).selectedTheme);
-    });
+    UserSettings? appUserSettings = AppUserSettings.of(context, listen: true);
+    theme = getTheme((appUserSettings ?? UserSettingsImpl()).selectedTheme);
   }
 
   @override
-  Widget build(BuildContext context) => _AppThemeInheritedWidget(
-    theme: theme, 
-    state: this, 
-    child: widget.child
-  );
+  Widget build(BuildContext context)  {
+    return _AppThemeInheritedWidget(
+      theme: theme!, 
+      state: this, 
+      child: widget.child
+    );
+  }
 }
 class _AppThemeInheritedWidget extends InheritedWidget {
   const _AppThemeInheritedWidget({

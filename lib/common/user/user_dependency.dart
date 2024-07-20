@@ -10,19 +10,30 @@ class AppUser extends StatefulWidget {
 
   final Widget child;
 
+  static User? of(BuildContext context, {bool listen = false}) => 
+    _AppUserInheritedWidget.of(context, listen: listen).user;
+
+  static bool isBoxOpen(BuildContext context, {bool listen = false}) =>
+    _AppUserInheritedWidget.of(context, listen: listen).state.boxOpen;
+  
   static void update(BuildContext context, User user) {
     _AppUserInheritedWidget.of(context).state._update(user);
   }
-
-  static User? of(BuildContext context, {bool listen = false}) => 
-    _AppUserInheritedWidget.of(context, listen: listen).user;
 
   @override
   State<AppUser> createState() => _AppUserState();
 }
 
-class _AppUserState extends State<AppUser> {
+class _AppUserState extends State<AppUser> with WidgetsBindingObserver{
   User? user;
+  bool boxOpen = false;
+
+  void _update(User user) {
+    setState(() {
+      this.user = user;     
+    });
+    if (Hive.isBoxOpen("User")) Hive.box("User").put("user", user);
+  }
 
   @override
   void initState() {
@@ -30,6 +41,7 @@ class _AppUserState extends State<AppUser> {
     Hive.openBox<User>("User")
       .then(
         (value) {
+          boxOpen = true;
           setState(() {
             user = value.get(
               "user",
@@ -44,19 +56,21 @@ class _AppUserState extends State<AppUser> {
   void dispose() {
     super.dispose();
     try{
-      Hive.box("User")
+      if (Hive.isBoxOpen("User")) {
+        Hive.box("User")
         ..put("user", user)
         ..close();
+      }
     } on HiveError catch(error) {
       print(error.message);
     }
-    
   }
 
-  void _update(User user) {
-    setState(() {
-      this.user = user;     
-    });
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.detached) dispose();
   }
 
   @override
@@ -70,6 +84,7 @@ class _AppUserState extends State<AppUser> {
 
 class _AppUserInheritedWidget extends InheritedWidget {
   const _AppUserInheritedWidget({
+    super.key,
     required this.state,
     required this.user,
     required super.child,
@@ -91,5 +106,5 @@ class _AppUserInheritedWidget extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant _AppUserInheritedWidget oldWidget) => 
-    oldWidget.user != user; 
+    oldWidget.user?.toJson() != user?.toJson(); 
 }

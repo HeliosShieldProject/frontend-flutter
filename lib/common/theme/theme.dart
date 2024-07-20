@@ -31,7 +31,7 @@ final MyTheme darkTheme = MyTheme(
     ),
     textTheme: const TextTheme(
       displayMedium: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontFamily: 'Ubuntu'
         ),
     ),
@@ -61,7 +61,7 @@ final MyTheme lightTheme = MyTheme(
     ),
     textTheme: const TextTheme(
       displayMedium: TextStyle(
-        color: Color.fromARGB(255, 255, 255, 255),
+        color: Colors.black,
         fontFamily: 'Ubuntu'
         ),
     ),

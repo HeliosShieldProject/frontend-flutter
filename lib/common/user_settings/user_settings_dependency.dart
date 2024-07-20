@@ -43,15 +43,21 @@ class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingOb
   }
 
   void _changeTheme(SelectedTheme? selectedTheme) {
+    UserSettings newUserSettings = UserSettingsImpl();
+    newUserSettings.selectedTheme = selectedTheme;
+    newUserSettings.subscriptionType = userSettings?.subscriptionType;
     setState(() {
-      userSettings?.selectedTheme = selectedTheme;
+      userSettings = newUserSettings;
     });
     if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
   }
 
   void _changeSubscription(SubscriptionType? subscriptionType) {
+    UserSettings newUserSettings = UserSettingsImpl();
+    newUserSettings.selectedTheme = userSettings?.selectedTheme;
+    newUserSettings.subscriptionType = subscriptionType;
     setState(() {
-      userSettings?.subscriptionType = subscriptionType;
+      userSettings = newUserSettings;
     });
     if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
   }
@@ -91,21 +97,22 @@ class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingOb
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if (state == AppLifecycleState.detached) {
-      dispose();
-    }
+    if (state == AppLifecycleState.detached) dispose();
   }
 
   @override
-  Widget build(BuildContext context) => _AppUserSettingsInheritedWidget(
-    state: this, 
-    userSettings: userSettings, 
-    child: widget.child,
-  );
+  Widget build(BuildContext context) { 
+    return _AppUserSettingsInheritedWidget(
+      state: this, 
+      userSettings: userSettings, 
+      child: widget.child,
+    );
+  }
 }
 
 class _AppUserSettingsInheritedWidget extends InheritedWidget {
   const _AppUserSettingsInheritedWidget({
+    super.key,
     required this.state, 
     required this.userSettings,
     required super.child,
@@ -126,6 +133,9 @@ class _AppUserSettingsInheritedWidget extends InheritedWidget {
   )!;
 
   @override
-  bool updateShouldNotify(_AppUserSettingsInheritedWidget oldWidget) =>
-    (userSettings?.selectedTheme != oldWidget.userSettings?.selectedTheme) || (userSettings?.subscriptionType != oldWidget.userSettings?.subscriptionType);
+  bool updateShouldNotify(covariant _AppUserSettingsInheritedWidget oldWidget) =>
+    (userSettings?.selectedTheme?.name != oldWidget.userSettings?.selectedTheme?.name)
+    ||
+    (userSettings?.subscriptionType?.name != oldWidget.userSettings?.subscriptionType?.name);
+    
 }
