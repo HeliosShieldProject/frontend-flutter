@@ -1,2 +1,1 @@
-abstract interface class AppL10n {
-}
+abstract interface class AppL10n {}

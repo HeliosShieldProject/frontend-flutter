@@ -10,7 +10,7 @@ abstract interface class User {
 
   String? deviceName;
   String? deviceType;
-  
+
   String? jwtToken;
   String? jwtRefreshToken;
 
@@ -32,7 +32,7 @@ class UserImpl implements User {
   @HiveField(2)
   @override
   String? email;
-  
+
   @HiveField(3)
   @override
   String? deviceName;
@@ -51,25 +51,26 @@ class UserImpl implements User {
 
   @override
   Map<String, dynamic> toJson() => <String, dynamic>{
-    "email" : email,
-    "password" : password,
-    "device" : {
-      "name" : deviceName,
-      "type" : deviceType,
-    }
-  };
+        "email": email,
+        "password": password,
+        "device": {
+          "name": deviceName,
+          "type": deviceType,
+        }
+      };
 
   @override
   UserValidity isValid() {
     if (jwtToken != null && jwtRefreshToken != null) {
       if (JwtDecoder.isExpired(jwtToken!)) {
-        return !JwtDecoder.isExpired(jwtRefreshToken!) ? UserValidity.needsRefreshment : UserValidity.notValid;  
+        return !JwtDecoder.isExpired(jwtRefreshToken!)
+            ? UserValidity.needsRefreshment
+            : UserValidity.notValid;
       }
       return UserValidity.isValid;
     }
     return UserValidity.notValid;
   }
-
 }
 
 enum UserValidity {

@@ -4,18 +4,18 @@ import 'user.dart';
 
 class AppUser extends StatefulWidget {
   const AppUser({
-    super.key, 
+    super.key,
     required this.child,
   });
 
   final Widget child;
 
-  static User? of(BuildContext context, {bool listen = false}) => 
-    _AppUserInheritedWidget.of(context, listen: listen).user;
+  static User? of(BuildContext context, {bool listen = false}) =>
+      _AppUserInheritedWidget.of(context, listen: listen).user;
 
   static bool isBoxOpen(BuildContext context, {bool listen = false}) =>
-    _AppUserInheritedWidget.of(context, listen: listen).state.boxOpen;
-  
+      _AppUserInheritedWidget.of(context, listen: listen).state.boxOpen;
+
   static void update(BuildContext context, User user) {
     _AppUserInheritedWidget.of(context).state._update(user);
   }
@@ -24,13 +24,13 @@ class AppUser extends StatefulWidget {
   State<AppUser> createState() => _AppUserState();
 }
 
-class _AppUserState extends State<AppUser> with WidgetsBindingObserver{
+class _AppUserState extends State<AppUser> with WidgetsBindingObserver {
   User? user;
   bool boxOpen = false;
 
   void _update(User user) {
     setState(() {
-      this.user = user;     
+      this.user = user;
     });
     if (Hive.isBoxOpen("User")) Hive.box("User").put("user", user);
   }
@@ -38,30 +38,27 @@ class _AppUserState extends State<AppUser> with WidgetsBindingObserver{
   @override
   void initState() {
     super.initState();
-    Hive.openBox<User>("User")
-      .then(
-        (value) {
-          boxOpen = true;
-          setState(() {
-            user = value.get(
-              "user",
-              defaultValue: UserImpl(),
-            );
-          });
-        }
-    );
+    Hive.openBox<User>("User").then((value) {
+      boxOpen = true;
+      setState(() {
+        user = value.get(
+          "user",
+          defaultValue: UserImpl(),
+        );
+      });
+    });
   }
 
-  @override 
+  @override
   void dispose() {
     super.dispose();
-    try{
+    try {
       if (Hive.isBoxOpen("User")) {
         Hive.box("User")
-        ..put("user", user)
-        ..close();
+          ..put("user", user)
+          ..close();
       }
-    } on HiveError catch(error) {
+    } on HiveError catch (error) {
       print(error.message);
     }
   }
@@ -75,12 +72,11 @@ class _AppUserState extends State<AppUser> with WidgetsBindingObserver{
 
   @override
   Widget build(BuildContext context) => _AppUserInheritedWidget(
-    user: user, 
-    state: this, 
-    child: widget.child,
-  );
+        user: user,
+        state: this,
+        child: widget.child,
+      );
 }
-
 
 class _AppUserInheritedWidget extends InheritedWidget {
   const _AppUserInheritedWidget({
@@ -93,18 +89,18 @@ class _AppUserInheritedWidget extends InheritedWidget {
   final _AppUserState state;
   final User? user;
 
-  static _AppUserInheritedWidget? maybeof(BuildContext context, {bool listen = false}) => listen 
-    ?
-    context.dependOnInheritedWidgetOfExactType<_AppUserInheritedWidget>()
-    :
-    context.getInheritedWidgetOfExactType<_AppUserInheritedWidget>();
+  static _AppUserInheritedWidget? maybeof(BuildContext context,
+          {bool listen = false}) =>
+      listen
+          ? context
+              .dependOnInheritedWidgetOfExactType<_AppUserInheritedWidget>()
+          : context.getInheritedWidgetOfExactType<_AppUserInheritedWidget>();
 
-  static _AppUserInheritedWidget of(BuildContext context, {bool listen = false}) => maybeof(
-    context, 
-    listen: listen
-  )!;  
+  static _AppUserInheritedWidget of(BuildContext context,
+          {bool listen = false}) =>
+      maybeof(context, listen: listen)!;
 
   @override
-  bool updateShouldNotify(covariant _AppUserInheritedWidget oldWidget) => 
-    oldWidget.user?.toJson() != user?.toJson(); 
+  bool updateShouldNotify(covariant _AppUserInheritedWidget oldWidget) =>
+      oldWidget.user?.toJson() != user?.toJson();
 }

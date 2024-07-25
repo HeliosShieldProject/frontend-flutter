@@ -4,7 +4,7 @@ import 'package:helios/common/user/user.dart';
 import 'package:helios/common/user_settings/user_settings.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void main() async{
+void main() async {
   await Hive.initFlutter();
 
   Hive

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-abstract interface class Routes {
+abstract interface class RouteNames {
+  static const String splash = "/splash"; 
   static const String welcome = "/welcome";
   static const String login = "/login";
   static const String reg = "/reg";
@@ -11,15 +12,23 @@ abstract interface class Routes {
   static const String password = "/password";
 }
 
-// abstract class RoutesBuilder {
-//   static final routesBuilder = <String, Widget Function(BuildContext)> {
-//     Routes.welcome: (_) => ,
-//     Routes.login: (_) => ,
+abstract class RoutesBuilder {
+  static final routesBuilder = <String, Widget Function(BuildContext)> {
+    RouteNames.welcome: (_) => ,
+    RouteNames.login: (_) => ,
 
-//   };
+  };
 
-//   static build
-// }
+  static Route<Object?>? onGenerateRoute(RouteSettings settings) {
+    return switch(settings.name) {
+      
+      RouteNames.splash => ,
+      null => throw UnimplementedError(),
+      String() => throw UnimplementedError(),
+    }
+  }
+
+}
 
 class NavigationManager {
   NavigationManager._();

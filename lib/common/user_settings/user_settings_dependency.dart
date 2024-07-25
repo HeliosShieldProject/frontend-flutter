@@ -10,36 +10,42 @@ class AppUserSettings extends StatefulWidget {
 
   final Widget child;
 
-  static UserSettings? of(BuildContext context, {bool listen = false}) => 
-    _AppUserSettingsInheritedWidget.of(context, listen: listen).userSettings; 
-  
-  static bool isBoxOpen(BuildContext context, {bool listen = false}) => 
-    _AppUserSettingsInheritedWidget.of(context, listen: listen).state.boxOpen;
+  static UserSettings? of(BuildContext context, {bool listen = false}) =>
+      _AppUserSettingsInheritedWidget.of(context, listen: listen).userSettings;
+
+  static bool isBoxOpen(BuildContext context, {bool listen = false}) =>
+      _AppUserSettingsInheritedWidget.of(context, listen: listen).state.boxOpen;
 
   static void update(BuildContext context, UserSettings userSettings) {
     _AppUserSettingsInheritedWidget.of(context).state._update(userSettings);
   }
+
   static void changeTheme(BuildContext context, SelectedTheme theme) {
     _AppUserSettingsInheritedWidget.of(context).state._changeTheme(theme);
   }
 
-  static void changeSubscription(BuildContext context, SubscriptionType subscriptionType) {
-    _AppUserSettingsInheritedWidget.of(context).state._changeSubscription(subscriptionType);
+  static void changeSubscription(
+      BuildContext context, SubscriptionType subscriptionType) {
+    _AppUserSettingsInheritedWidget.of(context)
+        .state
+        ._changeSubscription(subscriptionType);
   }
-  
+
   @override
   State<AppUserSettings> createState() => _AppUserSettingsState();
 }
 
-class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingObserver {
+class _AppUserSettingsState extends State<AppUserSettings>
+    with WidgetsBindingObserver {
   UserSettings? userSettings;
   bool boxOpen = false;
 
-  void _update(UserSettings userSettings) { 
+  void _update(UserSettings userSettings) {
     setState(() {
       this.userSettings = userSettings;
     });
-    if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
+    if (Hive.isBoxOpen("UserSettings"))
+      Hive.box("UserSettings").put("userSettings", userSettings);
   }
 
   void _changeTheme(SelectedTheme? selectedTheme) {
@@ -49,7 +55,8 @@ class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingOb
     setState(() {
       userSettings = newUserSettings;
     });
-    if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
+    if (Hive.isBoxOpen("UserSettings"))
+      Hive.box("UserSettings").put("userSettings", userSettings);
   }
 
   void _changeSubscription(SubscriptionType? subscriptionType) {
@@ -59,24 +66,22 @@ class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingOb
     setState(() {
       userSettings = newUserSettings;
     });
-    if (Hive.isBoxOpen("UserSettings")) Hive.box("UserSettings").put("userSettings", userSettings);
+    if (Hive.isBoxOpen("UserSettings"))
+      Hive.box("UserSettings").put("userSettings", userSettings);
   }
 
   @override
   void initState() {
     super.initState();
-    Hive.openBox("UserSettings") 
-      .then(
-        (value) {
-          boxOpen = true;
-          setState(() {
-            userSettings = value.get(
-              "userSettings", 
-              defaultValue: UserSettingsImpl(),
-            );
-          });
-        }
-      );
+    Hive.openBox("UserSettings").then((value) {
+      boxOpen = true;
+      setState(() {
+        userSettings = value.get(
+          "userSettings",
+          defaultValue: UserSettingsImpl(),
+        );
+      });
+    });
   }
 
   @override
@@ -88,7 +93,7 @@ class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingOb
           ..put("userSettings", userSettings)
           ..close();
       }
-    } on HiveError catch(error) {
+    } on HiveError catch (error) {
       print(error.message);
     }
   }
@@ -101,10 +106,10 @@ class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingOb
   }
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return _AppUserSettingsInheritedWidget(
-      state: this, 
-      userSettings: userSettings, 
+      state: this,
+      userSettings: userSettings,
       child: widget.child,
     );
   }
@@ -113,7 +118,7 @@ class _AppUserSettingsState extends State<AppUserSettings> with WidgetsBindingOb
 class _AppUserSettingsInheritedWidget extends InheritedWidget {
   const _AppUserSettingsInheritedWidget({
     super.key,
-    required this.state, 
+    required this.state,
     required this.userSettings,
     required super.child,
   });
@@ -121,21 +126,23 @@ class _AppUserSettingsInheritedWidget extends InheritedWidget {
   final _AppUserSettingsState state;
   final UserSettings? userSettings;
 
-  static _AppUserSettingsInheritedWidget? maybeof(BuildContext context, {bool listen = false}) => listen
-    ?
-    context.dependOnInheritedWidgetOfExactType<_AppUserSettingsInheritedWidget>()
-    :
-    context.getInheritedWidgetOfExactType<_AppUserSettingsInheritedWidget>();
+  static _AppUserSettingsInheritedWidget? maybeof(BuildContext context,
+          {bool listen = false}) =>
+      listen
+          ? context.dependOnInheritedWidgetOfExactType<
+              _AppUserSettingsInheritedWidget>()
+          : context
+              .getInheritedWidgetOfExactType<_AppUserSettingsInheritedWidget>();
 
-  static _AppUserSettingsInheritedWidget of(BuildContext context, {bool listen = false}) => maybeof(
-    context, 
-    listen: listen
-  )!;
+  static _AppUserSettingsInheritedWidget of(BuildContext context,
+          {bool listen = false}) =>
+      maybeof(context, listen: listen)!;
 
   @override
-  bool updateShouldNotify(covariant _AppUserSettingsInheritedWidget oldWidget) =>
-    (userSettings?.selectedTheme?.name != oldWidget.userSettings?.selectedTheme?.name)
-    ||
-    (userSettings?.subscriptionType?.name != oldWidget.userSettings?.subscriptionType?.name);
-    
+  bool updateShouldNotify(
+          covariant _AppUserSettingsInheritedWidget oldWidget) =>
+      (userSettings?.selectedTheme?.name !=
+          oldWidget.userSettings?.selectedTheme?.name) ||
+      (userSettings?.subscriptionType?.name !=
+          oldWidget.userSettings?.subscriptionType?.name);
 }

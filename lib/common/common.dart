@@ -4,4 +4,5 @@ export 'user/user.dart';
 export 'user/user_dependency.dart';
 export 'user_settings/user_settings.dart';
 export 'user_settings/user_settings_dependency.dart';
+export 'ui/elements/animated_helios_icon.dart';
 // export 'l10n/l10n.dart';

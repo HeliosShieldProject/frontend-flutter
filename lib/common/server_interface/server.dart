@@ -1,7 +1,3 @@
-abstract interface class AuthServer {
-  
-}
+abstract interface class AuthServer {}
 
-abstract interface class SessionServer {
-
-}
+abstract interface class SessionServer {}
