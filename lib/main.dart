@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:helios/app/ui/app.dart';
-import 'package:helios/common/user/user.dart';
-import 'package:helios/common/user_settings/user_settings.dart';
+import 'package:helios/app/app.dart';
+import 'package:helios/common/common.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -13,5 +12,13 @@ void main() async {
     ..registerAdapter(SubscriptionTypeAdapter())
     ..registerAdapter(SelectedThemeAdapter());
 
-  runApp(const App());
+  runApp(
+    const AppUser(
+      child: AppUserSettings(
+        child: AppTheme(
+          child: App(),
+        ),
+      ),
+    ),
+  );
 }

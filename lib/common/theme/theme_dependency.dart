@@ -14,7 +14,7 @@ class AppTheme extends StatefulWidget {
 }
 
 class _AppThemeState extends State<AppTheme> {
-  MyTheme? theme;
+  late MyTheme theme;
 
   @override
   void didChangeDependencies() {
@@ -26,7 +26,7 @@ class _AppThemeState extends State<AppTheme> {
   @override
   Widget build(BuildContext context) {
     return _AppThemeInheritedWidget(
-        theme: theme!, state: this, child: widget.child);
+        theme: theme, state: this, child: widget.child);
   }
 }
 

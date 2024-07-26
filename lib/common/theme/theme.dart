@@ -33,17 +33,14 @@ final MyTheme darkTheme = MyTheme(
         surface: Color(0xFF262626),
         onSurface: Color.fromARGB(128, 255, 255, 255)),
     textTheme: const TextTheme(
-      displayMedium: TextStyle(color: Colors.white, fontFamily: 'Ubuntu'),
-    ),
+        displayMedium: TextStyle(color: Colors.white, fontFamily: 'Ubuntu', fontSize: 12),
+        labelMedium: TextStyle(
+            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500)),
     appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
-        elevation: 0),
-    elevatedButtonTheme: const ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+        elevation: 0
       ),
-    ),
   ),
   isLight: false,
 );
@@ -58,17 +55,13 @@ final MyTheme lightTheme = MyTheme(
         surface: Color(0xFF262626),
         onSurface: Color.fromARGB(128, 255, 255, 255)),
     textTheme: const TextTheme(
-      displayMedium: TextStyle(color: Colors.black, fontFamily: 'Ubuntu'),
-    ),
+        displayMedium: TextStyle(color: Colors.black, fontFamily: 'Ubuntu'),
+        labelMedium: TextStyle(
+            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
     appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0),
-    elevatedButtonTheme: const ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll<Color>(Colors.black),
-      ),
-    ),
   ),
   isLight: true,
 );
