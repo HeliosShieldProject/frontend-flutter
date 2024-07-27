@@ -34,7 +34,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -51,7 +50,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     final bool isBoxOpen = AppUserSettings.isBoxOpen(context, listen: true) &&
         AppUser.isBoxOpen(context, listen: true);
     if (isBoxOpen) {
@@ -59,12 +57,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           ? Navigator.pushNamed(context, RouteNames.home)
           : Future.delayed(const Duration(seconds: 2)).then((_) => _onEnd());
     }
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -74,21 +73,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       body: Column(
         children: <Widget>[
           Expanded(
-            child: Hero(
-              tag: "Icon",
-              child: FadingHeliosIcon(
-                size:
-                    Size.fromRadius(MediaQuery.of(context).size.width * 0.306),
-                showHelios: _initEnded,
-                fadeAnimation: _fadeAnimation,
-              ),
+            child: FadingHeliosIcon(
+              radius: MediaQuery.of(context).size.width * 0.306,
+              showHelios: _initEnded,
+              fadeAnimation: _fadeAnimation,
             ),
           ),
-          FadingButton(
-              onTap: () => Navigator.pushNamed(context, RouteNames.home),
-              label: "Продолжить",
-              shouldStartFading: _initEnded,
-              fadeAnimation: _fadeAnimation),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 60),
+            child: FadingButton(
+                onTap: () => Navigator.pushNamed(context, RouteNames.login),
+                label: "Продолжить",
+                shouldStartFading: _initEnded,
+                fadeAnimation: _fadeAnimation),
+          ),
         ],
       ),
     );
@@ -112,26 +110,20 @@ class FadingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 60),
-        child: _shouldStartFading
-            ? FadeTransition(
-                opacity: _fadeAnimation,
-                child: HeliosButton(
-                  onTap: onTap,
-                  label: label,
-                  color:
-                      AppTheme.of(context).themeData.colorScheme.onBackground,
-                ),
-              )
-            : Container(
-                height: 52,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-      ),
-    );
+    return _shouldStartFading
+        ? FadeTransition(
+            opacity: _fadeAnimation,
+            child: HeliosButton(
+              onTap: onTap,
+              label: label,
+              color: AppTheme.of(context).themeData.colorScheme.onBackground,
+            ),
+          )
+        : Container(
+            height: 52,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          );
   }
 }

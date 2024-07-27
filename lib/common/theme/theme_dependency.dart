@@ -18,9 +18,9 @@ class _AppThemeState extends State<AppTheme> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     UserSettings? appUserSettings = AppUserSettings.of(context, listen: true);
     theme = getTheme((appUserSettings ?? UserSettingsImpl()).selectedTheme);
+    super.didChangeDependencies();
   }
 
   @override

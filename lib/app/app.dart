@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Expanded(
             child: HeliosIcon(
-              size: Size.fromRadius(MediaQuery.of(context).size.width * 0.306),
+              radius: MediaQuery.of(context).size.width * 0.306,
               showHelios: true,
             ),
           ),

@@ -72,7 +72,6 @@ class _AppUserSettingsState extends State<AppUserSettings>
 
   @override
   void initState() {
-    super.initState();
     Hive.openBox("UserSettings").then((value) {
       boxOpen = true;
       setState(() {
@@ -82,27 +81,29 @@ class _AppUserSettingsState extends State<AppUserSettings>
         );
       });
     });
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     try {
       if (Hive.isBoxOpen("UserSettings")) {
         Hive.box("UserSettings")
           ..put("userSettings", userSettings)
           ..close();
       }
+      print("UserSettings box closed");
     } on HiveError catch (error) {
       print(error.message);
     }
+    super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
     if (state == AppLifecycleState.detached) dispose();
+
+    super.didChangeAppLifecycleState(state);
   }
 
   @override

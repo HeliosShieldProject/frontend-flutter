@@ -37,7 +37,6 @@ class _AppUserState extends State<AppUser> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    super.initState();
     Hive.openBox<User>("User").then((value) {
       boxOpen = true;
       setState(() {
@@ -47,11 +46,11 @@ class _AppUserState extends State<AppUser> with WidgetsBindingObserver {
         );
       });
     });
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     try {
       if (Hive.isBoxOpen("User")) {
         Hive.box("User")
@@ -61,13 +60,14 @@ class _AppUserState extends State<AppUser> with WidgetsBindingObserver {
     } on HiveError catch (error) {
       print(error.message);
     }
+    super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
     if (state == AppLifecycleState.detached) dispose();
+
+    super.didChangeAppLifecycleState(state);
   }
 
   @override

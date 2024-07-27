@@ -1,14 +1,21 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../common.dart';
 
 class HeliosIcon extends StatelessWidget {
-  const HeliosIcon({
+  /// Creates blurred gradient circle with a Helios logo
+  /// if specified
+  ///
+  /// [radius] won't be larger than 150 logical pixels
+  /// no matter what is passed to it
+  ///
+  /// [showHelios] determines wether to show the Helios Icon over the
+  /// gradient circle
+  HeliosIcon({
     super.key,
-    required this.size, //can't be larger than 300 logical pixels in width and heigth.
+    required double radius,
     required this.showHelios,
-  });
+  }) : size = Size.fromRadius(radius);
 
   final Size size;
   final bool showHelios;
@@ -28,8 +35,8 @@ class HeliosIcon extends StatelessWidget {
                   begin: const Alignment(-0.7, 0),
                   end: const Alignment(0.3, 0.3),
                   colors: <Color>[
-                    AppTheme.of(context).themeData.colorScheme.primary,
-                    AppTheme.of(context).themeData.colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
                   ],
                 ),
                 shape: BoxShape.circle,
@@ -55,9 +62,9 @@ class HeliosIcon extends StatelessWidget {
 }
 
 class FadingHeliosIcon extends HeliosIcon {
-  const FadingHeliosIcon({
+  FadingHeliosIcon({
     super.key,
-    required super.size, //can't be larger than 300 logical pixels in width and heigth.
+    required super.radius,
     required super.showHelios,
     required this.fadeAnimation,
   });
@@ -81,8 +88,8 @@ class FadingHeliosIcon extends HeliosIcon {
                     begin: const Alignment(-0.7, 0),
                     end: const Alignment(0.3, 0.3),
                     colors: <Color>[
-                      AppTheme.of(context).themeData.colorScheme.primary,
-                      AppTheme.of(context).themeData.colorScheme.secondary,
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.secondary,
                     ],
                   ),
                   shape: BoxShape.circle,
