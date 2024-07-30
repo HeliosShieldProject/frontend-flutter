@@ -28,11 +28,22 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   late final FocusNode focusNode;
   bool obscureText = true;
   bool error = false;
+  Widget? suffixIcon;
 
   @override
   void initState() {
     super.initState();
     focusNode = FocusNode();
+    if (widget.obscureText) {
+      widget.controller.addListener(() {
+        Widget? newSuffixIcon = evaluateSuffixIcon();
+        if (suffixIcon != newSuffixIcon) {
+          setState((){
+            suffixIcon = newSuffixIcon;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -85,6 +96,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
+              suffixIcon: suffixIcon,
             ),
             validator: (value) {
               if (!widget.validityCriteria(value)) {
@@ -111,5 +123,22 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
         ),
       ),
     );
+  }
+
+  Widget? evaluateSuffixIcon() {
+    if(widget.controller.text.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: IconButton(
+          icon: Icon(obscureText ? Icons.visibility_rounded : Icons.visibility_off_rounded),
+          onPressed: () {
+            setState((){
+              obscureText = !obscureText;
+            });
+          },
+        ),
+      );
+    }
+    return null;
   }
 }
