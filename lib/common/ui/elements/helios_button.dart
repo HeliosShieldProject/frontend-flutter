@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
 
-class HeliosButton extends StatefulWidget {
+class HeliosButton extends StatelessWidget {
   const HeliosButton({
     super.key,
-    required this.onTap,
+    this.onTap,
     this.label,
     this.color,
     this.gradient,
@@ -16,13 +16,8 @@ class HeliosButton extends StatefulWidget {
   final String? label;
   final Color? color;
   final Gradient? gradient;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
-  @override
-  State<HeliosButton> createState() => _HeliosButtonState();
-}
-
-class _HeliosButtonState extends State<HeliosButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,14 +28,14 @@ class _HeliosButtonState extends State<HeliosButton> {
         child: Material(
           child: Ink(
             decoration: BoxDecoration(
-              color: widget.color,
-              gradient: widget.gradient,
+              color: onTap != null ? color : color?.withOpacity(0.5),
+              gradient: gradient,
             ),
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
                 Text(
-                  widget.label ?? "",
+                  label ?? "",
                   style: AppTheme.of(context).themeData.textTheme.labelMedium,
                 ),
                 InkWell(
@@ -49,7 +44,7 @@ class _HeliosButtonState extends State<HeliosButton> {
                       .colorScheme
                       .background
                       .withOpacity(0.7),
-                  onTap: widget.onTap,
+                  onTap: onTap,
                 ),
               ],
             ),

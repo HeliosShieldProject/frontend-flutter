@@ -16,13 +16,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late final Animation<double> _fadeAnimation;
   bool _initEnded = false;
 
-  void _onEnd() {
+  void _onEnd({String? route, Object? arguments}) {
     if (!_initEnded) {
       _controller.animateTo(0.0).then((_) {
         setState(() {
           _initEnded = true;
         });
-        _controller.forward();
+        if (route == null) {
+          _controller.forward();
+        } else {
+          Navigator.pushNamed(context, route, arguments: arguments);
+        }
       });
     }
   }
@@ -53,8 +57,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     final bool isBoxOpen = AppUserSettings.isBoxOpen(context, listen: true) &&
         AppUser.isBoxOpen(context, listen: true);
     if (isBoxOpen) {
-      AppUser.of(context)!.isValid() == UserValidity.isValid
-          ? Navigator.pushNamed(context, RouteNames.home)
+      AppUser.of(context)!.validity == UserValidity.isValid
+          ? _onEnd(route: RouteNames.home)
           : Future.delayed(const Duration(seconds: 2)).then((_) => _onEnd());
     }
     super.didChangeDependencies();

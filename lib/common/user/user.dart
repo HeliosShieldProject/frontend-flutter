@@ -18,7 +18,7 @@ abstract interface class User {
 
   Map<String, dynamic> toJson();
 
-  UserValidity isValid();
+  UserValidity get validity;
 }
 
 @HiveType(typeId: 3)
@@ -60,7 +60,7 @@ class UserImpl implements User {
       };
 
   @override
-  UserValidity isValid() {
+  UserValidity get validity {
     if (jwtToken != null && jwtRefreshToken != null) {
       if (JwtDecoder.isExpired(jwtToken!)) {
         return !JwtDecoder.isExpired(jwtRefreshToken!)

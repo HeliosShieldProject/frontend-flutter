@@ -1,18 +1,19 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
-import 'package:email_validator/email_validator.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegistrationPage> createState() => _RegistrationPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegistrationPageState extends State<RegistrationPage> {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   late final TextEditingController emailController;
-  late final TextEditingController passwordController;
+  late final TextEditingController passwordController1;
+  late final TextEditingController passwordController2;
   bool emailError = false;
   bool passwordError = false;
 
@@ -20,13 +21,15 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState;
     emailController = TextEditingController();
-    passwordController = TextEditingController();
+    passwordController1 = TextEditingController();
+    passwordController2 = TextEditingController();
   }
 
   @override
   void dispose() {
     emailController.dispose();
-    passwordController.dispose();
+    passwordController1.dispose();
+    passwordController2.dispose();
     super.dispose();
   }
 
@@ -63,10 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.065 +
-                                      10),
                           HeliosFormTextField(
                             controller: emailController,
                             text: "Введите email",
@@ -79,17 +78,29 @@ class _LoginPageState extends State<LoginPage> {
                             height: 10,
                           ),
                           HeliosFormTextField(
-                            controller: passwordController,
+                            controller: passwordController1,
                             text: "Введите пароль",
                             textOnError: "Введите пароль",
                             validityCriteria: (value) => (value!.isNotEmpty),
+                            obscureText: true,
+                            clearOnError: false,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          HeliosFormTextField(
+                            controller: passwordController2,
+                            text: "Повторите пароль",
+                            textOnError: "Пароли не совпадают",
+                            validityCriteria: (value) => (value!.isNotEmpty &&
+                                value == passwordController1.text),
                             obscureText: true,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "Забыли пароль?",
+                            "",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
@@ -103,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 40,
                           ),
                           HeliosButton(
-                            label: "Войти",
+                            label: "Зарегистрироваться",
                             color: Theme.of(context).colorScheme.onBackground,
                             onTap: () {
                               if (_formState.currentState!.validate()) {
@@ -119,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                     offset: const Offset(0.0, -32.0),
                     child: Text.rich(TextSpan(children: [
                       TextSpan(
-                        text: "Нет аккаунта? ",
+                        text: "Есть аккаунт? ",
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context)
                                 .colorScheme
@@ -130,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: PlaceholderAlignment.middle,
                         child: InkWell(
                             child: Text(
-                              "Зарегистрируйтесь!",
+                              "Войдите!",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -141,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onTap: () {
                               Navigator.pushReplacementNamed(
-                                  context, RouteNames.reg);
+                                  context, RouteNames.login);
                             }),
                       ),
                     ])),
