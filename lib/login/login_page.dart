@@ -13,8 +13,38 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
-  bool emailError = false;
-  bool passwordError = false;
+  bool canPop = true;
+
+  void _handleSignIn() {
+    setState(() {
+      canPop = false;
+    });
+
+    showLoadingIcon(context);
+    
+    AppServer.signIn(
+      context,
+      email: emailController.text,
+      password: passwordController.text,
+    ).then(
+      (response) {
+        setState(() {
+          canPop = true;
+        });
+
+        removeLoadingIcon();
+
+        if (response == SignInStatus.success) {
+          Navigator.popUntil(context, (value) => false);
+          Navigator.pushNamed(context, RouteNames.home);
+        } else {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar(context, title: response.name));
+        }
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -32,126 +62,125 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics:
-            const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-        child: ConstrainedBox(
-          constraints: BoxConstraints.tightFor(
+    return PopScope(
+      canPop: canPop,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
+          child: SizedBox(
             height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: HeliosIcon(
-                  radius: MediaQuery.of(context).size.width * 0.306,
-                  showHelios: true,
-                ),
-              ),
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Form(
-                    key: _formState,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 60),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.065 +
-                                      10),
-                          HeliosFormTextField(
-                            controller: emailController,
-                            text: "Введите email",
-                            textOnError: "Введите существующий email",
-                            keyboardType: TextInputType.emailAddress,
-                            validityCriteria: (value) =>
-                                EmailValidator.validate(value!),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          HeliosFormTextField(
-                            controller: passwordController,
-                            text: "Введите пароль",
-                            textOnError: "Введите пароль",
-                            validityCriteria: (value) => (value!.isNotEmpty),
-                            obscureText: true,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Забыли пароль?",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                ),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          HeliosButton(
-                            label: "Войти",
-                            color: Theme.of(context).colorScheme.onBackground,
-                            onTap: () {
-                              if (_formState.currentState!.validate()) {
-                                Navigator.pushNamed(context, RouteNames.home);
-                              }
-                            },
-                          ),
-                        ],
-                      ),
+            child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: HeliosIcon(
+                      radius: MediaQuery.of(context).size.width * 0.306,
+                      showHelios: true,
                     ),
                   ),
-                  Transform.translate(
-                    offset: const Offset(0.0, -32.0),
-                    child: Text.rich(TextSpan(children: [
-                      TextSpan(
-                        text: "Нет аккаунта? ",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onBackground
-                                .withOpacity(0.5)),
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: InkWell(
-                            child: Text(
-                              "Зарегистрируйтесь!",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
+                  Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Form(
+                        key: _formState,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, bottom: 60),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 62,
+                              ),
+                              HeliosFormTextField(
+                                controller: emailController,
+                                text: "Введите email",
+                                textOnError: "Введите существующий email",
+                                keyboardType: TextInputType.emailAddress,
+                                validityCriteria: (value) =>
+                                    EmailValidator.validate(value!),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              HeliosFormTextField(
+                                controller: passwordController,
+                                text: "Введите пароль",
+                                textOnError: "Введите пароль",
+                                validityCriteria: (value) => (value!.isNotEmpty),
+                                obscureText: true,
+                                textInputAction: TextInputAction.done,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Забыли пароль?",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .onBackground),
-                            ),
-                            onTap: () {
-                              Navigator.pushReplacementNamed(
-                                  context, RouteNames.reg);
-                            }),
+                                          .onBackground,
+                                    ),
+                              ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              HeliosButton(
+                                label: "Войти",
+                                color: Theme.of(context).colorScheme.onBackground,
+                                onTap: () {
+                                  if (_formState.currentState!.validate()) {
+                                    _handleSignIn();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ])),
+                      Transform.translate(
+                        offset: const Offset(0.0, -32.0),
+                        child: Text.rich(TextSpan(children: [
+                          TextSpan(
+                            text: "Нет аккаунта? ",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground
+                                        .withOpacity(0.5)),
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: InkWell(
+                                child: Text(
+                                  "Зарегистрируйтесь!",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground),
+                                ),
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, RouteNames.reg);
+                                }),
+                          ),
+                        ])),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+          ),
           ),
         ),
-      ),
     );
   }
 }

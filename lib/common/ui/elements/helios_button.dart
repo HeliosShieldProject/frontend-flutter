@@ -21,7 +21,7 @@ class HeliosButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.065,
+      height: 52,
       alignment: Alignment.center,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -52,5 +52,40 @@ class HeliosButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class FadingButton extends StatelessWidget {
+  const FadingButton({
+    super.key,
+    required this.onTap,
+    this.label,
+    required bool shouldStartFading,
+    required Animation<double> fadeAnimation,
+  })  : _shouldStartFading = shouldStartFading,
+        _fadeAnimation = fadeAnimation;
+
+  final bool _shouldStartFading;
+  final Animation<double> _fadeAnimation;
+  final String? label;
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return _shouldStartFading
+        ? FadeTransition(
+            opacity: _fadeAnimation,
+            child: HeliosButton(
+              onTap: onTap,
+              label: label,
+              color: AppTheme.of(context).themeData.colorScheme.onBackground,
+            ),
+          )
+        : Container(
+            height: 52,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          );
   }
 }

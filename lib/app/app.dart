@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
+import 'package:hive/hive.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -25,6 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
   late MyTheme theme;
 
   @override
+  void initState() {
+    super.initState();
+    print((Hive.box<User>("User").get("user") as User).toJson());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -46,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: selectedTheme.name,
               );
             }).toList(),
-            initialSelection: AppUserSettings.of(context)!.selectedTheme,
+            initialSelection: AppUserSettings.of(context).selectedTheme,
             onSelected: (value) => AppUserSettings.changeTheme(context, value!),
             textStyle: Theme.of(context).textTheme.displayMedium,
           )),

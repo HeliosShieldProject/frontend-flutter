@@ -61,20 +61,16 @@ class UserImpl implements User {
 
   @override
   UserValidity get validity {
-    if (jwtToken != null && jwtRefreshToken != null) {
-      if (JwtDecoder.isExpired(jwtToken!)) {
-        return !JwtDecoder.isExpired(jwtRefreshToken!)
-            ? UserValidity.needsRefreshment
-            : UserValidity.notValid;
-      }
-      return UserValidity.isValid;
+    if (jwtToken == null || jwtRefreshToken == null) {
+      return UserValidity.notValid;
+    } else if (JwtDecoder.isExpired(jwtRefreshToken!)) {
+      return UserValidity.notValid;
     }
-    return UserValidity.notValid;
+    return UserValidity.needsRefreshment;
   }
 }
 
 enum UserValidity {
-  isValid,
   needsRefreshment,
   notValid,
 }

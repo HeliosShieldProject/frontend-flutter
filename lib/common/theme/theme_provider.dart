@@ -18,15 +18,18 @@ class _AppThemeState extends State<AppTheme> {
 
   @override
   void didChangeDependencies() {
-    UserSettings? appUserSettings = AppUserSettings.of(context, listen: true);
-    theme = getTheme((appUserSettings ?? UserSettingsImpl()).selectedTheme);
+    UserSettings appUserSettings = AppUserSettings.of(context, listen: true);
+    theme = getTheme(appUserSettings.selectedTheme);
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return _AppThemeInheritedWidget(
-        theme: theme, state: this, child: widget.child);
+      theme: theme,
+      state: this,
+      child: widget.child,
+    );
   }
 }
 

@@ -14,8 +14,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late final TextEditingController emailController;
   late final TextEditingController passwordController1;
   late final TextEditingController passwordController2;
-  bool emailError = false;
-  bool passwordError = false;
 
   @override
   void initState() {
@@ -39,14 +37,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
       body: SingleChildScrollView(
         physics:
             const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-        child: ConstrainedBox(
-          constraints: BoxConstraints.tightFor(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-          ),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 child: HeliosIcon(
@@ -63,8 +56,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, bottom: 60),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           HeliosFormTextField(
                             controller: emailController,
@@ -95,6 +86,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             validityCriteria: (value) => (value!.isNotEmpty &&
                                 value == passwordController1.text),
                             obscureText: true,
+                            textInputAction: TextInputAction.done,
                           ),
                           const SizedBox(
                             height: 10,

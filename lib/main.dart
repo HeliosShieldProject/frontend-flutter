@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:helios/app/app.dart';
 import 'package:helios/common/common.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() async {
-  await Hive.initFlutter();
+Future<void> main() async {
+  await _initHive();
 
-  Hive
-    ..registerAdapter(UserSettingsImplAdapter())
-    ..registerAdapter(UserImplAdapter())
-    ..registerAdapter(SubscriptionTypeAdapter())
-    ..registerAdapter(SelectedThemeAdapter());
+  await dotenv.load(
+    fileName: "master_backend.env",
+  );
 
   runApp(
     const AppUser(
@@ -21,4 +20,17 @@ void main() async {
       ),
     ),
   );
+}
+
+Future<void> _initHive() async {
+  await Hive.initFlutter();
+
+  Hive
+    ..registerAdapter(UserSettingsImplAdapter())
+    ..registerAdapter(UserImplAdapter())
+    ..registerAdapter(SubscriptionTypeAdapter())
+    ..registerAdapter(SelectedThemeAdapter());
+
+  await Hive.openBox<UserSettings>("UserSettings");
+  await Hive.openBox<User>("User");
 }

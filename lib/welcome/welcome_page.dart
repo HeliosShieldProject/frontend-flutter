@@ -43,25 +43,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       vsync: this,
     );
 
-    _fadeAnimation = _controller.drive(_easeInTween);
+    _fadeAnimation = _easeInTween.animate(_controller);
 
     try {
       _controller.repeat(reverse: true);
     } on TickerCanceled {
       print("Animation canceled");
     }
-  }
 
-  @override
-  void didChangeDependencies() {
-    final bool isBoxOpen = AppUserSettings.isBoxOpen(context, listen: true) &&
-        AppUser.isBoxOpen(context, listen: true);
-    if (isBoxOpen) {
-      AppUser.of(context)!.validity == UserValidity.isValid
-          ? _onEnd(route: RouteNames.home)
-          : Future.delayed(const Duration(seconds: 2)).then((_) => _onEnd());
-    }
-    super.didChangeDependencies();
+    Future.delayed(const Duration(seconds: 2)).then((_) => _onEnd()); //to implement onAppInit, which could validate user, refresh tokens and etc
   }
 
   @override
@@ -97,37 +87,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 }
 
-class FadingButton extends StatelessWidget {
-  const FadingButton({
-    super.key,
-    required this.onTap,
-    this.label,
-    required bool shouldStartFading,
-    required Animation<double> fadeAnimation,
-  })  : _shouldStartFading = shouldStartFading,
-        _fadeAnimation = fadeAnimation;
+// switch(AppUser.of(context)!.validity) {
+//           case UserValidity.needsRefreshment:
+//             AppServer.refresh(context).then((value) {
+//                 _onEnd(route: RouteNames.home);
+//               },
+//             );
+//             break;
 
-  final bool _shouldStartFading;
-  final Animation<double> _fadeAnimation;
-  final String? label;
-  final GestureTapCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return _shouldStartFading
-        ? FadeTransition(
-            opacity: _fadeAnimation,
-            child: HeliosButton(
-              onTap: onTap,
-              label: label,
-              color: AppTheme.of(context).themeData.colorScheme.onBackground,
-            ),
-          )
-        : Container(
-            height: 52,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          );
-  }
-}
+//           case UserValidity.notValid:
+//             Future.delayed(const Duration(seconds: 2)).then((_) => _onEnd());
+//             break;
+//         }

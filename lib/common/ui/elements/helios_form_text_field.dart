@@ -8,6 +8,7 @@ class HeliosFormTextField extends StatefulWidget {
     required this.textOnError,
     required this.validityCriteria,
     this.keyboardType,
+    this.textInputAction = TextInputAction.next,
     this.obscureText = false,
     this.clearOnError = true,
   });
@@ -19,6 +20,7 @@ class HeliosFormTextField extends StatefulWidget {
   final bool obscureText;
   final bool clearOnError;
   final TextInputType? keyboardType;
+  final TextInputAction textInputAction;
 
   @override
   State<HeliosFormTextField> createState() => _HeliosFormTextFieldState();
@@ -28,7 +30,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   late final FocusNode focusNode;
   bool obscureText = true;
   bool error = false;
-  Widget? suffixIcon;
+  bool showSuffix = false;
 
   @override
   void initState() {
@@ -36,10 +38,13 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
     focusNode = FocusNode();
     if (widget.obscureText) {
       widget.controller.addListener(() {
-        Widget? newSuffixIcon = evaluateSuffixIcon();
-        if (suffixIcon != newSuffixIcon) {
-          setState((){
-            suffixIcon = newSuffixIcon;
+        if (!showSuffix && widget.controller.text.isNotEmpty) {
+          setState(() {
+            showSuffix = true;
+          });
+        } else if (showSuffix && widget.controller.text.isEmpty) {
+          setState(() {
+            showSuffix = false;
           });
         }
       });
@@ -58,12 +63,12 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
       cursor: SystemMouseCursors.text,
       child: GestureDetector(
         onTap: () {
-          if(!focusNode.hasFocus) {
+          if (!focusNode.hasFocus) {
             focusNode.requestFocus();
           }
         },
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.065,
+          height: 52,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -79,6 +84,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
             cursorColor: Theme.of(context).colorScheme.primary,
             cursorErrorColor: Theme.of(context).colorScheme.primary,
             style: Theme.of(context).textTheme.bodyMedium,
+            textInputAction: widget.textInputAction,
             decoration: InputDecoration(
               border: const OutlineInputBorder(borderSide: BorderSide.none),
               floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -96,7 +102,21 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
-              suffixIcon: suffixIcon,
+              suffixIcon: showSuffix
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: IconButton(
+                        icon: Icon(obscureText
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded),
+                        onPressed: () {
+                          setState(() {
+                            obscureText = !obscureText;
+                          });
+                        },
+                      ),
+                    )
+                  : null,
             ),
             validator: (value) {
               if (!widget.validityCriteria(value)) {
@@ -119,26 +139,21 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
                 });
               }
             },
+            onEditingComplete: widget.textInputAction == TextInputAction.next
+                ? () {
+                    do {
+                      FocusScope.of(context).nextFocus();
+                    } while ((FocusScope.of(context)
+                                .focusedChild
+                                ?.context
+                                ?.widget as Focus)
+                            .debugLabel !=
+                        "EditableText");
+                  }
+                : null,
           ),
         ),
       ),
     );
-  }
-
-  Widget? evaluateSuffixIcon() {
-    if(widget.controller.text.isNotEmpty) {
-      return Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: IconButton(
-          icon: Icon(obscureText ? Icons.visibility_rounded : Icons.visibility_off_rounded),
-          onPressed: () {
-            setState((){
-              obscureText = !obscureText;
-            });
-          },
-        ),
-      );
-    }
-    return null;
   }
 }
