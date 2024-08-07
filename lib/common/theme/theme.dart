@@ -31,7 +31,7 @@ final MyTheme darkTheme = MyTheme(
       background: Color.fromARGB(255, 0, 0, 0),
       onBackground: Color.fromARGB(255, 255, 255, 255),
       surface: Color(0xFF262626),
-      onSurface: Color.fromARGB(128, 255, 255, 255),
+      onSurface: Color.fromARGB(255, 62, 62, 62),
     ),
     textTheme: const TextTheme(
       displayMedium: TextStyle(
@@ -42,18 +42,27 @@ final MyTheme darkTheme = MyTheme(
       labelMedium: TextStyle(
         color: Colors.black,
         fontSize: 18,
+        fontFamily: 'Ubuntu',
         fontWeight: FontWeight.w500,
       ),
       bodyMedium: TextStyle(
         color: Color.fromARGB(128, 255, 255, 255),
         fontSize: 13,
-        fontWeight: FontWeight.w700,
+        fontFamily: 'Ubuntu',
+        fontWeight: FontWeight.w500,
+      ),
+      bodyLarge: TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+        fontFamily: 'Ubuntu',
+        fontWeight: FontWeight.w500,
       ),
     ),
     appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0),
+    scaffoldBackgroundColor: Colors.black,
   ),
   isLight: false,
 );
@@ -61,12 +70,13 @@ final MyTheme darkTheme = MyTheme(
 final MyTheme lightTheme = MyTheme(
   themeData: ThemeData(
     colorScheme: const ColorScheme.dark(
-        primary: Color(0xFFACB823),
-        secondary: Color(0xFF83847D),
-        background: Color.fromARGB(255, 255, 255, 255),
-        onBackground: Color.fromARGB(255, 0, 0, 0),
-        surface: Color(0xFF262626),
-        onSurface: Color.fromARGB(128, 255, 255, 255)),
+      primary: Color(0xFFACB823),
+      secondary: Color(0xFF83847D),
+      background: Color.fromARGB(255, 255, 255, 255),
+      onBackground: Color.fromARGB(255, 0, 0, 0),
+      surface: Color(0xFF262626),
+      onSurface: Color.fromARGB(255, 62, 62, 62),
+    ),
     textTheme: const TextTheme(
       displayMedium: TextStyle(
         color: Colors.black,
@@ -76,18 +86,27 @@ final MyTheme lightTheme = MyTheme(
       labelMedium: TextStyle(
         color: Colors.white,
         fontSize: 18,
+        fontFamily: 'Ubuntu',
         fontWeight: FontWeight.w500,
       ),
       bodyMedium: TextStyle(
         color: Color.fromARGB(128, 255, 255, 255),
         fontSize: 13,
-        fontWeight: FontWeight.w700,
+        fontFamily: 'Ubuntu',
+        fontWeight: FontWeight.w500,
+      ),
+      bodyLarge: TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+        fontFamily: 'Ubuntu',
+        fontWeight: FontWeight.w500,
       ),
     ),
     appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0),
+    scaffoldBackgroundColor: Colors.white,
   ),
   isLight: true,
 );

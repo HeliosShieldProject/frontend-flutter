@@ -103,18 +103,18 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
                 horizontal: 20,
               ),
               suffixIcon: showSuffix
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: IconButton(
-                        icon: Icon(obscureText
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded),
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
+                  ? IconButton(
+                      padding: const EdgeInsets.only(
+                        right: 20,
                       ),
+                      icon: Icon(obscureText
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded),
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
                     )
                   : null,
             ),

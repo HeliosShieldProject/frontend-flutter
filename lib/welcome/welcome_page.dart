@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
 
-class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({
     super.key,
   });
 
   @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
+  State<WelcomePage> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen>
+class _WelcomeScreenState extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
@@ -51,7 +51,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       print("Animation canceled");
     }
 
-    Future.delayed(const Duration(seconds: 2)).then((_) => _onEnd()); //to implement onAppInit, which could validate user, refresh tokens and etc
+    Future.delayed(const Duration(seconds: 2)).then((_) =>
+        _onEnd()); //to implement onAppInit, which could validate user, refresh tokens and etc
   }
 
   @override

@@ -23,7 +23,7 @@ class AppServer {
       return SignInStatus.failed;
     }
 
-    if(response["data"] is SignInStatus) {
+    if (response["data"] is SignInStatus) {
       return response["data"];
     } else {
       if (context.mounted) {
@@ -39,7 +39,7 @@ class AppServer {
     }
   }
 
-  static Future<String> signUp(BuildContext context,
+  static Future<SignUpStatus> signUp(BuildContext context,
       {required String email, required String password}) async {
     User user = await _createUser(email: email, password: password);
 
@@ -50,27 +50,22 @@ class AppServer {
         user: user,
       );
     } catch (_) {
-      return "failed";
+      return SignUpStatus.failed;
     }
 
-    switch (response["data"]) {
-      case ("userNotFound"):
-        return "userNotFound";
-      case ("wrongPassword"):
-        return "wrongPassword";
-      case ("failed"):
-        return "failed";
-      case (_):
-        if (context.mounted) {
-          AppUser.update(
-            context,
-            user
-              ..jwtToken = response["data"]["access_token"]
-              ..jwtRefreshToken = response["data"]["refresh_token"],
-          );
-          return "success";
-        }
-        return "failed";
+    if (response["data"] is SignUpStatus) {
+      return response["data"];
+    } else {
+      if (context.mounted) {
+        AppUser.update(
+          context,
+          user
+            ..jwtToken = response["data"]["access_token"]
+            ..jwtRefreshToken = response["data"]["refresh_token"],
+        );
+        return SignUpStatus.success;
+      }
+      return SignUpStatus.failed;
     }
   }
 

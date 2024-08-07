@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:helios/app/app.dart';
 import 'package:helios/registration/registration_page.dart';
 import 'package:helios/welcome/welcome_page.dart';
 import 'package:helios/login/login_page.dart';
+import 'package:helios/home/home_page.dart';
 
 abstract interface class RouteNames {
   static const String welcome = "/welcome";
@@ -21,13 +21,13 @@ abstract class RoutesBuilder {
       case (RouteNames.welcome):
         print("Welcome onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const WelcomeScreen(),
+          builder: (_) => const WelcomePage(),
           settings: settings,
         );
       case (RouteNames.home):
         print("Home onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
+          builder: (_) => const HomePage(),
           settings: settings,
         );
       case (RouteNames.login):

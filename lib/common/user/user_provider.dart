@@ -38,7 +38,10 @@ class _AppUserState extends State<AppUser> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    user = Hive.box<User>("User").get("user", defaultValue: UserImpl(),)!;
+    user = Hive.box<User>("User").get(
+      "user",
+      defaultValue: UserImpl(),
+    )!;
     super.initState();
   }
 
@@ -60,7 +63,6 @@ class _AppUserState extends State<AppUser> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.detached) dispose();
-    
 
     super.didChangeAppLifecycleState(state);
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
-import 'package:hive/hive.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -11,54 +10,54 @@ class App extends StatelessWidget {
         theme: AppTheme.of(context, listen: true).themeData,
         onGenerateRoute: RoutesBuilder.onGenerateRoute,
         onUnknownRoute: RoutesBuilder.onUnknownRoute,
-        initialRoute: RouteNames.welcome,
+        initialRoute: RouteNames.home,
       );
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
 
-class _HomeScreenState extends State<HomeScreen> {
-  late MyTheme theme;
+// class _HomeScreenState extends State<HomeScreen> {
+//   late MyTheme theme;
 
-  @override
-  void initState() {
-    super.initState();
-    print((Hive.box<User>("User").get("user") as User).toJson());
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     print((Hive.box<User>("User").get("user") as User).toJson());
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Column(
-        children: [
-          Expanded(
-            child: HeliosIcon(
-              radius: MediaQuery.of(context).size.width * 0.306,
-              showHelios: true,
-            ),
-          ),
-          Center(
-              child: DropdownMenu<SelectedTheme>(
-            dropdownMenuEntries: SelectedTheme.values
-                .map<DropdownMenuEntry<SelectedTheme>>(
-                    (SelectedTheme selectedTheme) {
-              return DropdownMenuEntry<SelectedTheme>(
-                value: selectedTheme,
-                label: selectedTheme.name,
-              );
-            }).toList(),
-            initialSelection: AppUserSettings.of(context).selectedTheme,
-            onSelected: (value) => AppUserSettings.changeTheme(context, value!),
-            textStyle: Theme.of(context).textTheme.displayMedium,
-          )),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Theme.of(context).colorScheme.background,
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: HeliosIcon(
+//               radius: MediaQuery.of(context).size.width * 0.306,
+//               showHelios: true,
+//             ),
+//           ),
+//           Center(
+//               child: DropdownMenu<SelectedTheme>(
+//             dropdownMenuEntries: SelectedTheme.values
+//                 .map<DropdownMenuEntry<SelectedTheme>>(
+//                     (SelectedTheme selectedTheme) {
+//               return DropdownMenuEntry<SelectedTheme>(
+//                 value: selectedTheme,
+//                 label: selectedTheme.name,
+//               );
+//             }).toList(),
+//             initialSelection: AppUserSettings.of(context).selectedTheme,
+//             onSelected: (value) => AppUserSettings.changeTheme(context, value!),
+//             textStyle: Theme.of(context).textTheme.displayMedium,
+//           )),
+//         ],
+//       ),
+//     );
+//   }
+// }
