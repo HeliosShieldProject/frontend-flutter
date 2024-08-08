@@ -45,6 +45,12 @@ final MyTheme darkTheme = MyTheme(
         fontFamily: 'Ubuntu',
         fontWeight: FontWeight.w500,
       ),
+      headlineMedium: TextStyle(
+        color: Colors.white,
+        fontSize: 18,
+        fontFamily: 'Ubuntu',
+        fontWeight: FontWeight.w500,
+      ),
       bodyMedium: TextStyle(
         color: Color.fromARGB(128, 255, 255, 255),
         fontSize: 13,
@@ -85,6 +91,12 @@ final MyTheme lightTheme = MyTheme(
       ),
       labelMedium: TextStyle(
         color: Colors.white,
+        fontSize: 18,
+        fontFamily: 'Ubuntu',
+        fontWeight: FontWeight.w500,
+      ),
+      headlineMedium: TextStyle(
+        color: Colors.black,
         fontSize: 18,
         fontFamily: 'Ubuntu',
         fontWeight: FontWeight.w500,

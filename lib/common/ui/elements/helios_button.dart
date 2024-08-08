@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:helios/common/common.dart';
 
 class HeliosButton extends StatelessWidget {
   const HeliosButton({
     super.key,
     this.onTap,
     this.label,
+    this.labelWidget,
     this.color,
     this.gradient,
   }) : assert(
             color != null && gradient == null ||
                 color == null && gradient != null,
-            "Either color or gradient should be provided");
+            "Either color or gradient should be provided"),
+      assert(
+        label == null && labelWidget != null || label != null && labelWidget == null, "Either label or labelWidget should be provided"
+      );
 
   final String? label;
+  final Widget? labelWidget;
   final Color? color;
   final Gradient? gradient;
   final GestureTapCallback? onTap;
+
+  Widget effectiveTitle(BuildContext context) {
+    return label != null 
+    ? Text(
+      label!,
+      style: Theme.of(context).textTheme.labelMedium,
+    )
+    : labelWidget!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +47,12 @@ class HeliosButton extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                Text(
-                  label ?? "",
-                  style: AppTheme.of(context).themeData.textTheme.labelMedium,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20,),
+                  child: effectiveTitle(context),
                 ),
                 InkWell(
-                  splashColor: AppTheme.of(context)
-                      .themeData
+                  splashColor: Theme.of(context)
                       .colorScheme
                       .background
                       .withOpacity(0.7),
@@ -78,7 +90,7 @@ class FadingButton extends StatelessWidget {
             child: HeliosButton(
               onTap: onTap,
               label: label,
-              color: AppTheme.of(context).themeData.colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           )
         : Container(

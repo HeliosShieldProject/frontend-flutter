@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
               size: 25,
             ),
             padding: const EdgeInsets.only(right: 20),
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).pushNamed(RouteNames.settings),
           )
         ],
       ),
@@ -44,12 +44,15 @@ class HomePage extends StatelessWidget {
           bottom: 40,
         ),
         child: Column(children: <Widget>[
-          Expanded(child: Container()),
+          Expanded(child: Center(
+            child: SvgPicture.asset("assets/shield_icon.svg", color: Theme.of(context).colorScheme.onBackground, height: 140, fit: BoxFit.scaleDown,),
+            ),
+          ),
           const HeliosVpnCard(
             connected: false,
-            currentCountry: CountriesConstants.uk,
-            uploadSpeed: 19.7,
-            downloadSpeed: 15.6,
+            // currentCountry: CountriesConstants.ru,
+            // uploadSpeed: 21.7,
+            // downloadSpeed: 15.6,
           ),
         ]),
       ),
@@ -145,7 +148,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                     animation: _animation,
                     builder: (context, _) => Container(
                       width: 30,
-                      height: 19,
+                      height: 21,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         gradient: _animation.value,
@@ -192,7 +195,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                     animation: _animation,
                     builder: (context, _) => Container(
                       width: 30,
-                      height: 19,
+                      height: 21,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         gradient: _animation.value,
@@ -271,17 +274,19 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    const double cardHeight = 150;
+
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: theme.colorScheme.surface,
         ),
-        height: MediaQuery.of(context).size.height * 0.188,
+        height: cardHeight ,
         child: Column(
           children: <Widget>[
             ConstrainedBox(
-              constraints: BoxConstraints.tightFor(
-                  height: MediaQuery.of(context).size.height * 0.094),
+              constraints: const BoxConstraints.tightFor(
+                  height: cardHeight / 2, ),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -315,6 +320,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Expanded(child: effectiveCountryName),
                         const SizedBox(
@@ -338,8 +344,8 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
               ),
             ),
             ConstrainedBox(
-              constraints: BoxConstraints.tightFor(
-                  height: MediaQuery.of(context).size.height * 0.094),
+              constraints: const BoxConstraints.tightFor(
+                  height: cardHeight / 2,),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
@@ -356,6 +362,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         effectiveDownloadText,
                         Text.rich(
@@ -381,6 +388,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         effectiveUploadText,
                         Text.rich(

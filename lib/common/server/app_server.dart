@@ -43,6 +43,8 @@ class AppServer {
       {required String email, required String password}) async {
     User user = await _createUser(email: email, password: password);
 
+    print(user.toJson());
+
     final Map<String, dynamic> response;
 
     try {

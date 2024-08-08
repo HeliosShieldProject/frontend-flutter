@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helios/registration/registration_page.dart';
+import 'package:helios/settings/settings_page.dart';
 import 'package:helios/welcome/welcome_page.dart';
 import 'package:helios/login/login_page.dart';
 import 'package:helios/home/home_page.dart';
@@ -40,6 +41,12 @@ abstract class RoutesBuilder {
         print("Reg onGenerateRoute");
         return MaterialPageRoute(
           builder: (_) => const RegistrationPage(),
+          settings: settings,
+        );
+      case (RouteNames.settings):
+        print("Settings onGenerateRoute");
+        return MaterialPageRoute(
+          builder: (_) => const SettingsPage(),
           settings: settings,
         );
     }

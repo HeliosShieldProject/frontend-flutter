@@ -64,7 +64,7 @@ class _WelcomeScreenState extends State<WelcomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.of(context).themeData.colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: <Widget>[
           Expanded(

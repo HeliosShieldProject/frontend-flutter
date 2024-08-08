@@ -29,6 +29,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       password: passwordController1.text,
     ).then(
       (response) {
+        print(response);
         setState(() {
           canPop = true;
         });
@@ -142,7 +143,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             HeliosButton(
                               label: "Зарегистрироваться",
                               color: Theme.of(context).colorScheme.onBackground,
-                              onTap: _handleSignUp,
+                              onTap: () {
+                                if(_formState.currentState!.validate()) {
+                                  _handleSignUp();
+                                }
+                              },
                             ),
                           ],
                         ),
