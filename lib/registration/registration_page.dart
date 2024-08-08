@@ -144,7 +144,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               label: "Зарегистрироваться",
                               color: Theme.of(context).colorScheme.onBackground,
                               onTap: () {
-                                if(_formState.currentState!.validate()) {
+                                if (_formState.currentState!.validate()) {
                                   _handleSignUp();
                                 }
                               },

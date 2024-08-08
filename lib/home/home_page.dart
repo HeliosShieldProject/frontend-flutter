@@ -33,7 +33,8 @@ class HomePage extends StatelessWidget {
               size: 25,
             ),
             padding: const EdgeInsets.only(right: 20),
-            onPressed: () => Navigator.of(context).pushNamed(RouteNames.settings),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(RouteNames.settings),
           )
         ],
       ),
@@ -44,8 +45,14 @@ class HomePage extends StatelessWidget {
           bottom: 40,
         ),
         child: Column(children: <Widget>[
-          Expanded(child: Center(
-            child: SvgPicture.asset("assets/shield_icon.svg", color: Theme.of(context).colorScheme.onBackground, height: 140, fit: BoxFit.scaleDown,),
+          Expanded(
+            child: Center(
+              child: SvgPicture.asset(
+                "assets/shield_icon.svg",
+                color: Theme.of(context).colorScheme.onBackground,
+                height: 140,
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
           const HeliosVpnCard(
@@ -281,12 +288,13 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
           borderRadius: BorderRadius.circular(20),
           color: theme.colorScheme.surface,
         ),
-        height: cardHeight ,
+        height: cardHeight,
         child: Column(
           children: <Widget>[
             ConstrainedBox(
               constraints: const BoxConstraints.tightFor(
-                  height: cardHeight / 2, ),
+                height: cardHeight / 2,
+              ),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -345,7 +353,8 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
             ),
             ConstrainedBox(
               constraints: const BoxConstraints.tightFor(
-                  height: cardHeight / 2,),
+                height: cardHeight / 2,
+              ),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 15),

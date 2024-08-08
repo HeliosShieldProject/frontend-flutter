@@ -8,13 +8,14 @@ class HeliosButton extends StatelessWidget {
     this.labelWidget,
     this.color,
     this.gradient,
-  }) : assert(
+  })  : assert(
             color != null && gradient == null ||
                 color == null && gradient != null,
             "Either color or gradient should be provided"),
-      assert(
-        label == null && labelWidget != null || label != null && labelWidget == null, "Either label or labelWidget should be provided"
-      );
+        assert(
+            label == null && labelWidget != null ||
+                label != null && labelWidget == null,
+            "Either label or labelWidget should be provided");
 
   final String? label;
   final Widget? labelWidget;
@@ -23,12 +24,12 @@ class HeliosButton extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   Widget effectiveTitle(BuildContext context) {
-    return label != null 
-    ? Text(
-      label!,
-      style: Theme.of(context).textTheme.labelMedium,
-    )
-    : labelWidget!;
+    return label != null
+        ? Text(
+            label!,
+            style: Theme.of(context).textTheme.labelMedium,
+          )
+        : labelWidget!;
   }
 
   @override
@@ -48,14 +49,14 @@ class HeliosButton extends StatelessWidget {
               alignment: Alignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
                   child: effectiveTitle(context),
                 ),
                 InkWell(
-                  splashColor: Theme.of(context)
-                      .colorScheme
-                      .background
-                      .withOpacity(0.7),
+                  splashColor:
+                      Theme.of(context).colorScheme.background.withOpacity(0.7),
                   onTap: onTap,
                 ),
               ],
