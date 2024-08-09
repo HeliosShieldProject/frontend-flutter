@@ -28,6 +28,7 @@ class HeliosFormTextField extends StatefulWidget {
 
 class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   late final FocusNode focusNode;
+  late final FocusNode passwordFocusNode;
   bool obscureText = true;
   bool error = false;
   bool showSuffix = false;
@@ -37,6 +38,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
     super.initState();
     focusNode = FocusNode();
     if (widget.obscureText) {
+      passwordFocusNode = FocusNode();
       widget.controller.addListener(() {
         if (!showSuffix && widget.controller.text.isNotEmpty) {
           setState(() {
@@ -54,6 +56,9 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   @override
   void dispose() {
     focusNode.dispose();
+    if (widget.obscureText) {
+      passwordFocusNode.dispose();
+    }
     super.dispose();
   }
 
@@ -103,18 +108,19 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
                 horizontal: 20,
               ),
               suffixIcon: showSuffix
-                  ? IconButton(
-                      padding: const EdgeInsets.only(
-                        right: 20,
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 7),
+                      child: IconButton(
+                        focusNode: passwordFocusNode,
+                        icon: Icon(obscureText
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded),
+                        onPressed: () {
+                          setState(() {
+                            obscureText = !obscureText;
+                          });
+                        },
                       ),
-                      icon: Icon(obscureText
-                          ? Icons.visibility_rounded
-                          : Icons.visibility_off_rounded),
-                      onPressed: () {
-                        setState(() {
-                          obscureText = !obscureText;
-                        });
-                      },
                     )
                   : null,
             ),
@@ -141,14 +147,10 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
             },
             onEditingComplete: widget.textInputAction == TextInputAction.next
                 ? () {
-                    do {
-                      FocusScope.of(context).nextFocus();
-                    } while ((FocusScope.of(context)
-                                .focusedChild
-                                ?.context
-                                ?.widget as Focus)
-                            .debugLabel !=
-                        "EditableText");
+                    focusNode.nextFocus();
+                    if (showSuffix) {
+                      passwordFocusNode.nextFocus();
+                    }
                   }
                 : null,
           ),

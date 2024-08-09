@@ -37,36 +37,38 @@ SnackBar snackBar(
       duration: const Duration(seconds: 10),
     );
 
-final loadingIcon = OverlayEntry(
-  builder: (context) => Center(
-    child: Container(
-      height: 60,
-      width: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context).colorScheme.onBackground,
+class LoadingIcon {
+  final loadingIcon = OverlayEntry(
+    builder: (context) => Center(
+      child: Container(
+        height: 60,
+        width: 60,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
+        padding: const EdgeInsets.all(8),
+        child: const CircularProgressIndicator.adaptive(),
       ),
-      padding: const EdgeInsets.all(8),
-      child: const CircularProgressIndicator.adaptive(),
     ),
-  ),
-);
+  );
 
-final modalBarrier = OverlayEntry(
-  builder: (context) => const ModalBarrier(
-    dismissible: false,
-    color: Colors.black54,
-  ),
-);
+  final modalBarrier = OverlayEntry(
+    builder: (context) => const ModalBarrier(
+      dismissible: false,
+      color: Colors.black54,
+    ),
+  );
 
-void showLoadingIcon(BuildContext context) {
-  Overlay.of(context).insert(modalBarrier);
-  Overlay.of(context).insert(loadingIcon);
-}
+  void showLoadingIcon(BuildContext context) {
+    Overlay.of(context).insert(modalBarrier);
+    Overlay.of(context).insert(loadingIcon);
+  }
 
-void removeLoadingIcon() {
-  loadingIcon.remove();
-  modalBarrier.remove();
-  loadingIcon.dispose();
-  modalBarrier.dispose();
+  void removeLoadingIcon() {
+    loadingIcon.remove();
+    modalBarrier.remove();
+    loadingIcon.dispose();
+    modalBarrier.dispose();
+  }
 }

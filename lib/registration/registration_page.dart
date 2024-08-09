@@ -21,7 +21,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
       canPop = false;
     });
 
-    showLoadingIcon(context);
+    final LoadingIcon loadingIcon = LoadingIcon();
+
+    loadingIcon.showLoadingIcon(context);
 
     AppServer.signUp(
       context,
@@ -29,12 +31,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
       password: passwordController1.text,
     ).then(
       (response) {
-        print(response);
         setState(() {
           canPop = true;
         });
 
-        removeLoadingIcon();
+        loadingIcon.removeLoadingIcon();
 
         if (response == SignUpStatus.success) {
           Navigator.popUntil(context, (value) => false);

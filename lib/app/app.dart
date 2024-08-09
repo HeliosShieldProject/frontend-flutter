@@ -10,7 +10,7 @@ class App extends StatelessWidget {
         theme: AppTheme.of(context, listen: true).themeData,
         onGenerateRoute: RoutesBuilder.onGenerateRoute,
         onUnknownRoute: RoutesBuilder.onUnknownRoute,
-        initialRoute: RouteNames.home,
+        initialRoute: RouteNames.welcome,
       );
 }
 

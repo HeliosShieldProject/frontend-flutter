@@ -20,7 +20,9 @@ class _LoginPageState extends State<LoginPage> {
       canPop = false;
     });
 
-    showLoadingIcon(context);
+    final LoadingIcon loadingIcon = LoadingIcon();
+
+    loadingIcon.showLoadingIcon(context);
 
     AppServer.signIn(
       context,
@@ -32,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           canPop = true;
         });
 
-        removeLoadingIcon();
+        loadingIcon.removeLoadingIcon();
 
         if (response == SignInStatus.success) {
           Navigator.popUntil(context, (value) => false);

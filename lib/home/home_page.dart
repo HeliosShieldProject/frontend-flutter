@@ -26,15 +26,17 @@ class HomePage extends StatelessWidget {
           ),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Theme.of(context).colorScheme.onBackground,
-              size: 25,
+          Padding(
+            padding: const EdgeInsets.only(right: 7),
+            child: IconButton(
+              icon: Icon(
+                Icons.settings,
+                color: Theme.of(context).colorScheme.onBackground,
+                size: 25,
+              ),
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(RouteNames.settings),
             ),
-            padding: const EdgeInsets.only(right: 20),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(RouteNames.settings),
           )
         ],
       ),

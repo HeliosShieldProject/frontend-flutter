@@ -19,7 +19,6 @@ class AppServer {
         user: user,
       );
     } catch (e) {
-      AppUser.update(context, user);
       return SignInStatus.failed;
     }
 
