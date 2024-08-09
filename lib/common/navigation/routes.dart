@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helios/appearance/appearance_page.dart';
 import 'package:helios/registration/registration_page.dart';
 import 'package:helios/settings/settings_page.dart';
 import 'package:helios/welcome/welcome_page.dart';
@@ -14,6 +15,7 @@ abstract interface class RouteNames {
   static const String subscription = "/sub";
   static const String history = "/history";
   static const String password = "/password";
+  static const String appearance = "/appearance";
 }
 
 abstract class RoutesBuilder {
@@ -47,6 +49,12 @@ abstract class RoutesBuilder {
         print("Settings onGenerateRoute");
         return MaterialPageRoute(
           builder: (_) => const SettingsPage(),
+          settings: settings,
+        );
+      case (RouteNames.appearance):
+        print("Appearance onGenerateRoute");
+        return MaterialPageRoute(
+          builder: (_) => const AppearancePage(),
           settings: settings,
         );
     }

@@ -202,6 +202,49 @@ class SettingsPage extends StatelessWidget {
               HeliosListTile(children: <Widget>[
                 SizedBox(
                   height: 40,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Stack(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.auto_fix_high_rounded,
+                                size: 20,
+                                color: Colors.white.withOpacity(0.5),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Внешний вид",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: Colors.white.withOpacity(0.5),
+                                size: 15,
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              RouteNames.appearance,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
                   child: Row(
                     children: [
                       Icon(
@@ -313,6 +356,7 @@ class HeliosListTile extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: effectiveChildren(context),
       ),

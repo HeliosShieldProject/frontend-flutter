@@ -51,6 +51,8 @@ class _WelcomeScreenState extends State<WelcomePage>
       print("Animation canceled");
     }
 
+    print(AppUserSettings.of(context).selectedTheme!.name);
+
     Future.delayed(const Duration(seconds: 2)).then((_) =>
         _onEnd()); //to implement onAppInit, which could validate user, refresh tokens and etc
   }
