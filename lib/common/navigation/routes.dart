@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:helios/appearance/appearance_page.dart';
 import 'package:helios/registration/registration_page.dart';
 import 'package:helios/settings/settings_page.dart';
+import 'package:helios/unknown/unknown_page.dart';
 import 'package:helios/welcome/welcome_page.dart';
 import 'package:helios/login/login_page.dart';
 import 'package:helios/home/home_page.dart';
@@ -51,12 +51,6 @@ abstract class RoutesBuilder {
           builder: (_) => const SettingsPage(),
           settings: settings,
         );
-      case (RouteNames.appearance):
-        print("Appearance onGenerateRoute");
-        return MaterialPageRoute(
-          builder: (_) => const AppearancePage(),
-          settings: settings,
-        );
     }
 
     return null;
@@ -64,7 +58,7 @@ abstract class RoutesBuilder {
 
   static Route<dynamic>? onUnknownRoute(RouteSettings settings) =>
       MaterialPageRoute(
-        builder: (_) => const Placeholder(),
+        builder: (_) => const UnknownPage(),
         settings: settings,
       );
 }

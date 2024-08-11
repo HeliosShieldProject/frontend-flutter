@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
+import 'elements/elements.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -17,7 +18,10 @@ class SettingsPage extends StatelessWidget {
             ],
           ),
           color: Theme.of(context).colorScheme.onBackground,
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(
+            context,
+            RouteNames.subscription,
+          ),
         ),
       SubscriptionType.premium => HeliosButton(
           labelWidget: Row(
@@ -47,7 +51,10 @@ class SettingsPage extends StatelessWidget {
               0.7,
             ],
           ),
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(
+            context,
+            RouteNames.subscription,
+          ),
         ),
       SubscriptionType.superPremium => HeliosButton(
           labelWidget: Row(
@@ -76,7 +83,10 @@ class SettingsPage extends StatelessWidget {
                 0.3,
                 0.7,
               ]),
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(
+            context,
+            RouteNames.subscription,
+          ),
         ),
       null => throw UnimplementedError(),
     };
@@ -105,6 +115,30 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             children: [
               effectiveSubButton(context),
+              const SizedBox(
+                height: 10,
+              ),
+              HeliosListTile(
+                children: [
+                  SizedBox(
+                    height: 40,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        HeliosThemeButton(theme: SelectedTheme.values[2]),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        HeliosThemeButton(theme: SelectedTheme.values[1]),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        HeliosThemeButton(theme: SelectedTheme.values[0]),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -147,29 +181,41 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 40,
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.lock,
-                          color: Colors.white.withOpacity(0.5),
-                          size: 20,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            RouteNames.password,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.lock,
+                                color: Colors.white.withOpacity(0.5),
+                                size: 20,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Сменить пароль",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: Colors.white.withOpacity(0.5),
+                                size: 15,
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          "Сменить пароль",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        Expanded(
-                          child: Container(),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Colors.white.withOpacity(0.5),
-                          size: 15,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -199,27 +245,31 @@ class SettingsPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              HeliosListTile(children: <Widget>[
-                SizedBox(
-                  height: 40,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Stack(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
+              HeliosListTile(
+                children: <Widget>[
+                  SizedBox(
+                    height: 40,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            RouteNames.history,
+                          ),
+                          child: Row(
+                            children: [
                               Icon(
-                                Icons.auto_fix_high_rounded,
-                                size: 20,
+                                Icons.public,
                                 color: Colors.white.withOpacity(0.5),
+                                size: 20,
                               ),
                               const SizedBox(
                                 width: 15,
                               ),
                               Text(
-                                "Внешний вид",
+                                "История",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               Expanded(
@@ -232,134 +282,50 @@ class SettingsPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          InkWell(
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              RouteNames.appearance,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.public,
-                        color: Colors.white.withOpacity(0.5),
-                        size: 20,
+                  SizedBox(
+                    height: 40,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {},
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.accessible_forward_rounded,
+                                color: Colors.white.withOpacity(0.5),
+                                size: 23,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Поддержка",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: Colors.white.withOpacity(0.5),
+                                size: 15,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "История",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                        size: 15,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.accessible_forward_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                        size: 23,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "Поддержка",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                        size: 15,
-                      ),
-                    ],
-                  ),
-                )
-              ]),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
         ),
       );
-}
-
-class HeliosListTile extends StatelessWidget {
-  const HeliosListTile({
-    super.key,
-    this.titleWidget,
-    required this.children,
-  });
-
-  final Widget? titleWidget;
-  final List<Widget> children;
-
-  List<Widget> effectiveChildren(BuildContext context) {
-    var _children = <Widget>[];
-    titleWidget != null
-        ? _children.addAll(<Widget>[
-            titleWidget!,
-            const SizedBox(
-              height: 20,
-            ),
-          ])
-        : null;
-    for (int i = 0; i < children.length; i++) {
-      i == 0
-          ? _children.add(children[i])
-          : _children.addAll(
-              <Widget>[
-                const SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  height: 0,
-                  thickness: 2,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                children[i],
-              ],
-            );
-    }
-    return _children;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: effectiveChildren(context),
-      ),
-    );
-  }
 }

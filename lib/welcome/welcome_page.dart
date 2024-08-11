@@ -51,8 +51,6 @@ class _WelcomeScreenState extends State<WelcomePage>
       print("Animation canceled");
     }
 
-    print(AppUserSettings.of(context).selectedTheme!.name);
-
     Future.delayed(const Duration(seconds: 2)).then((_) =>
         _onEnd()); //to implement onAppInit, which could validate user, refresh tokens and etc
   }
@@ -89,16 +87,3 @@ class _WelcomeScreenState extends State<WelcomePage>
     );
   }
 }
-
-// switch(AppUser.of(context)!.validity) {
-//           case UserValidity.needsRefreshment:
-//             AppServer.refresh(context).then((value) {
-//                 _onEnd(route: RouteNames.home);
-//               },
-//             );
-//             break;
-
-//           case UserValidity.notValid:
-//             Future.delayed(const Duration(seconds: 2)).then((_) => _onEnd());
-//             break;
-//         }
