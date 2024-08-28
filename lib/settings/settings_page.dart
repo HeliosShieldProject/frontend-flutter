@@ -120,22 +120,19 @@ class SettingsPage extends StatelessWidget {
               ),
               HeliosListTile(
                 children: [
-                  SizedBox(
-                    height: 40,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        HeliosThemeButton(theme: SelectedTheme.values[2]),
-                        Expanded(
-                          child: Container(),
-                        ),
-                        HeliosThemeButton(theme: SelectedTheme.values[1]),
-                        Expanded(
-                          child: Container(),
-                        ),
-                        HeliosThemeButton(theme: SelectedTheme.values[0]),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      HeliosThemeButton(theme: SelectedTheme.values[2]),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      HeliosThemeButton(theme: SelectedTheme.values[1]),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      HeliosThemeButton(theme: SelectedTheme.values[0]),
+                    ],
                   ),
                 ],
               ),

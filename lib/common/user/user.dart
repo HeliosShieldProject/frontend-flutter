@@ -55,7 +55,7 @@ class UserImpl implements User {
         "password": password,
         "device": {
           "name": deviceName,
-          "type": deviceType,
+          "os": deviceType,
         }
       };
 

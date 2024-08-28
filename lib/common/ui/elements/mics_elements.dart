@@ -27,6 +27,7 @@ SnackBar snackBar(
       backgroundColor: Colors.red,
       action: SnackBarAction(
         label: "Понятно",
+        textColor: Colors.white,
         onPressed: () {},
       ),
       margin: const EdgeInsets.symmetric(horizontal: 20),

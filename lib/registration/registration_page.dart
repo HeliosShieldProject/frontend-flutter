@@ -38,8 +38,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
         loadingIcon.removeLoadingIcon();
 
         if (response == SignUpStatus.success) {
-          Navigator.popUntil(context, (value) => false);
-          Navigator.pushNamed(context, RouteNames.home);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            RouteNames.home,
+            (route) => false,
+          );
         } else {
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context)
@@ -110,7 +113,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               textOnError: "Введите пароль",
                               validityCriteria: (value) => (value!.isNotEmpty),
                               obscureText: true,
-                              clearOnError: false,
                             ),
                             const SizedBox(
                               height: 10,

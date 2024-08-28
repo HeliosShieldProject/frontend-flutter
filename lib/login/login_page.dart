@@ -37,8 +37,11 @@ class _LoginPageState extends State<LoginPage> {
         loadingIcon.removeLoadingIcon();
 
         if (response == SignInStatus.success) {
-          Navigator.popUntil(context, (value) => false);
-          Navigator.pushNamed(context, RouteNames.home);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            RouteNames.home,
+            (route) => false,
+          );
         } else {
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context)
@@ -69,7 +72,8 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(
-              parent: NeverScrollableScrollPhysics()),
+            parent: NeverScrollableScrollPhysics(),
+          ),
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Column(

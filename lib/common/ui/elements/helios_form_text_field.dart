@@ -10,7 +10,6 @@ class HeliosFormTextField extends StatefulWidget {
     this.keyboardType,
     this.textInputAction = TextInputAction.next,
     this.obscureText = false,
-    this.clearOnError = true,
   });
 
   final TextEditingController controller;
@@ -18,7 +17,6 @@ class HeliosFormTextField extends StatefulWidget {
   final String textOnError;
   final bool Function(String?) validityCriteria;
   final bool obscureText;
-  final bool clearOnError;
   final TextInputType? keyboardType;
   final TextInputAction textInputAction;
 
@@ -27,8 +25,8 @@ class HeliosFormTextField extends StatefulWidget {
 }
 
 class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
-  late final FocusNode focusNode;
   late final FocusNode passwordFocusNode;
+  late final FocusNode suffixIconFocusNode;
   bool obscureText = true;
   bool error = false;
   bool showSuffix = false;
@@ -36,9 +34,9 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   @override
   void initState() {
     super.initState();
-    focusNode = FocusNode();
+    passwordFocusNode = FocusNode();
     if (widget.obscureText) {
-      passwordFocusNode = FocusNode();
+      suffixIconFocusNode = FocusNode();
       widget.controller.addListener(() {
         if (!showSuffix && widget.controller.text.isNotEmpty) {
           setState(() {
@@ -55,21 +53,23 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
 
   @override
   void dispose() {
-    focusNode.dispose();
+    passwordFocusNode.dispose();
     if (widget.obscureText) {
-      passwordFocusNode.dispose();
+      suffixIconFocusNode.dispose();
     }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
+
     return MouseRegion(
       cursor: SystemMouseCursors.text,
       child: GestureDetector(
         onTap: () {
-          if (!focusNode.hasFocus) {
-            focusNode.requestFocus();
+          if (!passwordFocusNode.hasFocus) {
+            passwordFocusNode.requestFocus();
           }
         },
         child: Container(
@@ -81,81 +81,92 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
           ),
           alignment: Alignment.centerLeft,
           child: TextFormField(
-            focusNode: focusNode,
+            focusNode: passwordFocusNode,
             controller: widget.controller,
             keyboardType: widget.keyboardType,
             obscureText: widget.obscureText ? obscureText : false,
             autocorrect: false,
-            cursorColor: Theme.of(context).colorScheme.primary,
-            cursorErrorColor: Theme.of(context).colorScheme.primary,
-            style: Theme.of(context).textTheme.bodyMedium,
+            cursorColor: themeData.colorScheme.primary,
+            cursorErrorColor: themeData.colorScheme.primary,
+            style: themeData.textTheme.bodyMedium,
             textInputAction: widget.textInputAction,
             decoration: InputDecoration(
               border: const OutlineInputBorder(borderSide: BorderSide.none),
               floatingLabelBehavior: FloatingLabelBehavior.never,
-              labelText: error ? widget.textOnError : widget.text,
-              labelStyle: error
-                  ? Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Colors.red)
-                  : Theme.of(context).textTheme.bodyMedium,
-              errorStyle: const TextStyle(
-                color: Colors.transparent,
-                height: 0,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              suffixIcon: showSuffix
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 7),
-                      child: IconButton(
-                        focusNode: passwordFocusNode,
-                        icon: Icon(obscureText
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded),
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                      ),
-                    )
-                  : null,
+              labelText: _effectiveLabelText,
+              labelStyle: _effectiveLabelStyle(context),
+              errorStyle: _errorStyle,
+              suffixIcon: _effectiveSuffixIcon,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+              isDense: true,
             ),
-            validator: (value) {
-              if (!widget.validityCriteria(value)) {
-                if (!error) {
-                  setState(() {
-                    error = true;
-                  });
-                  if (widget.clearOnError) {
-                    widget.controller.clear();
-                  }
-                }
-                return '';
-              }
-              return null;
-            },
-            onChanged: (value) {
-              if (error && widget.validityCriteria(value)) {
-                setState(() {
-                  error = false;
-                });
-              }
-            },
-            onEditingComplete: widget.textInputAction == TextInputAction.next
-                ? () {
-                    focusNode.nextFocus();
-                    if (showSuffix) {
-                      passwordFocusNode.nextFocus();
-                    }
-                  }
-                : null,
+            validator: _validator,
+            onChanged: _onChanged,
+            onEditingComplete: _onEditingComplete,
           ),
         ),
       ),
     );
   }
+
+  String get _effectiveLabelText => error ? widget.textOnError : widget.text;
+
+  TextStyle _effectiveLabelStyle(BuildContext context) => error
+      ? Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.red)
+      : Theme.of(context).textTheme.bodyMedium!;
+
+  TextStyle get _errorStyle => const TextStyle(
+        color: Colors.transparent,
+        fontSize: 0,
+      );
+
+  Widget? get _effectiveSuffixIcon => showSuffix
+      ? Padding(
+          padding: const EdgeInsets.only(right: 7),
+          child: IconButton(
+            focusNode: suffixIconFocusNode,
+            icon: Icon(
+              obscureText
+                  ? Icons.visibility_rounded
+                  : Icons.visibility_off_rounded,
+              color: Colors.white.withOpacity(0.5),
+            ),
+            onPressed: () {
+              setState(() {
+                obscureText = !obscureText;
+              });
+            },
+          ),
+        )
+      : null;
+
+  String? _validator(value) {
+    if (!widget.validityCriteria(value)) {
+      if (!error) {
+        setState(() {
+          error = true;
+        });
+      }
+      return '';
+    }
+    return null;
+  }
+
+  void _onChanged(value) {
+    if (error && widget.validityCriteria(value)) {
+      setState(() {
+        error = false;
+      });
+    }
+  }
+
+  VoidCallback? _onEditingComplete() =>
+      widget.textInputAction == TextInputAction.next
+          ? () {
+              passwordFocusNode.nextFocus();
+              if (showSuffix) {
+                suffixIconFocusNode.nextFocus();
+              }
+            }
+          : null;
 }

@@ -14,11 +14,17 @@ enum SignUpStatus {
   success,
 }
 
+enum RefreshStatus {
+  failed,
+  success,
+}
+
 class Server {
   static final Dio dio = Dio(BaseOptions(
     baseUrl: dotenv.get("MASTER_BACKEND_URL", fallback: "localhost"),
     connectTimeout: const Duration(seconds: 5),
     receiveTimeout: const Duration(seconds: 3),
+    validateStatus: (status) => true,
   ));
 
   static Future<void> changePassword({required String newPassword}) {
@@ -41,22 +47,38 @@ class Server {
     throw UnimplementedError();
   }
 
-  static Future<void> refresh() {
-    throw UnimplementedError();
+  static Future<Map<String, dynamic>> refresh({required User user}) async {
+    var headers = {
+      "Authorization": "Bearer ${user.jwtRefreshToken}",
+    };
+
+    final result = await dio.request(
+      "auth/refresh",
+      options: Options(
+        headers: headers,
+      ),
+    );
+
+    return switch (result.statusCode) {
+      200 => result.data,
+      401 => {"data": RefreshStatus.failed},
+      int() => {"data": RefreshStatus.failed},
+      null => {"data": RefreshStatus.failed},
+    };
   }
 
   static Future<Map<String, dynamic>> signIn({required User user}) async {
-    var result = await dio.request(
+    final result = await dio.request(
       "/auth/sign-in",
-      data: jsonEncode(user.toJson()),
+      data: user.toJson(),
       options: Options(
         method: "POST",
       ),
     );
 
     return switch (result.statusCode) {
-      200 => jsonDecode(result.data),
-      400 => {"data": SignInStatus.userNotFound},
+      200 => result.data,
+      404 => {"data": SignInStatus.userNotFound},
       401 => {"data": SignInStatus.wrongPassword},
       int() => {"data": SignInStatus.failed},
       null => {"data": SignInStatus.failed},
@@ -64,18 +86,17 @@ class Server {
   }
 
   static Future<Map<String, dynamic>> signUp({required User user}) async {
-    var result = await dio.request(
+    final result = await dio.request(
       "/auth/sign-up",
-      data: jsonEncode(user.toJson()),
+      data: user.toJson(),
       options: Options(
         method: "POST",
       ),
     );
 
     return switch (result.statusCode) {
-      201 => jsonDecode(result.data),
+      201 => result.data,
       409 => {"data": SignUpStatus.userExists},
-      400 => {"data": SignUpStatus.missingCredentialsOrDeviceInfo},
       int() => {"data": SignUpStatus.failed},
       null => {"data": SignUpStatus.failed},
     };

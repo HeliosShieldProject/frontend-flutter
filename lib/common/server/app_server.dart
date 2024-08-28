@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helios/common/common.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -15,11 +14,11 @@ class AppServer {
     final Map<String, dynamic> response;
 
     try {
-      // response = await Server.signIn(
-      //   user: user,
-      // );
-      response = {"data": SignInStatus.success};
+      response = await Server.signIn(
+        user: user,
+      );
     } catch (e) {
+      print(e);
       return SignInStatus.failed;
     }
 
@@ -43,15 +42,14 @@ class AppServer {
       {required String email, required String password}) async {
     User user = await _createUser(email: email, password: password);
 
-    print(user.toJson());
-
     final Map<String, dynamic> response;
 
     try {
       response = await Server.signUp(
         user: user,
       );
-    } catch (_) {
+    } catch (e) {
+      print(e);
       return SignUpStatus.failed;
     }
 
@@ -97,8 +95,30 @@ class AppServer {
       };
   }
 
-  static Future<String> refresh(BuildContext context) async {
-    await Future.delayed(const Duration(milliseconds: 2000));
-    return "failed";
+  static Future<RefreshStatus> refresh(BuildContext context) async {
+    User user = AppUser.of(context)!;
+
+    final Map<String, dynamic> response;
+
+    try {
+      response = await Server.refresh(
+        user: user,
+      );
+    } catch (e) {
+      return RefreshStatus.failed;
+    }
+
+    if (response["data"] is RefreshStatus) {
+      return response["data"];
+    } else if (context.mounted) {
+      AppUser.update(
+        context,
+        user
+          ..jwtToken = response["data"]["access_token"]
+          ..jwtRefreshToken = response["data"]["refresh_token"],
+      );
+      return RefreshStatus.success;
+    }
+    return RefreshStatus.failed;
   }
 }
