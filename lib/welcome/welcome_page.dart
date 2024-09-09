@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helios/common/common.dart';
+import 'package:Helios/common/common.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({

@@ -1,6 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:helios/common/common.dart';
+import 'package:Helios/common/common.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});

@@ -291,6 +291,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_v2ray:
+    dependency: "direct main"
+    description:
+      name: flutter_v2ray
+      sha256: "4c65c94c530f905b7518f0838082c00423d3c090c320b34dd53f25dd54780a86"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

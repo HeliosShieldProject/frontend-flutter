@@ -54,9 +54,8 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   @override
   void dispose() {
     passwordFocusNode.dispose();
-    if (widget.obscureText) {
-      suffixIconFocusNode.dispose();
-    }
+    if (widget.obscureText) suffixIconFocusNode.dispose();
+
     super.dispose();
   }
 
@@ -75,7 +74,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
         child: Container(
           height: 52,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
+            color: themeData.colorScheme.surface,
             borderRadius: const BorderRadius.all(Radius.circular(20)),
             border: error ? Border.all(color: Colors.red, width: 3) : null,
           ),
@@ -160,7 +159,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
     }
   }
 
-  VoidCallback? _onEditingComplete() =>
+  VoidCallback? get _onEditingComplete =>
       widget.textInputAction == TextInputAction.next
           ? () {
               passwordFocusNode.nextFocus();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:helios/app/app.dart';
-import 'package:helios/common/common.dart';
+import 'package:Helios/app/app.dart';
+import 'package:Helios/common/common.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

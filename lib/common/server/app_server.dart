@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:helios/common/common.dart';
+import 'package:Helios/common/common.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 part "server.dart";
+part "enums.dart";
 
 class AppServer {
   static Future<SignInStatus> signIn(BuildContext context,
@@ -120,5 +121,27 @@ class AppServer {
       return RefreshStatus.success;
     }
     return RefreshStatus.failed;
+  }
+
+  static Future<CreateSessionStatus> createSession(BuildContext context,
+      {required String country}) async {
+    User user = AppUser.of(context)!;
+
+    final Map<String, dynamic> response;
+
+    try {
+      response = await Server.createSession(
+        country: country,
+        user: user,
+      );
+    } catch (e) {
+      return CreateSessionStatus.failed;
+    }
+
+    if (response["data"] is CreateSessionStatus) {
+      return response["data"];
+    } else {
+      return response["data"];
+    }
   }
 }

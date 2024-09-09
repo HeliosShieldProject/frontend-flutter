@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helios/common/common.dart';
+import 'package:Helios/common/common.dart';
 import 'elements/elements.dart';
 
 class SettingsPage extends StatelessWidget {

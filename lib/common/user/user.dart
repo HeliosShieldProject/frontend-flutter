@@ -23,27 +23,22 @@ abstract interface class User {
 
 @HiveType(typeId: 3)
 class UserImpl implements User {
-  @HiveField(0)
   @override
   String? name;
-  @HiveField(1)
   @override
   String? password;
-  @HiveField(2)
   @override
   String? email;
 
-  @HiveField(3)
   @override
   String? deviceName;
-  @HiveField(4)
   @override
   String? deviceType;
 
-  @HiveField(5)
+  @HiveField(0)
   @override
   String? jwtRefreshToken;
-  @HiveField(6)
+  @HiveField(1)
   @override
   String? jwtToken;
 

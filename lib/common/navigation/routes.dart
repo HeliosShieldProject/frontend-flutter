@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:helios/registration/registration_page.dart';
-import 'package:helios/settings/settings_page.dart';
-import 'package:helios/unknown/unknown_page.dart';
-import 'package:helios/welcome/welcome_page.dart';
-import 'package:helios/login/login_page.dart';
-import 'package:helios/home/home_page.dart';
+import 'package:Helios/registration/registration_page.dart';
+import 'package:Helios/settings/settings_page.dart';
+import 'package:Helios/unknown/unknown_page.dart';
+import 'package:Helios/welcome/welcome_page.dart';
+import 'package:Helios/login/login_page.dart';
+import 'package:Helios/home/home_page.dart';
 
 abstract interface class RouteNames {
   static const String welcome = "/welcome";
