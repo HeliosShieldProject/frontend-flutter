@@ -2,15 +2,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+/// Creates blurred gradient circle with a Helios logo
+/// if specified
+///
+/// [radius] won't be larger than 150 logical pixels
+/// no matter what is passed to it
+///
+/// [showHelios] determines whether to show the Helios Icon over the
+/// gradient circle
 class HeliosIcon extends StatelessWidget {
-  /// Creates blurred gradient circle with a Helios logo
-  /// if specified
-  ///
-  /// [radius] won't be larger than 150 logical pixels
-  /// no matter what is passed to it
-  ///
-  /// [showHelios] determines wether to show the Helios Icon over the
-  /// gradient circle
   HeliosIcon({
     super.key,
     required double radius,
@@ -61,6 +61,13 @@ class HeliosIcon extends StatelessWidget {
   }
 }
 
+/// The Helios Logo, that will be fading according to the [fadeAnimation]
+///
+/// [radius] won't be larger than 150 logical pixels
+/// no matter what is passed to it
+///
+/// [showHelios] determines whether to show the Helios Icon over the
+/// gradient circle
 class FadingHeliosIcon extends HeliosIcon {
   FadingHeliosIcon({
     super.key,

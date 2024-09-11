@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Helios/common/common.dart';
+import '../widgets/fading_button.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({

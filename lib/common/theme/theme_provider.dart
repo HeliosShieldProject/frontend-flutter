@@ -6,7 +6,7 @@ class AppTheme extends StatefulWidget {
 
   final Widget child;
 
-  static MyTheme of(BuildContext context, {bool listen = false}) =>
+  static ThemeData of(BuildContext context, {bool listen = false}) =>
       _AppThemeInheritedWidget.of(context, listen: listen).theme;
 
   @override
@@ -14,7 +14,7 @@ class AppTheme extends StatefulWidget {
 }
 
 class _AppThemeState extends State<AppTheme> {
-  late MyTheme theme;
+  late ThemeData theme;
 
   @override
   void didChangeDependencies() {
@@ -42,7 +42,7 @@ class _AppThemeInheritedWidget extends InheritedWidget {
   });
 
   final _AppThemeState state;
-  final MyTheme theme;
+  final ThemeData theme;
 
   static _AppThemeInheritedWidget? maybeof(BuildContext context,
           {bool listen = false}) =>
@@ -57,5 +57,5 @@ class _AppThemeInheritedWidget extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_AppThemeInheritedWidget oldWidget) =>
-      theme.isLight != oldWidget.theme.isLight;
+      theme.brightness != oldWidget.theme.brightness;
 }

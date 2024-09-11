@@ -1,5 +1,22 @@
 import 'package:flutter/material.dart';
 
+/// Helios Button compliant to the design patterns of the Helios app
+///
+/// [onTap] - callback on tap of the button, if not specified, the button
+/// is assumed as disabled and thus the color of the button is applied with
+/// opacity(0.5)
+///
+/// [label] - text label of the button, uses labelMedium TextStyle from context's ThemeData
+///
+/// [labelWidget] - Widget, that will be used instead of the label text.
+///
+/// !!Either [label] or [labelWidget] should be specified
+///
+/// [color] - color of the button
+///
+/// [gradient] - gradient that will be applied to the button
+///
+/// !!Either [color] or [gradient] should be specified
 class HeliosButton extends StatelessWidget {
   const HeliosButton({
     super.key,
@@ -32,6 +49,8 @@ class HeliosButton extends StatelessWidget {
         : labelWidget!;
   }
 
+  Color? get effectiveColor => onTap != null ? color : color?.withOpacity(0.5);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +61,7 @@ class HeliosButton extends StatelessWidget {
         child: Material(
           child: Ink(
             decoration: BoxDecoration(
-              color: onTap != null ? color : color?.withOpacity(0.5),
+              color: effectiveColor,
               gradient: gradient,
             ),
             child: Stack(
@@ -65,40 +84,5 @@ class HeliosButton extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class FadingButton extends StatelessWidget {
-  const FadingButton({
-    super.key,
-    required this.onTap,
-    this.label,
-    required bool shouldStartFading,
-    required Animation<double> fadeAnimation,
-  })  : _shouldStartFading = shouldStartFading,
-        _fadeAnimation = fadeAnimation;
-
-  final bool _shouldStartFading;
-  final Animation<double> _fadeAnimation;
-  final String? label;
-  final GestureTapCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return _shouldStartFading
-        ? FadeTransition(
-            opacity: _fadeAnimation,
-            child: HeliosButton(
-              onTap: onTap,
-              label: label,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-          )
-        : Container(
-            height: 52,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          );
   }
 }

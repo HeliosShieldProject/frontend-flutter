@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_v2ray/flutter_v2ray.dart';
 
 class AppVPNService {
-  static ValueNotifier<V2RayStatus> status =
+  static ValueNotifier<V2RayStatus> statusNotifier =
       ValueNotifier<V2RayStatus>(V2RayStatus());
 
   static final FlutterV2ray _flutterV2ray = FlutterV2ray(
     onStatusChanged: (v2RayStatus) {
-      status.value = v2RayStatus;
+      statusNotifier.value = v2RayStatus;
     },
   );
 
@@ -16,7 +16,7 @@ class AppVPNService {
 
     final V2RayURL config = FlutterV2ray.parseFromURL(url);
 
-    if (status.value.state != "CONNECTED" &&
+    if (statusNotifier.value.state != "CONNECTED" &&
         await _flutterV2ray.requestPermission()) {
       await _flutterV2ray.startV2Ray(
         remark: config.remark,

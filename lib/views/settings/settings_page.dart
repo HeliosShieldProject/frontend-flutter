@@ -5,6 +5,7 @@ import 'elements/elements.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
+  // Component style={hui} text={hui}
   Widget effectiveSubButton(BuildContext context) {
     return switch (AppUserSettings.of(context).subscriptionType) {
       SubscriptionType.free => HeliosButton(

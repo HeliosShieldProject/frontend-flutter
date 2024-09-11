@@ -3,6 +3,8 @@ import 'package:Helios/app/app.dart';
 import 'package:Helios/common/common.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:Helios/common/enums/enums.dart';
+import 'package:Helios/common/interafces/user.dart';
 
 Future<void> main() async {
   await _initHive();

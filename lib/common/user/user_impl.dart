@@ -1,25 +1,9 @@
 import "package:hive/hive.dart";
 import "package:jwt_decoder/jwt_decoder.dart";
+import 'package:Helios/common/enums/enums.dart';
+import 'package:Helios/common/interafces/user.dart';
 
 part 'user.g.dart';
-
-abstract interface class User {
-  String? name;
-  String? email;
-  String? password;
-
-  String? deviceName;
-  String? deviceType;
-
-  String? jwtToken;
-  String? jwtRefreshToken;
-
-  User();
-
-  Map<String, dynamic> toJson();
-
-  UserValidity get validity;
-}
 
 @HiveType(typeId: 3)
 class UserImpl implements User {
@@ -63,9 +47,4 @@ class UserImpl implements User {
     }
     return UserValidity.needsRefreshment;
   }
-}
-
-enum UserValidity {
-  needsRefreshment,
-  notValid,
 }

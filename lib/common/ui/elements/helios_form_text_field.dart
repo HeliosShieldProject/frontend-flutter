@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Helios Form Text Field compliant to the design patterns of the Helios app
 class HeliosFormTextField extends StatefulWidget {
   const HeliosFormTextField({
     super.key,

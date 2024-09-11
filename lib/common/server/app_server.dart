@@ -5,72 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 part "server.dart";
-part "enums.dart";
 
-class AppServer {
-  static Future<SignInStatus> signIn(BuildContext context,
-      {required String email, required String password}) async {
-    User user = await _createUser(email: email, password: password);
 
-    final Map<String, dynamic> response;
-
-    try {
-      response = await Server.signIn(
-        user: user,
-      );
-    } catch (e) {
-      print(e);
-      return SignInStatus.failed;
-    }
-
-    if (response["data"] is SignInStatus) {
-      return response["data"];
-    } else {
-      if (context.mounted) {
-        AppUser.update(
-          context,
-          user
-            ..jwtToken = response["data"]["access_token"]
-            ..jwtRefreshToken = response["data"]["refresh_token"],
-        );
-        return SignInStatus.success;
-      }
-      return SignInStatus.failed;
-    }
-  }
-
-  static Future<SignUpStatus> signUp(BuildContext context,
-      {required String email, required String password}) async {
-    User user = await _createUser(email: email, password: password);
-
-    final Map<String, dynamic> response;
-
-    try {
-      response = await Server.signUp(
-        user: user,
-      );
-    } catch (e) {
-      print(e);
-      return SignUpStatus.failed;
-    }
-
-    if (response["data"] is SignUpStatus) {
-      return response["data"];
-    } else {
-      if (context.mounted) {
-        AppUser.update(
-          context,
-          user
-            ..jwtToken = response["data"]["access_token"]
-            ..jwtRefreshToken = response["data"]["refresh_token"],
-        );
-        return SignUpStatus.success;
-      }
-      return SignUpStatus.failed;
-    }
-  }
-
-  static Future<User> _createUser(
+Future<User> _createUser(
       {required String email, required String password}) async {
     final device = await DeviceInfoPlugin().deviceInfo;
 
@@ -95,6 +32,13 @@ class AppServer {
         BaseDeviceInfo() => "Unknown",
       };
   }
+
+class AppServer {
+  static 
+
+  static
+
+  static 
 
   static Future<RefreshStatus> refresh(BuildContext context) async {
     User user = AppUser.of(context)!;

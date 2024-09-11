@@ -1,6 +1,6 @@
-part of 'countries_constants.dart';
+import 'package:flutter/material.dart';
 
-class Country {
+abstract interface class Country {
   const Country({
     required this.countryCode,
     required this.countryName,
@@ -8,4 +8,6 @@ class Country {
 
   final String countryCode;
   final String countryName;
+
+  Widget get flag;
 }
