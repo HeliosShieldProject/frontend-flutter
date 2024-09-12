@@ -1,11 +1,14 @@
+import 'package:flutter/material.dart';
+
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/navigation/routes.dart';
-import 'package:Helios/common/ui/elements/helios_button.dart';
+
 import 'package:Helios/common/user/user_provider.dart';
 import 'package:Helios/common/user_settings/user_settings_provider.dart';
-import 'package:Helios/features/settings/widgets/helios_list_tile.dart';
-import 'package:Helios/features/settings/widgets/helios_theme_button.dart';
-import 'package:flutter/material.dart';
+
+import 'package:Helios/common/ui/elements/helios_button.dart';
+
+import 'package:Helios/features/settings/widgets/widgets.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

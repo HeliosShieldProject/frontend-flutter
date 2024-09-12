@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:Helios/common/navigation/routes.dart';
 
-import 'package:Helios/features/register_sign_in/widgets/helios_icon.dart';
-import 'package:Helios/features/register_sign_in/widgets/fading_button.dart';
+import 'package:Helios/features/register_sign_in/widgets/widgets.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
