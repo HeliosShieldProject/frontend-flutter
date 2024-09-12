@@ -3,7 +3,7 @@ import "package:jwt_decoder/jwt_decoder.dart";
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/user.dart';
 
-part 'user.g.dart';
+part 'user_impl.g.dart';
 
 @HiveType(typeId: 3)
 class UserImpl implements User {
@@ -11,6 +11,7 @@ class UserImpl implements User {
   String? name;
   @override
   String? password;
+  @HiveField(0)
   @override
   String? email;
 
@@ -19,10 +20,10 @@ class UserImpl implements User {
   @override
   String? deviceType;
 
-  @HiveField(0)
+  @HiveField(1)
   @override
   String? jwtRefreshToken;
-  @HiveField(1)
+  @HiveField(2)
   @override
   String? jwtToken;
 

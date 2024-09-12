@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:Helios/common/common.dart';
+
+import 'package:Helios/common/navigation/routes.dart';
+
+import 'package:Helios/common/theme/theme_provider.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

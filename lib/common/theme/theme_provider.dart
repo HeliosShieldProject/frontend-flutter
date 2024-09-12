@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:Helios/common/common.dart';
+
+import 'package:Helios/common/interafces/user_settings.dart';
+
+import 'package:Helios/common/user_settings/user_settings_provider.dart';
+
+import 'package:Helios/common/theme/utils/get_theme.dart';
 
 class AppTheme extends StatefulWidget {
   const AppTheme({super.key, required this.child});

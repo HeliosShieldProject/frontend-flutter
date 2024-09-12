@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:Helios/common/common.dart';
+
 import 'package:email_validator/email_validator.dart';
+
+import 'package:Helios/common/enums/enums.dart';
+import 'package:Helios/common/navigation/routes.dart';
+
+import 'package:Helios/common/ui/elements/elements.dart';
+
+import 'package:Helios/features/register_sign_in/domain/server/high_level/sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
     loadingIcon.showLoadingIcon(context);
 
-    AppServer.signIn(
+    signIn(
       context,
       email: emailController.text,
       password: passwordController.text,
@@ -36,7 +43,10 @@ class _LoginPageState extends State<LoginPage> {
 
         loadingIcon.removeLoadingIcon();
 
-        if (response == SignInStatus.success) {
+        if (!mounted) {
+          return;
+        }
+        if (response == Auth.success) {
           Navigator.pushNamedAndRemoveUntil(
             context,
             RouteNames.home,
@@ -91,7 +101,10 @@ class _LoginPageState extends State<LoginPage> {
                       key: _formState,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 60),
+                          left: 20,
+                          right: 20,
+                          bottom: 60,
+                        ),
                         child: Column(
                           children: [
                             const SizedBox(
@@ -148,37 +161,41 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Transform.translate(
                       offset: const Offset(0.0, -32.0),
-                      child: Text.rich(TextSpan(children: [
+                      child: Text.rich(
                         TextSpan(
-                          text: "Нет аккаунта? ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground
-                                      .withOpacity(0.5)),
+                          children: [
+                            TextSpan(
+                              text: "Нет аккаунта? ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground
+                                          .withOpacity(0.5)),
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: InkWell(
+                                  child: Text(
+                                    "Зарегистрируйтесь!",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground),
+                                  ),
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.reg);
+                                  }),
+                            ),
+                          ],
                         ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: InkWell(
-                              child: Text(
-                                "Зарегистрируйтесь!",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onBackground),
-                              ),
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, RouteNames.reg);
-                              }),
-                        ),
-                      ])),
+                      ),
                     ),
                   ],
                 ),

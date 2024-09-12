@@ -1,6 +1,13 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:Helios/common/common.dart';
+
+import 'package:email_validator/email_validator.dart';
+
+import 'package:Helios/common/enums/enums.dart';
+import 'package:Helios/common/navigation/routes.dart';
+
+import 'package:Helios/common/ui/elements/elements.dart';
+
+import 'package:Helios/features/register_sign_in/domain/server/high_level/sign_up.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -25,7 +32,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     loadingIcon.showLoadingIcon(context);
 
-    AppServer.signUp(
+    signUp(
       context,
       email: emailController.text,
       password: passwordController1.text,
@@ -37,7 +44,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
         loadingIcon.removeLoadingIcon();
 
-        if (response == SignUpStatus.success) {
+        if (!mounted) {
+          return;
+        }
+        if (response == Auth.success) {
           Navigator.pushNamedAndRemoveUntil(
             context,
             RouteNames.home,
@@ -93,7 +103,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       key: _formState,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 60),
+                          left: 20,
+                          right: 20,
+                          bottom: 60,
+                        ),
                         child: Column(
                           children: [
                             HeliosFormTextField(
@@ -158,37 +171,41 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ),
                     Transform.translate(
                       offset: const Offset(0.0, -32.0),
-                      child: Text.rich(TextSpan(children: [
+                      child: Text.rich(
                         TextSpan(
-                          text: "Есть аккаунт? ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground
-                                      .withOpacity(0.5)),
+                          children: [
+                            TextSpan(
+                              text: "Есть аккаунт? ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground
+                                          .withOpacity(0.5)),
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: InkWell(
+                                  child: Text(
+                                    "Войдите!",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground),
+                                  ),
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.login);
+                                  }),
+                            ),
+                          ],
                         ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: InkWell(
-                              child: Text(
-                                "Войдите!",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onBackground),
-                              ),
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, RouteNames.login);
-                              }),
-                        ),
-                      ])),
+                      ),
                     ),
                   ],
                 ),

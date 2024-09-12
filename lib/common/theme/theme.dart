@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:Helios/common/enums/enums.dart';
 
 final ThemeData darkTheme = ThemeData(
   colorScheme: const ColorScheme.dark(
@@ -95,14 +93,3 @@ final ThemeData lightTheme = ThemeData(
       elevation: 0),
   scaffoldBackgroundColor: Colors.white,
 );
-
-ThemeData getTheme(SelectedTheme? theme) => switch (theme) {
-      (SelectedTheme.system) =>
-        SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-                Brightness.dark
-            ? darkTheme
-            : lightTheme,
-      (SelectedTheme.dark) => darkTheme,
-      (SelectedTheme.light) => lightTheme,
-      (null) => throw ("Unknown behaviour"),
-    };

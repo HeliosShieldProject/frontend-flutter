@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:Helios/app/app.dart';
-import 'package:Helios/common/common.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:Helios/common/theme/theme_provider.dart';
+import 'package:Helios/common/user/user_provider.dart';
+import 'package:Helios/common/user_settings/user_settings_provider.dart';
+
+import 'package:Helios/common/user/user_impl.dart';
+import 'package:Helios/common/user_settings/user_settings_impl.dart';
+
 import 'package:Helios/common/enums/enums.dart';
-import 'package:Helios/common/interafces/user.dart';
+import 'package:Helios/common/interafces/interfaces.dart';
+
+import 'package:Helios/app/app.dart';
 
 Future<void> main() async {
   await _initHive();
