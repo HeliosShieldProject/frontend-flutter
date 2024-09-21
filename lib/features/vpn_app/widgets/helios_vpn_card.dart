@@ -179,7 +179,9 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 4000));
+      vsync: this,
+      duration: const Duration(milliseconds: 4000),
+    );
 
     _animation = GradientTween()
         .chain(CurveTween(curve: Curves.ease))
@@ -266,11 +268,15 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Expanded(child: effectiveCountryName),
+                        Expanded(
+                          child: effectiveCountryName,
+                        ),
                         const SizedBox(
                           height: 5,
                         ),
-                        Expanded(child: effectiveCountryIp),
+                        Expanded(
+                          child: effectiveCountryIp,
+                        ),
                       ],
                     )
                   ],
@@ -370,8 +376,9 @@ class GradientTween extends Tween<Gradient> {
       end: Alignment.centerRight,
       colors: <Color>[
         Colors.white.withOpacity(0.1),
-        Colors.white
-            .withOpacity(0.1 + 0.1 * (-pow(t * 2 - 1, 2).toDouble() + 1)),
+        Colors.white.withOpacity(
+          0.1 + 0.1 * (-pow(t * 2 - 1, 2).toDouble() + 1),
+        ),
         Colors.white.withOpacity(0.1),
       ],
       stops: <double>[0.0, t, 1.0],
@@ -401,16 +408,22 @@ class CustomTrim extends CustomPainter {
       ..shader = (colors != null)
           ? LinearGradient(
               colors: colors!,
-              begin: Alignment(-0.5, -0.5),
+              begin: const Alignment(-0.5, -0.5),
               end: Alignment.bottomRight,
-            ).createShader(Rect.fromCenter(
-              center: Offset(size.width / 2, size.height / 2),
-              width: size.width,
-              height: size.height))
+            ).createShader(
+              Rect.fromCenter(
+                center: Offset(size.width / 2, size.height / 2),
+                width: size.width,
+                height: size.height,
+              ),
+            )
           : null;
 
     canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), size.width / 2, paint);
+      Offset(size.width / 2, size.height / 2),
+      size.width / 2,
+      paint,
+    );
   }
 
   @override

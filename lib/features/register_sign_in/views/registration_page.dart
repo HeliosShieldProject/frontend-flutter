@@ -6,6 +6,7 @@ import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/navigation/routes.dart';
 
 import 'package:Helios/common/ui/elements/elements.dart';
+import 'package:Helios/features/register_sign_in/widgets/widgets.dart';
 
 import 'package:Helios/features/register_sign_in/domain/server/high_level/sign_up.dart';
 

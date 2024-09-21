@@ -1,6 +1,6 @@
 import 'package:Helios/common/interafces/basic_response.dart';
 import 'package:Helios/common/interafces/basic_server_entity.dart';
-import 'package:Helios/features/register_sign_in/domain/server/mappers/sign_in_server_entity_mapper.dart';
+import 'package:Helios/features/register_sign_in/domain/server/mappers/sign_in_up_server_entity_mapper.dart';
 import 'package:dio/dio.dart';
 import 'package:Helios/common/interafces/user.dart';
 import 'package:Helios/common/server/mappers/mappers.dart';

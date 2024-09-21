@@ -20,7 +20,10 @@ class HomePage extends StatelessWidget {
             child: SvgPicture.asset(
               fit: BoxFit.scaleDown,
               "assets/helios_icon.svg",
-              color: Theme.of(context).colorScheme.onBackground,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.onBackground,
+                BlendMode.src,
+              ),
               height: 20,
             ),
           ),
@@ -49,11 +52,17 @@ class HomePage extends StatelessWidget {
         child: Column(children: <Widget>[
           Expanded(
             child: Center(
-              child: SvgPicture.asset(
-                "assets/shield_icon.svg",
-                color: Theme.of(context).colorScheme.onBackground,
-                height: 140,
-                fit: BoxFit.scaleDown,
+              child: GestureDetector(
+                onTap: null,
+                child: SvgPicture.asset(
+                  "assets/shield_icon.svg",
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.onBackground,
+                    BlendMode.src,
+                  ),
+                  height: 140,
+                  fit: BoxFit.scaleDown,
+                ),
               ),
             ),
           ),
