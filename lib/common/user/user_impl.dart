@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import "package:hive/hive.dart";
 import "package:jwt_decoder/jwt_decoder.dart";
 import 'package:Helios/common/enums/enums.dart';
@@ -6,28 +7,46 @@ import 'package:Helios/common/interafces/user.dart';
 part 'user_impl.g.dart';
 
 @HiveType(typeId: 3)
+@immutable
 class UserImpl implements User {
-  @override
-  String? name;
-  @override
-  String? password;
-  @HiveField(0)
-  @override
-  String? email;
+  UserImpl({
+    String? name,
+    this.password = "unknwon",
+    this.email = "test@mail.com",
+    this.deviceName = "unknown",
+    this.deviceType = "unknown",
+    this.jwtRefreshToken = "unknwon",
+    this.jwtToken = "unknwon",
+  }) : name = name ?? email!.split("@")[0];
 
   @override
-  String? deviceName;
+  final String? name;
   @override
-  String? deviceType;
+  final String? password;
+  @HiveField(0)
+  @override
+  final String? email;
+
+  @override
+  final String? deviceName;
+  @override
+  final String? deviceType;
 
   @HiveField(1)
   @override
-  String? jwtRefreshToken;
+  final String? jwtRefreshToken;
   @HiveField(2)
   @override
-  String? jwtToken;
+  final String? jwtToken;
 
-  UserImpl();
+  const UserImpl.empty()
+      : name = null,
+        email = null,
+        password = null,
+        deviceName = null,
+        deviceType = null,
+        jwtRefreshToken = null,
+        jwtToken = null;
 
   @override
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -40,6 +59,27 @@ class UserImpl implements User {
       };
 
   @override
+  User copyWith({
+    String? name,
+    String? email,
+    String? password,
+    String? deviceName,
+    String? deviceType,
+    String? jwtToken,
+    String? jwtRefreshToken,
+  }) {
+    return UserImpl(
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      deviceType: deviceType ?? this.deviceType,
+      deviceName: deviceName ?? this.deviceName,
+      jwtToken: jwtToken ?? this.jwtToken,
+      jwtRefreshToken: jwtRefreshToken ?? this.jwtRefreshToken,
+    );
+  }
+
+  @override
   UserValidity get validity {
     if (jwtToken == null || jwtRefreshToken == null) {
       return UserValidity.notValid;
@@ -48,4 +88,18 @@ class UserImpl implements User {
     }
     return UserValidity.needsRefreshment;
   }
+
+  @override
+  List<Object?> get props => [
+        name,
+        password,
+        email,
+        deviceName,
+        deviceType,
+        jwtRefreshToken,
+        jwtToken
+      ];
+
+  @override
+  bool? get stringify => true;
 }

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_settings_impl.dart';
+part of '../../bloc/user_settings/state/user_settings_impl.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

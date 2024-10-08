@@ -1,19 +1,40 @@
 import 'package:Helios/common/enums/enums.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
-abstract interface class User {
-  String? name;
-  String? email;
-  String? password;
+@immutable
+abstract interface class User extends Equatable {
+  const User({
+    this.name,
+    this.password,
+    this.email,
+    this.deviceName,
+    this.deviceType,
+    this.jwtRefreshToken,
+    this.jwtToken,
+  });
 
-  String? deviceName;
-  String? deviceType;
+  final String? name;
+  final String? email;
+  final String? password;
 
-  String? jwtToken;
-  String? jwtRefreshToken;
+  final String? deviceName;
+  final String? deviceType;
 
-  User();
+  final String? jwtToken;
+  final String? jwtRefreshToken;
 
   Map<String, dynamic> toJson();
+
+  User copyWith({
+    String? name,
+    String? email,
+    String? password,
+    String? deviceName,
+    String? deviceType,
+    String? jwtToken,
+    String? jwtRefreshToken,
+  });
 
   UserValidity get validity;
 }

@@ -1,38 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_impl.dart';
+part of 'vpn_status.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserImplAdapter extends TypeAdapter<UserImpl> {
+class VPNStatusAdapter extends TypeAdapter<VPNStatus> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
-  UserImpl read(BinaryReader reader) {
+  VPNStatus read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserImpl(
-      email: fields[0] as String?,
-      jwtRefreshToken: fields[1] as String?,
-      jwtToken: fields[2] as String?,
+    return VPNStatus(
+      country: fields[0] as Country?,
+      protocol: fields[1] as Protocol?,
+      status: fields[2] as Status?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, UserImpl obj) {
+  void write(BinaryWriter writer, VPNStatus obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.email)
+      ..write(obj.country)
       ..writeByte(1)
-      ..write(obj.jwtRefreshToken)
+      ..write(obj.protocol)
       ..writeByte(2)
-      ..write(obj.jwtToken);
+      ..write(obj.status);
   }
 
   @override
@@ -41,7 +41,7 @@ class UserImplAdapter extends TypeAdapter<UserImpl> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserImplAdapter &&
+      other is VPNStatusAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

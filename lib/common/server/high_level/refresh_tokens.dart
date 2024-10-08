@@ -1,14 +1,10 @@
+import 'package:Helios/common/interafces/user.dart';
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/basic_server_entity.dart';
-import 'package:Helios/common/interafces/user.dart';
 import 'package:Helios/common/server/entitties/refresh_server_entity.dart';
 import 'package:Helios/common/server/low_level/refresh_tokens.dart';
-import 'package:Helios/common/user/user_provider.dart';
-import 'package:flutter/material.dart';
 
-Future<Auth> refresh(BuildContext context) async {
-  User user = AppUser.of(context)!;
-
+Future<Auth> refresh(User user) async {
   final BasicServerEntity response;
 
   try {
@@ -21,15 +17,12 @@ Future<Auth> refresh(BuildContext context) async {
 
   if (response.status != Auth.success) {
     return response.status;
-  } else if (context.mounted) {
+  } else {
     response as RefreshServerEntity;
-    AppUser.update(
-      context,
-      user
-        ..jwtToken = response.accessToken
-        ..jwtRefreshToken = response.refreshToken,
+    user = user.copyWith(
+      jwtRefreshToken: response.refreshToken,
+      jwtToken: response.accessToken,
     );
     return response.status;
   }
-  return Auth.failed;
 }

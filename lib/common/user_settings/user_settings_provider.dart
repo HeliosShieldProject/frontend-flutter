@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:Helios/common/enums/enums.dart';
-import 'package:Helios/common/interafces/user_settings.dart';
-import 'package:Helios/common/user_settings/user_settings_impl.dart';
+import 'package:Helios/bloc/user_settings/state/user_settings.dart';
+import 'package:Helios/bloc/user_settings/state/user_settings_impl.dart';
 
 import 'package:hive/hive.dart';
 
