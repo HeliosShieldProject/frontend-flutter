@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'enums.g.dart';
+part '../../repositories/local_repository/user_settings/generated/enums.g.dart';
 
 enum Auth {
   success,

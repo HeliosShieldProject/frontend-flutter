@@ -1,12 +1,12 @@
 import 'package:Helios/common/interafces/user.dart';
 import 'package:Helios/common/user/user_impl.dart';
 import 'package:Helios/repositories/local_repository/user/get_user.dart';
-import 'package:Helios/repository/user/put_user.dart';
+import 'package:Helios/repositories/local_repository/user/put_user.dart';
 
 class UserRepository {
   User? _user;
 
-  User getUser() {
+  User get() {
     if (_user != null) {
       return _user!;
     }
@@ -14,7 +14,8 @@ class UserRepository {
     return _user!;
   }
 
-  bool putUser() {
+  bool put({required User user}) {
+    _user = user;
     return putLocalUser(
       user: _user ?? const UserImpl.empty(),
     );

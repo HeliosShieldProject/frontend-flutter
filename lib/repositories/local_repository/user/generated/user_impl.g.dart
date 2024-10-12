@@ -1,35 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_settings_impl.dart';
+part of '../../../../common/user/user_impl.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserSettingsImplAdapter extends TypeAdapter<UserSettingsImpl> {
+class UserImplAdapter extends TypeAdapter<UserImpl> {
   @override
-  final int typeId = 0;
+  final int typeId = 3;
 
   @override
-  UserSettingsImpl read(BinaryReader reader) {
+  UserImpl read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserSettingsImpl(
-      selectedTheme: fields[0] as SelectedTheme?,
-      subscriptionType: fields[1] as SubscriptionType?,
+    return UserImpl(
+      email: fields[0] as String?,
+      jwtRefreshToken: fields[1] as String?,
+      jwtToken: fields[2] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, UserSettingsImpl obj) {
+  void write(BinaryWriter writer, UserImpl obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.selectedTheme)
+      ..write(obj.email)
       ..writeByte(1)
-      ..write(obj.subscriptionType);
+      ..write(obj.jwtRefreshToken)
+      ..writeByte(2)
+      ..write(obj.jwtToken);
   }
 
   @override
@@ -38,7 +41,7 @@ class UserSettingsImplAdapter extends TypeAdapter<UserSettingsImpl> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserSettingsImplAdapter &&
+      other is UserImplAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
