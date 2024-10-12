@@ -11,8 +11,8 @@ import 'package:Helios/repositories/user_repository/user_repository.dart';
 part 'event.dart';
 part 'state.dart';
 
-class SignInBloc extends Bloc<SignInEvent, SignUpState> {
-  SignInBloc({required this.userRepository})
+class SignUpBloc extends Bloc<SignInEvent, SignUpState> {
+  SignUpBloc({required this.userRepository})
       : super(const SignUpState.unknwon()) {
     on<SignUpExecutedEvent>(onSignUpExecuted);
   }

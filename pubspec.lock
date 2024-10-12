@@ -544,6 +544,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  password_validator_package:
+    dependency: "direct main"
+    description:
+      name: password_validator_package
+      sha256: b3871584c4201edb673255edc5c546137572c0730cec45cb02891441cf1bd454
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   path:
     dependency: transitive
     description:
