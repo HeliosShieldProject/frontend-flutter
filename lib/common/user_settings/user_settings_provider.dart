@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:Helios/common/enums/enums.dart';
-import 'package:Helios/bloc/user_settings/state/user_settings.dart';
-import 'package:Helios/bloc/user_settings/state/user_settings_impl.dart';
+import 'package:Helios/common/interafces/user_settings.dart';
+import 'package:Helios/common/user_settings/user_settings_impl.dart';
 
 import 'package:hive/hive.dart';
 
@@ -53,9 +53,9 @@ class _AppUserSettingsState extends State<AppUserSettings>
   }
 
   void _changeTheme(SelectedTheme? selectedTheme) {
-    UserSettings newUserSettings = UserSettingsImpl();
-    newUserSettings.selectedTheme = selectedTheme;
-    newUserSettings.subscriptionType = userSettings.subscriptionType;
+    UserSettings newUserSettings = userSettings.copyWith(
+      selectedTheme: selectedTheme,
+    );
     setState(() {
       userSettings = newUserSettings;
     });
@@ -68,9 +68,9 @@ class _AppUserSettingsState extends State<AppUserSettings>
   }
 
   void _changeSubscription(SubscriptionType? subscriptionType) {
-    UserSettings newUserSettings = UserSettingsImpl();
-    newUserSettings.selectedTheme = userSettings.selectedTheme;
-    newUserSettings.subscriptionType = subscriptionType;
+    UserSettings newUserSettings = userSettings.copyWith(
+      subscriptionType: subscriptionType,
+    );
     setState(() {
       userSettings = newUserSettings;
     });

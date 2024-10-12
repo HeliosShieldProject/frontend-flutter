@@ -32,9 +32,10 @@ Future<Auth> signUp(BuildContext context,
     response as SignInUpServerEntity;
     AppUser.update(
       context,
-      user
-        ..jwtToken = response.accessToken
-        ..jwtRefreshToken = response.refreshToken,
+      user.copyWith(
+        jwtRefreshToken: response.refreshToken,
+        jwtToken: response.accessToken,
+      ),
     );
     return response.status;
   }

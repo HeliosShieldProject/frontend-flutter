@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../bloc/user_settings/state/user_settings_impl.dart';
+part of 'user_settings_impl.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -16,9 +16,10 @@ class UserSettingsImplAdapter extends TypeAdapter<UserSettingsImpl> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserSettingsImpl()
-      ..selectedTheme = fields[0] as SelectedTheme?
-      ..subscriptionType = fields[1] as SubscriptionType?;
+    return UserSettingsImpl(
+      selectedTheme: fields[0] as SelectedTheme?,
+      subscriptionType: fields[1] as SubscriptionType?,
+    );
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:Helios/bloc/user_settings/state/user_settings.dart';
+import 'package:Helios/common/interafces/user_settings.dart';
 
 import 'package:Helios/common/user_settings/user_settings_provider.dart';
 

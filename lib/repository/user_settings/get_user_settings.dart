@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 import 'package:Helios/repository/hive_keys.dart';
 
-import 'package:Helios/bloc/user_settings/state/user_settings_impl.dart';
+import 'package:Helios/common/user_settings/user_settings_impl.dart';
 import 'package:Helios/common/interafces/interfaces.dart';
 
 UserSettings getUserSettings() {
