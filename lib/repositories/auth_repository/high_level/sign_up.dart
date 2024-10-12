@@ -7,10 +7,10 @@ import 'package:Helios/common/interafces/user.dart';
 
 import 'package:Helios/common/user/user_provider.dart';
 
-import 'package:Helios/features/register_sign_in/domain/server/entities/sign_in_up_server_entity.dart';
-import 'package:Helios/features/register_sign_in/domain/server/low_level/sign_up.dart';
+import 'package:Helios/repositories/auth_repository/entities/sign_in_up_server_entity.dart';
+import 'package:Helios/repositories/auth_repository/low_level/sign_up.dart';
 
-import 'package:Helios/features/register_sign_in/domain/server/utils/create_user.dart';
+import 'package:Helios/repositories/auth_repository/utils/create_user.dart';
 
 Future<Auth> signUp(BuildContext context,
     {required String email, required String password}) async {

@@ -7,8 +7,8 @@ part 'user_settings.g.dart';
 @HiveType(typeId: 0)
 class UserSettingsImpl implements UserSettings {
   const UserSettingsImpl({
-    this.selectedTheme = SelectedTheme.dark,
-    this.subscriptionType = SubscriptionType.free,
+    required this.selectedTheme,
+    required this.subscriptionType,
   });
 
   @HiveField(0)
@@ -22,6 +22,10 @@ class UserSettingsImpl implements UserSettings {
   const UserSettingsImpl.empty()
       : selectedTheme = null,
         subscriptionType = null;
+
+  const UserSettingsImpl.basic()
+      : selectedTheme = SelectedTheme.dark,
+        subscriptionType = SubscriptionType.free;
 
   @override
   UserSettings copyWith({

@@ -8,7 +8,7 @@ import 'package:Helios/common/navigation/routes.dart';
 import 'package:Helios/common/ui/elements/elements.dart';
 import 'package:Helios/features/register_sign_in/widgets/widgets.dart';
 
-import 'package:Helios/features/register_sign_in/domain/server/high_level/sign_in.dart';
+import 'package:Helios/repositories/auth_repository/high_level/sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

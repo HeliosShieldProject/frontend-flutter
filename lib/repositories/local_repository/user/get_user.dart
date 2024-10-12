@@ -1,18 +1,18 @@
 import 'package:hive/hive.dart';
 
-import 'package:Helios/repository/hive_keys.dart';
+import 'package:Helios/repositories/local_repository/hive_keys.dart';
 
 import 'package:Helios/common/interafces/user.dart';
 import 'package:Helios/common/user/user_impl.dart';
 
-User getUser() {
-  User user = UserImpl();
+User getLocalUser() {
+  User user = const UserImpl.empty();
 
   try {
     final Box<User> userBox = Hive.box<User>(HiveKeys.userBox);
-    user = userBox.get(HiveKeys.userKey, defaultValue: UserImpl())!;
+    user = userBox.get(HiveKeys.userKey, defaultValue: const UserImpl.empty())!;
   } catch (e) {
-    return UserImpl();
+    return user;
   }
 
   return user;

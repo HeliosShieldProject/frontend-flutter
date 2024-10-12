@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:Helios/common/theme/theme_provider.dart';
-import 'package:Helios/common/user/user_provider.dart';
-import 'package:Helios/common/user_settings/user_settings_provider.dart';
-
-import 'package:Helios/repository/init_repository.dart';
+import 'package:Helios/repositories/local_repository/init.dart';
+import 'package:Helios/repositories/repository_providers.dart';
 
 import 'package:Helios/app/app.dart';
 
@@ -18,12 +16,15 @@ Future<void> main() async {
   );
 
   runApp(
-    const AppUser(
-      child: AppUserSettings(
-        child: AppTheme(
-          child: App(),
-        ),
+    repositoryProviders(
+      child: blocProviders(
+        child: const App(),
       ),
     ),
   );
 }
+
+MultiBlocProvider blocProviders({required Widget child}) => MultiBlocProvider(
+      providers: <BlocProvider>[],
+      child: child,
+    );

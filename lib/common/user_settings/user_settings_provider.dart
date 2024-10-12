@@ -86,7 +86,7 @@ class _AppUserSettingsState extends State<AppUserSettings>
   void initState() {
     userSettings = Hive.box<UserSettings>("UserSettings").get(
       "userSettings",
-      defaultValue: UserSettingsImpl(),
+      defaultValue: const UserSettingsImpl.basic(),
     )!;
     super.initState();
   }
