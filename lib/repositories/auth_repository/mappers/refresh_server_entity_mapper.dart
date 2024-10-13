@@ -4,7 +4,7 @@ import 'package:Helios/common/interafces/basic_response.dart';
 import 'package:Helios/common/server/dto/error_response.dart';
 import 'package:Helios/common/server/dto/response.dart';
 
-import 'package:Helios/common/server/entitties/refresh_server_entity.dart';
+import 'package:Helios/repositories/auth_repository/entities/refresh_server_entity.dart';
 
 RefreshServerEntity refreshServerEntityMapper(
     {required BasicResponse response}) {
