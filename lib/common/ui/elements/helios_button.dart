@@ -1,3 +1,4 @@
+import 'package:Helios/common/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 /// Helios Button compliant to the design patterns of the Helios app
@@ -54,10 +55,12 @@ class HeliosButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 52,
+      height: NumericConstants.elementHieght,
       alignment: Alignment.center,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(
+          NumericConstants.borderRadius,
+        ),
         child: Material(
           child: Ink(
             decoration: BoxDecoration(
@@ -69,13 +72,13 @@ class HeliosButton extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
+                    horizontal: NumericConstants.horizontalPadding,
                   ),
                   child: effectiveTitle(context),
                 ),
                 InkWell(
                   splashColor:
-                      Theme.of(context).colorScheme.background.withOpacity(0.7),
+                      Theme.of(context).colorScheme.surface.withOpacity(0.5),
                   onTap: onTap,
                 ),
               ],

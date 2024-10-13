@@ -45,7 +45,7 @@ abstract class RoutesBuilder {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
               create: (context) => SignInBloc(
-                    userRepository: context.watch<UserRepository>(),
+                    userRepository: context.read<UserRepository>(),
                   ),
               child: const LoginPage()),
           settings: settings,

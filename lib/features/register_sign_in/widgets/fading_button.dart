@@ -1,3 +1,4 @@
+import 'package:Helios/common/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:Helios/common/ui/elements/elements.dart';
 
@@ -34,13 +35,15 @@ class FadingButton extends StatelessWidget {
             child: HeliosButton(
               onTap: onTap,
               label: label,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           )
         : Container(
-            height: 52,
+            height: NumericConstants.elementHieght,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(
+                NumericConstants.borderRadius,
+              ),
             ),
           );
   }

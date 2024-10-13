@@ -6,7 +6,7 @@ import 'package:Helios/repositories/local_repository/user_settings/put_user_sett
 class UserSettingsRepository {
   UserSettings? _userSettings;
 
-  UserSettings getUserSettings() {
+  UserSettings get() {
     if (_userSettings != null) {
       return _userSettings!;
     }
@@ -14,7 +14,7 @@ class UserSettingsRepository {
     return _userSettings!;
   }
 
-  bool putUserSettings({required UserSettings userSettings}) {
+  bool put({required UserSettings userSettings}) {
     _userSettings = userSettings;
     return putLocalUserSettings(
       userSettings: _userSettings ?? const UserSettingsImpl.basic(),

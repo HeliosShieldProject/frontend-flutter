@@ -34,7 +34,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late LoadingIcon loadingIcon;
 
   late Size screenSize;
-  late TextTheme textTheme;
   late ColorScheme colorScheme;
 
   @override
@@ -105,7 +104,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     super.didChangeDependencies();
 
     final ThemeData themeData = Theme.of(context);
-    textTheme = themeData.textTheme;
     colorScheme = themeData.colorScheme;
 
     screenSize = MediaQuery.sizeOf(context);

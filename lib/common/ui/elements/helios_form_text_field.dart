@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:Helios/common/constants/constants.dart';
+
 /// Helios Form Text Field compliant to the design patterns of the Helios app
 class HeliosFormTextField extends StatefulWidget {
   const HeliosFormTextField({
@@ -83,7 +85,11 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
             height: 52,
             decoration: BoxDecoration(
               color: themeData.colorScheme.tertiary,
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(
+                  NumericConstants.borderRadius,
+                ),
+              ),
               border: error ? Border.all(color: Colors.red, width: 3) : null,
             ),
             alignment: Alignment.centerLeft,
@@ -96,9 +102,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
               cursorColor: themeData.colorScheme.primary,
               cursorErrorColor: themeData.colorScheme.primary,
               style: themeData.textTheme.labelMedium!.copyWith(
-                color: Colors.white.withOpacity(
-                  0.5,
-                ),
+                color: Colors.white.withOpacity(0.5),
               ),
               textInputAction: widget.textInputAction,
               decoration: InputDecoration(
@@ -108,7 +112,9 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
                 labelStyle: _effectiveLabelStyle(context),
                 errorStyle: _errorStyle,
                 suffixIcon: _effectiveSuffixIcon,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: NumericConstants.horizontalPadding,
+                ),
                 isDense: true,
               ),
               validator: _validator,
