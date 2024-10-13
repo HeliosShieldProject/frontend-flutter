@@ -16,4 +16,16 @@ abstract interface class Literals {
   static const String signUp = "Зарегистрируйтесь!";
 
   static const String authSnackBar = "Понятно";
+
+  static const String loading = "Загрузка";
+  static const String success = "Успешно";
+  static const String failed = "Пожалуйста, попробуйте позже";
+  static const String wrongToken = "Неверный токен";
+  static const String wrongPassword = "Неверный пароль";
+  static const String userNotFound = "Пользователь не существует";
+  static const String userAlreadyExists = "Пользователь уже существует";
+  static const String passwordIsSame = "Пароль идентичен старому";
+  static const String oAuthFailed = "Не удалось пройти проверку";
+  static const String oAuthDifferentEmail = "Неверный email на проверке";
+  static const String noClassicAuth = "Пароль неизвестен";
 }
