@@ -32,22 +32,25 @@ abstract class RoutesBuilder {
           builder: (_) => const WelcomePage(),
           settings: settings,
         );
+
       case (RouteNames.home):
         print("Home onGenerateRoute");
         return MaterialPageRoute(
           builder: (_) => const HomePage(),
           settings: settings,
         );
+
       case (RouteNames.login):
         print("Login onGenerateRoute");
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
               create: (context) => SignInBloc(
-                    userRepository: context.read<UserRepository>(),
+                    userRepository: context.watch<UserRepository>(),
                   ),
               child: const LoginPage()),
           settings: settings,
         );
+
       case (RouteNames.reg):
         print("Reg onGenerateRoute");
         return MaterialPageRoute(
@@ -58,6 +61,7 @@ abstract class RoutesBuilder {
               child: const RegistrationPage()),
           settings: settings,
         );
+
       case (RouteNames.settings):
         print("Settings onGenerateRoute");
         return MaterialPageRoute(

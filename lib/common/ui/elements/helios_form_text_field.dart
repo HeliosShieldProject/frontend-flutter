@@ -28,9 +28,12 @@ class HeliosFormTextField extends StatefulWidget {
 class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   late final FocusNode passwordFocusNode;
   late final FocusNode suffixIconFocusNode;
+
   bool obscureText = true;
   bool error = false;
   bool showSuffix = false;
+
+  late ThemeData themeData;
 
   @override
   void initState() {
@@ -53,6 +56,13 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    themeData = Theme.of(context);
+  }
+
+  @override
   void dispose() {
     passwordFocusNode.dispose();
     if (widget.obscureText) suffixIconFocusNode.dispose();
@@ -61,59 +71,65 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
-
-    return MouseRegion(
-      cursor: SystemMouseCursors.text,
-      child: GestureDetector(
-        onTap: () {
-          if (!passwordFocusNode.hasFocus) {
-            passwordFocusNode.requestFocus();
-          }
-        },
-        child: Container(
-          height: 52,
-          decoration: BoxDecoration(
-            color: themeData.colorScheme.surface,
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            border: error ? Border.all(color: Colors.red, width: 3) : null,
-          ),
-          alignment: Alignment.centerLeft,
-          child: TextFormField(
-            focusNode: passwordFocusNode,
-            controller: widget.controller,
-            keyboardType: widget.keyboardType,
-            obscureText: widget.obscureText ? obscureText : false,
-            autocorrect: false,
-            cursorColor: themeData.colorScheme.primary,
-            cursorErrorColor: themeData.colorScheme.primary,
-            style: themeData.textTheme.bodyMedium,
-            textInputAction: widget.textInputAction,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(borderSide: BorderSide.none),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              labelText: _effectiveLabelText,
-              labelStyle: _effectiveLabelStyle(context),
-              errorStyle: _errorStyle,
-              suffixIcon: _effectiveSuffixIcon,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-              isDense: true,
+  Widget build(BuildContext context) => MouseRegion(
+        cursor: SystemMouseCursors.text,
+        child: GestureDetector(
+          onTap: () {
+            if (!passwordFocusNode.hasFocus) {
+              passwordFocusNode.requestFocus();
+            }
+          },
+          child: Container(
+            height: 52,
+            decoration: BoxDecoration(
+              color: themeData.colorScheme.tertiary,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              border: error ? Border.all(color: Colors.red, width: 3) : null,
             ),
-            validator: _validator,
-            onChanged: _onChanged,
-            onEditingComplete: _onEditingComplete,
+            alignment: Alignment.centerLeft,
+            child: TextFormField(
+              focusNode: passwordFocusNode,
+              controller: widget.controller,
+              keyboardType: widget.keyboardType,
+              obscureText: widget.obscureText ? obscureText : false,
+              autocorrect: false,
+              cursorColor: themeData.colorScheme.primary,
+              cursorErrorColor: themeData.colorScheme.primary,
+              style: themeData.textTheme.labelMedium!.copyWith(
+                color: Colors.white.withOpacity(
+                  0.5,
+                ),
+              ),
+              textInputAction: widget.textInputAction,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                labelText: _effectiveLabelText,
+                labelStyle: _effectiveLabelStyle(context),
+                errorStyle: _errorStyle,
+                suffixIcon: _effectiveSuffixIcon,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                isDense: true,
+              ),
+              validator: _validator,
+              onChanged: _onChanged,
+              onEditingComplete: _onEditingComplete,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   String get _effectiveLabelText => error ? widget.textOnError : widget.text;
 
   TextStyle _effectiveLabelStyle(BuildContext context) => error
-      ? Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.red)
-      : Theme.of(context).textTheme.bodyMedium!;
+      ? Theme.of(context).textTheme.labelMedium!.copyWith(
+            color: Colors.red,
+          )
+      : Theme.of(context).textTheme.labelMedium!.copyWith(
+            color: Colors.white.withOpacity(
+              0.5,
+            ),
+          );
 
   TextStyle get _errorStyle => const TextStyle(
         color: Colors.transparent,

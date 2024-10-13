@@ -8,7 +8,7 @@ class SignInState extends Equatable {
 
   final Auth? signInStatus;
 
-  const SignInState.unknwon() : signInStatus = null;
+  const SignInState.empty() : signInStatus = null;
 
   SignInState copyWith({Auth? signInStatus}) => SignInState(
         signInStatus: signInStatus ?? this.signInStatus,

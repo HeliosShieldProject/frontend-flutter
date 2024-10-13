@@ -13,7 +13,7 @@ part 'state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc({required this.userRepository})
-      : super(const SignInState.unknwon()) {
+      : super(const SignInState.empty()) {
     on<SignInExecutedEvent>(onSignInExecuted);
   }
 
@@ -22,6 +22,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   void onSignInExecuted(SignInExecutedEvent event, Emitter<SignInState> emit) {
     final String email = event.email;
     final String password = event.password;
+
+    emit(
+      state.copyWith(
+        signInStatus: Auth.loading,
+      ),
+    );
 
     signIn(email: email, password: password).then(
       (value) {

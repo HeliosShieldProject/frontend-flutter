@@ -72,7 +72,7 @@ class _WelcomeScreenState extends State<WelcomePage>
         children: <Widget>[
           Expanded(
             child: FadingHeliosIcon(
-              radius: MediaQuery.of(context).size.width * 0.306,
+              radius: MediaQuery.of(context).size.width * ,
               showHelios: _initEnded,
               fadeAnimation: _fadeAnimation,
             ),

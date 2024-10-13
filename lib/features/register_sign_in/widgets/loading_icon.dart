@@ -9,14 +9,14 @@ class LoadingIcon {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).colorScheme.onBackground,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         child: const CircularProgressIndicator.adaptive(),
       ),
     ),
   );
 
-  final modalBarrier = OverlayEntry(
+  final _modalBarrier = OverlayEntry(
     builder: (context) => const ModalBarrier(
       dismissible: false,
       color: Colors.black54,
@@ -24,7 +24,7 @@ class LoadingIcon {
   );
 
   void showLoadingIcon(BuildContext context) {
-    Overlay.of(context).insert(modalBarrier);
+    Overlay.of(context).insert(_modalBarrier);
     Overlay.of(context).insert(_loadingIcon);
   }
 
@@ -34,8 +34,8 @@ class LoadingIcon {
   void removeLoadingIcon() {
     //сделайте лучше, если не нравится)
     _loadingIcon.remove();
-    modalBarrier.remove();
+    _modalBarrier.remove();
     _loadingIcon.dispose();
-    modalBarrier.dispose();
+    _modalBarrier.dispose();
   }
 }

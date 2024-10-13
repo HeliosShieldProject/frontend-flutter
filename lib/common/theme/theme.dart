@@ -1,49 +1,47 @@
 import 'package:flutter/material.dart';
 
+const String fontFamily = "Ubuntu";
+
 final ThemeData darkTheme = ThemeData(
   colorScheme: const ColorScheme.dark(
     primary: Color(0xFFACB823),
     secondary: Color(0xFF83847D),
-    background: Color.fromARGB(255, 0, 0, 0),
-    onBackground: Color.fromARGB(255, 255, 255, 255),
-    surface: Color(0xFF262626),
-    onSurface: Color.fromARGB(255, 62, 62, 62),
+    surface: Colors.black,
+    onSurface: Colors.white,
+    tertiary: Color(0xFF262626),
+    onTertiary: Color.fromARGB(255, 62, 62, 62),
   ),
   textTheme: const TextTheme(
-    displayMedium: TextStyle(
+    titleLarge: TextStyle(
       color: Colors.white,
-      fontFamily: 'Ubuntu',
-      fontSize: 12,
-    ),
-    labelMedium: TextStyle(
-      color: Colors.black,
+      fontFamily: fontFamily,
       fontSize: 18,
-      fontFamily: 'Ubuntu',
       fontWeight: FontWeight.w500,
     ),
-    headlineMedium: TextStyle(
+    titleMedium: TextStyle(
       color: Colors.white,
-      fontSize: 18,
-      fontFamily: 'Ubuntu',
+      fontFamily: fontFamily,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
+    labelMedium: TextStyle(
+      color: Colors.white,
+      fontFamily: fontFamily,
+      fontSize: 13,
       fontWeight: FontWeight.w500,
     ),
     bodyMedium: TextStyle(
-      color: Color.fromARGB(128, 255, 255, 255),
+      color: Color(0x80FFFFFF),
+      fontFamily: fontFamily,
       fontSize: 13,
-      fontFamily: 'Ubuntu',
-      fontWeight: FontWeight.w500,
-    ),
-    bodyLarge: TextStyle(
-      color: Colors.white,
-      fontSize: 16,
-      fontFamily: 'Ubuntu',
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w300,
     ),
   ),
   appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      foregroundColor: Colors.white,
-      elevation: 0),
+    backgroundColor: Colors.transparent,
+    foregroundColor: Colors.white,
+    elevation: 0,
+  ),
   scaffoldBackgroundColor: Colors.black,
 );
 
@@ -51,45 +49,41 @@ final ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme.light(
     primary: Color(0xFFACB823),
     secondary: Color(0xFF83847D),
-    background: Color.fromARGB(255, 255, 255, 255),
-    onBackground: Color.fromARGB(255, 0, 0, 0),
-    surface: Color(0xFF262626),
-    onSurface: Color.fromARGB(255, 62, 62, 62),
+    surface: Color.fromARGB(255, 255, 255, 255),
+    onSurface: Color.fromARGB(255, 0, 0, 0),
+    tertiary: Color(0xFF262626),
+    onTertiary: Color.fromARGB(255, 62, 62, 62),
   ),
   textTheme: const TextTheme(
-    displayMedium: TextStyle(
+    titleLarge: TextStyle(
       color: Colors.black,
-      fontFamily: 'Ubuntu',
-      fontSize: 12,
-    ),
-    labelMedium: TextStyle(
-      color: Colors.white,
+      fontFamily: fontFamily,
       fontSize: 18,
-      fontFamily: 'Ubuntu',
       fontWeight: FontWeight.w500,
     ),
-    headlineMedium: TextStyle(
+    titleMedium: TextStyle(
       color: Colors.black,
-      fontSize: 18,
-      fontFamily: 'Ubuntu',
+      fontFamily: fontFamily,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
+    labelMedium: TextStyle(
+      color: Colors.black,
+      fontFamily: fontFamily,
+      fontSize: 13,
       fontWeight: FontWeight.w500,
     ),
     bodyMedium: TextStyle(
-      color: Color.fromARGB(128, 255, 255, 255),
+      color: Color(0x80FFFFFF),
+      fontFamily: fontFamily,
       fontSize: 13,
-      fontFamily: 'Ubuntu',
-      fontWeight: FontWeight.w500,
-    ),
-    bodyLarge: TextStyle(
-      color: Colors.white,
-      fontSize: 16,
-      fontFamily: 'Ubuntu',
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w300,
     ),
   ),
   appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      foregroundColor: Colors.white,
-      elevation: 0),
+    backgroundColor: Colors.transparent,
+    foregroundColor: Colors.black,
+    elevation: 0,
+  ),
   scaffoldBackgroundColor: Colors.white,
 );
