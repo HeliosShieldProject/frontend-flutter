@@ -1,10 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Helios/common/constants/numeric_constants.dart';
 
 import 'package:Helios/features/register_sign_in/domain/utils/text_size.dart';
 
-class UnderButtonText extends StatelessWidget {
+class UnderButtonText extends StatefulWidget {
   const UnderButtonText({
     super.key,
     required this.firstText,
@@ -15,6 +16,28 @@ class UnderButtonText extends StatelessWidget {
   final String firstText;
   final String secondText;
   final VoidCallback onTap;
+
+  @override
+  State<UnderButtonText> createState() => _UnderButtonTextState();
+}
+
+class _UnderButtonTextState extends State<UnderButtonText> {
+  late final TapGestureRecognizer tapGestureRecognizer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    tapGestureRecognizer = TapGestureRecognizer();
+    tapGestureRecognizer.onTap = widget.onTap;
+  }
+
+  @override
+  void dispose() {
+    tapGestureRecognizer.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +51,7 @@ class UnderButtonText extends StatelessWidget {
         NumericConstants.pi / 2,
         NumericConstants.spacerSize +
             textSize(
-              "$firstText $secondText",
+              "${widget.firstText} ${widget.secondText}",
               textTheme.labelMedium!,
             ).height,
       ),
@@ -36,22 +59,17 @@ class UnderButtonText extends StatelessWidget {
         TextSpan(
           children: <InlineSpan>[
             TextSpan(
-              text: "$firstText ",
+              text: "${widget.firstText} ",
               style: textTheme.labelMedium!.copyWith(
                 color: colorScheme.onSurface.withOpacity(
                   0.5,
                 ),
               ),
             ),
-            WidgetSpan(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: onTap,
-                child: Text(
-                  secondText,
-                  style: textTheme.labelMedium,
-                ),
-              ),
+            TextSpan(
+              recognizer: tapGestureRecognizer,
+              text: widget.secondText,
+              style: textTheme.labelMedium,
             ),
           ],
         ),
