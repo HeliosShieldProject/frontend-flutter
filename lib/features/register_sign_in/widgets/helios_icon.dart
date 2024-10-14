@@ -15,7 +15,8 @@ class HeliosIcon extends StatelessWidget {
     super.key,
     required double radius,
     required this.showHelios,
-  }) : size = Size.fromRadius(radius);
+  }) : size =
+            radius < 150 ? Size.fromRadius(radius) : const Size.fromRadius(150);
 
   final Size size;
   final bool showHelios;
@@ -28,8 +29,8 @@ class HeliosIcon extends StatelessWidget {
         children: <Widget>[
           Center(
             child: Container(
-              width: size.width < 300 ? size.width : 300,
-              height: size.width < 300 ? size.width : 300,
+              width: size.width,
+              height: size.width,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: const Alignment(-0.7, 0),
@@ -44,14 +45,17 @@ class HeliosIcon extends StatelessWidget {
             ),
           ),
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 35.0, sigmaY: 35.0),
+            filter: ImageFilter.blur(
+              sigmaX: size.width / 4,
+              sigmaY: size.height / 4,
+            ),
             child: Container(),
           ),
           Center(
             child: showHelios
                 ? SvgPicture.asset(
                     "assets/helios_icon.svg",
-                    width: (size.width < 300 ? size.width : 300) * 0.5,
+                    width: size.width / 2,
                   )
                 : null,
           )
@@ -88,8 +92,8 @@ class FadingHeliosIcon extends HeliosIcon {
             child: FadeTransition(
               opacity: fadeAnimation,
               child: Container(
-                width: size.width < 300 ? size.width : 300,
-                height: size.width < 300 ? size.width : 300,
+                width: size.width,
+                height: size.width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: const Alignment(-0.7, 0),
@@ -105,7 +109,10 @@ class FadingHeliosIcon extends HeliosIcon {
             ),
           ),
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 35.0, sigmaY: 35.0),
+            filter: ImageFilter.blur(
+              sigmaX: size.width / 4,
+              sigmaY: size.height / 4,
+            ),
             child: Container(),
           ),
           Center(
@@ -114,7 +121,7 @@ class FadingHeliosIcon extends HeliosIcon {
                     opacity: fadeAnimation,
                     child: SvgPicture.asset(
                       "assets/helios_icon.svg",
-                      width: (size.width < 300 ? size.width : 300) * 0.5,
+                      width: size.width / 2,
                     ),
                   )
                 : null,
