@@ -45,6 +45,7 @@ class UnderButtonText extends StatelessWidget {
             ),
             WidgetSpan(
               child: GestureDetector(
+                behavior: HitTestBehavior.deferToChild,
                 onTap: onTap,
                 child: Text(
                   secondText,

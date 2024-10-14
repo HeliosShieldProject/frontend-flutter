@@ -1,5 +1,6 @@
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_up_bloc/sign_up_bloc.dart';
+import 'package:Helios/features/register_sign_in/domain/bloc/welcome/welcome_bloc.dart';
 import 'package:Helios/repositories/user_repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,14 @@ abstract class RoutesBuilder {
       case (RouteNames.welcome):
         print("Welcome onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const WelcomePage(),
+          builder: (_) => BlocProvider(
+            create: (context) => WelcomeBloc(
+              userRepository: context.read<UserRepository>(),
+            )..add(
+                AppInitEvent(),
+              ),
+            child: const WelcomePage(),
+          ),
           settings: settings,
         );
 

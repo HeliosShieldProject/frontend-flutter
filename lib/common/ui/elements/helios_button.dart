@@ -45,7 +45,9 @@ class HeliosButton extends StatelessWidget {
     return label != null
         ? Text(
             label!,
-            style: Theme.of(context).textTheme.labelMedium,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.surface,
+                ),
           )
         : labelWidget!;
   }

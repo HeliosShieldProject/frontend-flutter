@@ -19,7 +19,8 @@ class SignUpBloc extends Bloc<SignInEvent, SignUpState> {
 
   UserRepository userRepository;
 
-  void onSignUpExecuted(SignUpExecutedEvent event, Emitter<SignUpState> emit) {
+  Future<void> onSignUpExecuted(
+      SignUpExecutedEvent event, Emitter<SignUpState> emit) async {
     final String email = event.email;
     final String password = event.password;
 
@@ -29,9 +30,11 @@ class SignUpBloc extends Bloc<SignInEvent, SignUpState> {
       ),
     );
 
-    signUp(email: email, password: password).then(
+    await signUp(email: email, password: password).then(
       (value) {
-        userRepository.put(user: value);
+        userRepository.put(
+          user: value,
+        );
         emit(
           state.copyWith(
             signInStatus: Auth.success,

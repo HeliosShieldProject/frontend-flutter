@@ -1,3 +1,4 @@
+import 'package:Helios/common/constants/constants.dart';
 import 'package:Helios/common/countries/countries_constants.dart';
 import 'package:Helios/common/navigation/routes.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -16,12 +19,14 @@ class HomePage extends StatelessWidget {
         leading: Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(
+              left: NumericConstants.horizontalPadding,
+            ),
             child: SvgPicture.asset(
               fit: BoxFit.scaleDown,
               "assets/helios_icon.svg",
               colorFilter: ColorFilter.mode(
-                Theme.of(context).colorScheme.onBackground,
+                colorScheme.onSurface,
                 BlendMode.src,
               ),
               height: 20,
@@ -34,20 +39,22 @@ class HomePage extends StatelessWidget {
             child: IconButton(
               icon: Icon(
                 Icons.settings,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: colorScheme.surface,
                 size: 25,
               ),
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(RouteNames.settings),
+              onPressed: () => Navigator.pushNamed(
+                context,
+                RouteNames.settings,
+              ),
             ),
           )
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: 40,
+          left: NumericConstants.horizontalPadding,
+          right: NumericConstants.horizontalPadding,
+          bottom: NumericConstants.bottomPadding,
         ),
         child: Column(children: <Widget>[
           Expanded(
@@ -57,7 +64,7 @@ class HomePage extends StatelessWidget {
                 child: SvgPicture.asset(
                   "assets/shield_icon.svg",
                   colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.onBackground,
+                    colorScheme.surface,
                     BlendMode.src,
                   ),
                   height: 140,

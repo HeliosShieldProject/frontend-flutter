@@ -46,6 +46,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    final ThemeData themeData = Theme.of(context);
+    colorScheme = themeData.colorScheme;
+
+    screenSize = MediaQuery.sizeOf(context);
+
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController0.dispose();
@@ -67,6 +77,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   void _blocListener(BuildContext context, SignUpState state) {
     switch (state.signInStatus) {
+      case null:
+        loadingIcon.removeLoadingIcon();
+        break;
       case Auth.loading:
         loadingIcon = LoadingIcon();
         loadingIcon.showLoadingIcon(context);
@@ -79,9 +92,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
           (route) => false,
         );
         break;
-      case null:
-        break;
       default:
+        loadingIcon.removeLoadingIcon();
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           snackBar(
@@ -100,16 +112,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final ThemeData themeData = Theme.of(context);
-    colorScheme = themeData.colorScheme;
-
-    screenSize = MediaQuery.sizeOf(context);
-  }
-
-  @override
   Widget build(BuildContext context) => BlocListener<SignUpBloc, SignUpState>(
         listener: _blocListener,
         child: PopScope(
@@ -119,48 +121,51 @@ class _RegistrationPageState extends State<RegistrationPage> {
               physics: const ClampingScrollPhysics(
                 parent: NeverScrollableScrollPhysics(),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: NumericConstants.horizontalPadding,
-                  right: NumericConstants.horizontalPadding,
-                  bottom: NumericConstants.bottomPadding,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: HeliosIcon(
-                        radius: Multipliers.screenWidth2IconRadius *
-                            screenSize.width,
-                        showHelios: true,
+              child: SizedBox(
+                height: screenSize.height,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: NumericConstants.horizontalPadding,
+                    right: NumericConstants.horizontalPadding,
+                    bottom: NumericConstants.bottomPadding,
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: HeliosIcon(
+                          radius: Multipliers.screenWidth2IconRadius *
+                              screenSize.width,
+                          showHelios: true,
+                        ),
                       ),
-                    ),
-                    RegisterForm(
-                      formState: _formState,
-                      emailController: _emailController,
-                      passwordController0: _passwordController0,
-                      passwordController1: _passwordController1,
-                    ),
-                    blankSpacerV(
-                      multiplier: Multipliers.bigGap2BlankSpacer,
-                    ),
-                    Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        HeliosButton(
-                          label: Literals.toSignIn,
-                          color: colorScheme.onSurface,
-                          onTap: () => _onTapSignUp(
-                            signUpBloc: context.read<SignUpBloc>(),
+                      RegisterForm(
+                        formState: _formState,
+                        emailController: _emailController,
+                        passwordController0: _passwordController0,
+                        passwordController1: _passwordController1,
+                      ),
+                      blankSpacerV(
+                        multiplier: Multipliers.bigGap2BlankSpacer,
+                      ),
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          HeliosButton(
+                            label: Literals.toSignIn,
+                            color: colorScheme.onSurface,
+                            onTap: () => _onTapSignUp(
+                              signUpBloc: context.read<SignUpBloc>(),
+                            ),
                           ),
-                        ),
-                        UnderButtonText(
-                          firstText: Literals.haveAccount,
-                          secondText: Literals.signIn,
-                          onTap: () => _underButtonTextCallBack,
-                        ),
-                      ],
-                    )
-                  ],
+                          UnderButtonText(
+                            firstText: Literals.haveAccount,
+                            secondText: Literals.signIn,
+                            onTap: () => _underButtonTextCallBack,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

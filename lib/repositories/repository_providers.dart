@@ -8,10 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 MultiRepositoryProvider repositoryProviders({required Widget child}) =>
     MultiRepositoryProvider(
       providers: <RepositoryProvider>[
-        RepositoryProvider(
+        RepositoryProvider<UserRepository>(
           create: (context) => UserRepository(),
         ),
-        RepositoryProvider(
+        RepositoryProvider<UserSettingsRepository>(
           create: (context) => UserSettingsRepository(),
         ),
       ],

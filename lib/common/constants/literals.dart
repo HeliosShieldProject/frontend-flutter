@@ -15,6 +15,8 @@ abstract interface class Literals {
   static const String toSignUp = "Зарегистрироваться";
   static const String signUp = "Зарегистрируйтесь!";
 
+  static const String toContinue = "Продолжить";
+
   static const String authSnackBar = "Понятно";
 
   static const String loading = "Загрузка";
