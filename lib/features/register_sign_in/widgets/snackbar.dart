@@ -17,7 +17,9 @@ SnackBar snackBar(BuildContext context,
           Icons.warning_amber_rounded,
           color: Colors.white,
         ),
-        blankSpacerH(),
+        const BlankSpacer(
+          horizontal: true,
+        ),
         Text(
           title,
           style: textTheme.labelMedium,

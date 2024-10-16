@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,11 +31,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late final TextEditingController _passwordController0;
   late final TextEditingController _passwordController1;
 
+  late final TapGestureRecognizer _underButtonTextRecognizer;
+
   bool canPop = true;
   late LoadingIcon loadingIcon;
 
   late Size screenSize;
+  late TextTheme textTheme;
   late ColorScheme colorScheme;
+
+  double get _bottomPadding2BlankSpacer =>
+      NumericConstants.bottomPadding / NumericConstants.spacerSize;
 
   @override
   void initState() {
@@ -43,16 +50,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
     _emailController = TextEditingController();
     _passwordController0 = TextEditingController();
     _passwordController1 = TextEditingController();
+
+    _underButtonTextRecognizer = TapGestureRecognizer();
+    _underButtonTextRecognizer.onTap = () => _underButtonTextCallBack(context);
   }
 
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
+
     final ThemeData themeData = Theme.of(context);
+    textTheme = themeData.textTheme;
     colorScheme = themeData.colorScheme;
 
     screenSize = MediaQuery.sizeOf(context);
-
-    super.didChangeDependencies();
   }
 
   @override
@@ -144,26 +155,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         passwordController0: _passwordController0,
                         passwordController1: _passwordController1,
                       ),
-                      blankSpacerV(
+                      const BlankSpacer(
                         multiplier: Multipliers.bigGap2BlankSpacer,
                       ),
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          HeliosButton(
-                            label: Literals.toSignIn,
-                            color: colorScheme.onSurface,
-                            onTap: () => _onTapSignUp(
-                              signUpBloc: context.read<SignUpBloc>(),
-                            ),
+                      HeliosButton(
+                        label: Literals.toSignIn,
+                        color: colorScheme.onSurface,
+                        onTap: () => _onTapSignUp(
+                          signUpBloc: context.read<SignUpBloc>(),
+                        ),
+                      ),
+                      BlankSpacer(
+                        multiplier: _bottomPadding2BlankSpacer,
+                        child: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: "${Literals.haveAccount} ",
+                                style: textTheme.labelMedium!.copyWith(
+                                  color: colorScheme.onSurface.withOpacity(0.5),
+                                ),
+                              ),
+                              TextSpan(
+                                recognizer: _underButtonTextRecognizer,
+                                text: Literals.signIn,
+                                style: textTheme.labelMedium,
+                              )
+                            ],
                           ),
-                          UnderButtonText(
-                            firstText: Literals.haveAccount,
-                            secondText: Literals.signIn,
-                            onTap: () => _underButtonTextCallBack,
-                          ),
-                        ],
-                      )
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -204,7 +225,7 @@ class RegisterForm extends StatelessWidget {
             textOnError: Literals.emailFieldOnError,
             validityCriteria: (email) => EmailValidator.validate(email ?? ""),
           ),
-          blankSpacerV(),
+          const BlankSpacer(),
           HeliosFormTextField(
             controller: passwordController0,
             text: Literals.passwordFeild,
@@ -214,7 +235,7 @@ class RegisterForm extends StatelessWidget {
             obscureText: true,
             textInputAction: TextInputAction.next,
           ),
-          blankSpacerV(),
+          const BlankSpacer(),
           HeliosFormTextField(
             controller: passwordController0,
             text: Literals.passwordFeild,

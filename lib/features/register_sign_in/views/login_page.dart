@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +15,6 @@ import 'package:Helios/common/ui/elements/elements.dart';
 import 'package:Helios/common/ui/utils/utils.dart';
 import 'package:Helios/features/register_sign_in/widgets/widgets.dart';
 
-import 'package:Helios/features/register_sign_in/domain/utils/text_size.dart';
-
 import 'package:Helios/common/navigation/routes.dart';
 
 class LoginPage extends StatefulWidget {
@@ -31,6 +30,9 @@ class _LoginPageState extends State<LoginPage> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
+  late final TapGestureRecognizer _underFieldTextRecognizer;
+  late final TapGestureRecognizer _underButtonTextRecognizer;
+
   bool canPop = true;
   late LoadingIcon loadingIcon;
 
@@ -38,12 +40,21 @@ class _LoginPageState extends State<LoginPage> {
   late TextTheme textTheme;
   late ColorScheme colorScheme;
 
+  double get _bottomPadding2BlankSpacer =>
+      NumericConstants.bottomPadding / NumericConstants.spacerSize;
+
   @override
   void initState() {
     super.initState;
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+
+    _underFieldTextRecognizer = TapGestureRecognizer();
+    _underFieldTextRecognizer.onTap = () => _underFieldTextCallBack(context);
+
+    _underButtonTextRecognizer = TapGestureRecognizer();
+    _underButtonTextRecognizer.onTap = () => _underButtonTextCallBack(context);
   }
 
   @override
@@ -61,6 +72,9 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+
+    _underFieldTextRecognizer.dispose();
+    _underButtonTextRecognizer.dispose();
 
     super.dispose();
   }
@@ -126,10 +140,8 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 height: screenSize.height,
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: NumericConstants.horizontalPadding,
-                    right: NumericConstants.horizontalPadding,
-                    bottom: NumericConstants.bottomPadding,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: NumericConstants.horizontalPadding,
                   ),
                   child: Column(
                     children: <Widget>[
@@ -140,57 +152,51 @@ class _LoginPageState extends State<LoginPage> {
                           showHelios: true,
                         ),
                       ),
-                      blankSpacerV(
+                      const BlankSpacer(
                         multiplier: Multipliers.element2BlankSpacer + 1,
                       ),
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          Transform.translate(
-                            offset: Offset.fromDirection(
-                              NumericConstants.pi / 2,
-                              NumericConstants.spacerSize +
-                                  textSize(
-                                    Literals.forgotPassword,
-                                    textTheme.labelMedium!,
-                                  ).height,
-                            ),
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              child: Text(
-                                Literals.forgotPassword,
-                                style: textTheme.labelMedium,
-                              ),
-                              onTap: () => _underFieldTextCallBack(context),
-                            ),
-                          ),
-                          LoginForm(
-                            formState: _formState,
-                            emailController: _emailController,
-                            passwordController: _passwordController,
-                          ),
-                        ],
+                      LoginForm(
+                        formState: _formState,
+                        emailController: _emailController,
+                        passwordController: _passwordController,
                       ),
-                      blankSpacerV(
+                      BlankSpacer(
                         multiplier: Multipliers.bigGap2BlankSpacer,
+                        child: Text.rich(
+                          TextSpan(
+                            recognizer: _underFieldTextRecognizer,
+                            text: Literals.forgotPassword,
+                            style: textTheme.labelMedium,
+                          ),
+                        ),
                       ),
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          HeliosButton(
-                            label: Literals.toSignIn,
-                            color: colorScheme.onSurface,
-                            onTap: () => _onTapSignIn(
-                              signInBloc: context.read<SignInBloc>(),
-                            ),
+                      HeliosButton(
+                        label: Literals.toSignIn,
+                        color: colorScheme.onSurface,
+                        onTap: () => _onTapSignIn(
+                          signInBloc: context.read<SignInBloc>(),
+                        ),
+                      ),
+                      BlankSpacer(
+                        multiplier: _bottomPadding2BlankSpacer,
+                        child: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: "${Literals.noAccount} ",
+                                style: textTheme.labelMedium!.copyWith(
+                                  color: colorScheme.onSurface.withOpacity(0.5),
+                                ),
+                              ),
+                              TextSpan(
+                                recognizer: _underButtonTextRecognizer,
+                                text: Literals.signUp,
+                                style: textTheme.labelMedium,
+                              )
+                            ],
                           ),
-                          UnderButtonText(
-                            firstText: Literals.noAccount,
-                            secondText: Literals.signUp,
-                            onTap: () => _underButtonTextCallBack,
-                          ),
-                        ],
-                      )
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -225,7 +231,7 @@ class LoginForm extends StatelessWidget {
             textOnError: Literals.emailFieldOnError,
             validityCriteria: (email) => EmailValidator.validate(email ?? ""),
           ),
-          blankSpacerV(),
+          const BlankSpacer(),
           HeliosFormTextField(
             controller: passwordController,
             text: Literals.passwordFeild,
