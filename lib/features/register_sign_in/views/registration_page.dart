@@ -1,6 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:password_validator_package/password_validator_package.dart';
@@ -39,9 +39,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late Size screenSize;
   late TextTheme textTheme;
   late ColorScheme colorScheme;
-
-  double get _bottomPadding2BlankSpacer =>
-      NumericConstants.bottomPadding / NumericConstants.spacerSize;
 
   @override
   void initState() {
@@ -138,7 +135,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   padding: const EdgeInsets.only(
                     left: NumericConstants.horizontalPadding,
                     right: NumericConstants.horizontalPadding,
-                    bottom: NumericConstants.bottomPadding,
                   ),
                   child: Column(
                     children: <Widget>[
@@ -159,14 +155,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         multiplier: Multipliers.bigGap2BlankSpacer,
                       ),
                       HeliosButton(
-                        label: Literals.toSignIn,
+                        label: Literals.toSignUp,
                         color: colorScheme.onSurface,
                         onTap: () => _onTapSignUp(
                           signUpBloc: context.read<SignUpBloc>(),
                         ),
                       ),
                       BlankSpacer(
-                        multiplier: _bottomPadding2BlankSpacer,
+                        multiplier: Multipliers.bottomPadding2BlankSpacer,
                         child: Text.rich(
                           TextSpan(
                             children: <InlineSpan>[
@@ -210,7 +206,10 @@ class RegisterForm extends StatelessWidget {
   final GlobalKey<FormState> formState;
 
   bool _secondPasswordFieldValidator(String? password) {
-    return password == passwordController0.value.text;
+    bool criteria = (password?.isNotEmpty ?? false) &&
+        password == passwordController0.value.text;
+
+    return criteria;
   }
 
   @override
@@ -237,9 +236,9 @@ class RegisterForm extends StatelessWidget {
           ),
           const BlankSpacer(),
           HeliosFormTextField(
-            controller: passwordController0,
-            text: Literals.passwordFeild,
-            textOnError: Literals.passwordFieldOnError,
+            controller: passwordController1,
+            text: Literals.secondPasswordField,
+            textOnError: Literals.secondPasswordFieldOnError,
             validityCriteria: _secondPasswordFieldValidator,
             obscureText: true,
             textInputAction: TextInputAction.done,

@@ -1,6 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:password_validator_package/password_validator_package.dart';
@@ -39,9 +39,6 @@ class _LoginPageState extends State<LoginPage> {
   late Size screenSize;
   late TextTheme textTheme;
   late ColorScheme colorScheme;
-
-  double get _bottomPadding2BlankSpacer =>
-      NumericConstants.bottomPadding / NumericConstants.spacerSize;
 
   @override
   void initState() {
@@ -178,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       BlankSpacer(
-                        multiplier: _bottomPadding2BlankSpacer,
+                        multiplier: Multipliers.bottomPadding2BlankSpacer,
                         child: Text.rich(
                           TextSpan(
                             children: <InlineSpan>[

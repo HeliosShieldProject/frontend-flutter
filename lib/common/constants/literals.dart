@@ -5,6 +5,9 @@ abstract interface class Literals {
   static const String emailField = "Введите email";
   static const String emailFieldOnError = "Введите существующий email";
 
+  static const String secondPasswordField = "Повторите пароль";
+  static const String secondPasswordFieldOnError = "Пароль не совпадает";
+
   static const String forgotPassword = "Забыли пароль?";
   static const String noAccount = "Нет аккаунта?";
   static const String haveAccount = "Есть аккаунт?";

@@ -52,6 +52,16 @@ flutter:
   fonts:
     - family: Ubuntu
       fonts:
-        - asset: fonts/UbuntuSansMono-VariableFont_wght.ttf
-        - asset: fonts/UbuntuSansMono-Italic-VariableFont_wght.ttf
+        - asset: fonts/Ubuntu-Light.ttf
+        - asset: fonts/Ubuntu-Regular.ttf
+        - asset: fonts/Ubuntu-Medium.ttf
+        - asset: fonts/Ubuntu-Bold.ttf
+
+        - asset: fonts/Ubuntu-LightItalic.ttf
+          style: italic
+        - asset: fonts/Ubuntu-Italic.ttf
+          style: italic
+        - asset: fonts/Ubuntu-MediumItalic.ttf
+          style: italic
+        - asset: fonts/Ubuntu-BoldItalic.ttf
           style: italic
