@@ -1,5 +1,5 @@
 import 'package:Helios/common/constants/constants.dart';
-import 'package:Helios/common/countries/countries_constants.dart';
+import 'package:Helios/common/constants/countries_constants.dart';
 import 'package:Helios/common/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +7,13 @@ import '../widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  void _onTapAppBar(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      RouteNames.settings,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class HomePage extends StatelessWidget {
                 colorScheme.onSurface,
                 BlendMode.src,
               ),
-              height: 20,
+              height: NumericConstants.appBarElementSize,
             ),
           ),
         ),
@@ -40,12 +47,9 @@ class HomePage extends StatelessWidget {
               icon: Icon(
                 Icons.settings,
                 color: colorScheme.surface,
-                size: 25,
+                size: NumericConstants.appBarElementSize,
               ),
-              onPressed: () => Navigator.pushNamed(
-                context,
-                RouteNames.settings,
-              ),
+              onPressed: () => _onTapAppBar(context),
             ),
           )
         ],
@@ -56,30 +60,32 @@ class HomePage extends StatelessWidget {
           right: NumericConstants.horizontalPadding,
           bottom: NumericConstants.bottomPadding,
         ),
-        child: Column(children: <Widget>[
-          Expanded(
-            child: Center(
-              child: GestureDetector(
-                onTap: null,
-                child: SvgPicture.asset(
-                  "assets/shield_icon.svg",
-                  colorFilter: ColorFilter.mode(
-                    colorScheme.surface,
-                    BlendMode.src,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Center(
+                child: GestureDetector(
+                  onTap: null,
+                  child: SvgPicture.asset(
+                    "assets/shield_icon.svg",
+                    colorFilter: ColorFilter.mode(
+                      colorScheme.surface,
+                      BlendMode.src,
+                    ),
+                    height: 140,
+                    fit: BoxFit.scaleDown,
                   ),
-                  height: 140,
-                  fit: BoxFit.scaleDown,
                 ),
               ),
             ),
-          ),
-          const HeliosVpnCard(
-            connected: false,
-            currentCountry: CountriesConstants.ru,
-            uploadSpeed: 21.7,
-            downloadSpeed: 15.6,
-          ),
-        ]),
+            const HeliosVpnCard(
+              connected: false,
+              currentCountry: CountriesConstants.ru,
+              uploadSpeed: 21.7,
+              downloadSpeed: 15.6,
+            ),
+          ],
+        ),
       ),
     );
   }

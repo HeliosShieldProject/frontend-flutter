@@ -13,9 +13,9 @@ Future<void> initHive() async {
 
   Hive
     ..registerAdapter(UserSettingsImplAdapter())
-    ..registerAdapter(UserImplAdapter())
     ..registerAdapter(SubscriptionTypeAdapter())
     ..registerAdapter(SelectedThemeAdapter())
+    ..registerAdapter(UserImplAdapter())
     ..registerAdapter(CountryImplAdapter());
 
   await Hive.openBox<UserSettings>(HiveKeys.userBox);

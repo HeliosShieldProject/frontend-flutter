@@ -8,7 +8,7 @@ part of 'country_impl.dart';
 
 class CountryImplAdapter extends TypeAdapter<CountryImpl> {
   @override
-  final int typeId = 7;
+  final int typeId = 6;
 
   @override
   CountryImpl read(BinaryReader reader) {

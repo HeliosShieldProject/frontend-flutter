@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 part 'country_impl.g.dart';
 
-@HiveType(typeId: 7)
+@HiveType(typeId: 6)
 class CountryImpl implements Country {
   const CountryImpl({
     required this.countryCode,

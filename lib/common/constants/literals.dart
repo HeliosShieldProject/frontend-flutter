@@ -33,4 +33,9 @@ abstract interface class Literals {
   static const String oAuthFailed = "Не удалось пройти проверку";
   static const String oAuthDifferentEmail = "Неверный email на проверке";
   static const String noClassicAuth = "Пароль неизвестен";
+
+  static const String dowload = "загрузка";
+  static const String upload = "выгрузка";
+
+  static const String mbs = "Mb/s";
 }
