@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-part of '../../../../common/enums/enums.dart';
-
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
+part of 'enums.dart';
 
 class SubscriptionTypeAdapter extends TypeAdapter<SubscriptionType> {
   @override
@@ -90,6 +84,45 @@ class SelectedThemeAdapter extends TypeAdapter<SelectedTheme> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is SelectedThemeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class ProtocolsAdapter extends TypeAdapter<Protocols> {
+  @override
+  final int typeId = 7;
+
+  @override
+  Protocols read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return Protocols.vless;
+      case 1:
+        return Protocols.ss;
+      default:
+        return Protocols.vless;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, Protocols obj) {
+    switch (obj) {
+      case Protocols.vless:
+        writer.writeByte(0);
+        break;
+      case Protocols.ss:
+        writer.writeByte(1);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProtocolsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

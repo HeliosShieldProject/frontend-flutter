@@ -8,6 +8,10 @@ class RefreshServerEntity implements BasicServerEntity {
     required this.status,
   });
 
+  const RefreshServerEntity.error({required this.status})
+      : accessToken = null,
+        refreshToken = null;
+
   final String? accessToken;
   final String? refreshToken;
 

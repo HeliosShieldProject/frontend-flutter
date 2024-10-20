@@ -6,7 +6,7 @@ import 'package:Helios/common/user_settings/user_settings_impl.dart';
 import 'package:Helios/common/interafces/interfaces.dart';
 
 UserSettings getLocalUserSettings() {
-  UserSettings userSettings = const UserSettingsImpl.basic();
+  late final UserSettings userSettings;
 
   try {
     final Box<UserSettings> userSettingsBox =

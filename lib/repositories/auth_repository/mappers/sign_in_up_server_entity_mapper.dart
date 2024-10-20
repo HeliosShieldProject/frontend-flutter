@@ -15,16 +15,13 @@ SignInUpServerEntity signInUpServerEntityMapper(
             (response.data as Map<String, dynamic>)["data"].toString(),
         status: Auth.success,
       ),
-    (ErrorResponse _) => SignInUpServerEntity(
-        accessToken: null,
-        refreshToken: null,
+    (ErrorResponse _) => SignInUpServerEntity.error(
         status: Auth.values.firstWhere(
           (e) => e.name == (response as ErrorResponse).error,
+          orElse: () => Auth.failed,
         ),
       ),
-    Type() => SignInUpServerEntity(
-        accessToken: null,
-        refreshToken: null,
+    Type() => const SignInUpServerEntity.error(
         status: Auth.failed,
       ),
   };

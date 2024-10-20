@@ -17,11 +17,10 @@ RefreshServerEntity refreshServerEntityMapper(
             (response.data as Map<String, dynamic>)["data"].toString(),
         status: Auth.success,
       ),
-    (ErrorResponse _) => RefreshServerEntity(
-        accessToken: null,
-        refreshToken: null,
+    (ErrorResponse _) => RefreshServerEntity.error(
         status: Auth.values.firstWhere(
-          (e) => e.name == (response as ErrorResponse).error,
+          (status) => status.name == (response as ErrorResponse).error,
+          orElse: () => Auth.failed,
         ),
       ),
     Type() => RefreshServerEntity(

@@ -9,7 +9,7 @@ Future<User> refresh(User user) async {
 
   try {
     response = await serverRefresh(
-      user: user,
+      jwtRefreshToken: user.jwtRefreshToken!,
     );
   } catch (e) {
     throw Auth.failed;

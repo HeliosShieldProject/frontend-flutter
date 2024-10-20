@@ -6,7 +6,7 @@ import 'package:Helios/common/interafces/user.dart';
 import 'package:Helios/common/user/user_impl.dart';
 
 User getLocalUser() {
-  User user = const UserImpl.empty();
+  late final User user;
 
   try {
     final Box<User> userBox = Hive.box<User>(HiveKeys.userBox);

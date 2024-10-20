@@ -19,7 +19,7 @@ Future<BasicServerEntity> serverSignIn({required User user}) async {
     200 => responseMapper(
         json: result.data,
       ),
-    int() || null => errorResponseMapper(
+    _ => errorResponseMapper(
         json: result.data,
       ),
   };

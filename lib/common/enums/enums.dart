@@ -1,7 +1,7 @@
 import 'package:Helios/common/constants/literals.dart';
 import 'package:hive/hive.dart';
 
-part '../../repositories/local_repository/user_settings/generated/enums.g.dart';
+part 'enums.g.dart';
 
 enum Auth {
   loading(name: Literals.loading),
@@ -21,6 +21,14 @@ enum Auth {
   });
 
   final String name;
+}
+
+@HiveType(typeId: 7)
+enum Protocols {
+  @HiveField(0)
+  vless,
+  @HiveField(1)
+  ss,
 }
 
 enum UserValidity {
