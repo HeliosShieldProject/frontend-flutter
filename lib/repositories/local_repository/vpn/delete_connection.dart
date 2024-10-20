@@ -1,5 +1,5 @@
-import 'package:Helios/common/interafces/vpn_connection.dart';
 import 'package:Helios/repositories/local_repository/hive_keys.dart';
+import 'package:Helios/repositories/local_repository/vpn/models/vpn_connection.dart';
 import 'package:hive/hive.dart';
 
 bool delete() {

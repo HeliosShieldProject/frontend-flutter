@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 
-part '../generated/models.g.dart';
+part '../generated/vpn_connection.g.dart';
 
 @HiveType(typeId: 4)
 @immutable

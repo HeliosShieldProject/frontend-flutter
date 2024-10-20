@@ -1,5 +1,5 @@
 import 'package:Helios/common/interafces/user.dart';
-import 'package:Helios/common/user/user_impl.dart';
+import 'package:Helios/repositories/local_repository/user/models/user_impl.dart';
 import 'package:Helios/repositories/local_repository/user/get_user.dart';
 import 'package:Helios/repositories/local_repository/user/put_user.dart';
 

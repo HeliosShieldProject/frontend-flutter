@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:Helios/common/interafces/user.dart';
-import 'user_impl.dart';
+import '../../repositories/local_repository/user/models/user_impl.dart';
 
 class AppUser extends StatefulWidget {
   const AppUser({

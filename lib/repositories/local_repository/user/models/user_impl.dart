@@ -4,7 +4,7 @@ import "package:jwt_decoder/jwt_decoder.dart";
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/user.dart';
 
-part '../../repositories/local_repository/user/generated/user_impl.g.dart';
+part '../generated/user_impl.g.dart';
 
 @HiveType(typeId: 3)
 @immutable

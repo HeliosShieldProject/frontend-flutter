@@ -2,7 +2,7 @@ import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/user_settings.dart';
 import 'package:hive/hive.dart';
 
-part '../../repositories/local_repository/user_settings/generated/user_settings.g.dart';
+part '../generated/user_settings.g.dart';
 
 @HiveType(typeId: 0)
 class UserSettingsImpl implements UserSettings {
