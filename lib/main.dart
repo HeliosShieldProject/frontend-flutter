@@ -10,6 +10,4 @@ void main() {
       child: const App(),
     ),
   );
-
-  print("Hui");
 }

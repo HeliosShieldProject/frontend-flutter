@@ -1,8 +1,8 @@
 import 'package:Helios/repositories/local_repository/hive_keys.dart';
-import 'package:Helios/repositories/local_repository/vpn/models/vpn_connection.dart';
+import 'package:Helios/repositories/local_repository/vpn_connection/models/vpn_connection.dart';
 import 'package:hive/hive.dart';
 
-bool delete() {
+bool deleteLocalConnection() {
   try {
     final Box<VpnConnection> vpnConnectionBox =
         Hive.box<VpnConnection>(HiveKeys.vpnConnectionBox);

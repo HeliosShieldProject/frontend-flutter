@@ -6,8 +6,8 @@ import 'package:Helios/repositories/local_repository/user/models/user_impl.dart'
 import 'package:Helios/repositories/local_repository/user_settings/models/user_settings_impl.dart';
 import 'package:Helios/common/countries/country_impl.dart';
 
-import 'package:Helios/repositories/local_repository/vpn/models/ip.dart';
-import 'package:Helios/repositories/local_repository/vpn/models/vpn_connection.dart';
+import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
+import 'package:Helios/repositories/local_repository/vpn_connection/models/vpn_connection.dart';
 
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/interfaces.dart';
