@@ -11,3 +11,13 @@ class VpnStatusChanged extends VpnEvent {
 
   final V2RayStatus status;
 }
+
+class VpnConnectionExecuted extends VpnEvent {
+  VpnConnectionExecuted({
+    required this.country,
+    required this.protocol,
+  });
+
+  final Country country;
+  final Protocols protocol;
+}

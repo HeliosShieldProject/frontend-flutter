@@ -21,6 +21,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
   }) : super(const VpnState.empty()) {
     on<VpnAppInitEvent>(onVpnAppInit);
     on<VpnStatusChanged>(onVpnStatusChanged);
+    on<VpnConnectionExecuted>(onVpnConnectionExecuted);
   }
 
   UserRepository userRepository;
@@ -38,9 +39,45 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
   void onVpnStatusChanged(VpnStatusChanged event, Emitter<VpnState> emit) {
     final VpnConnection vpnConnection = vpnConnectionRepository.get();
+    final V2RayStatus v2rayStatus = event.status;
 
-    final States v2rayState = event.status.status;
-    final States localState =
-        vpnConnection.isEmpty ? States.disconnected : States.connected;
+    final States localState = vpnConnection.state;
+    final States v2rayState = v2rayStatus.status;
+
+    if (localState == v2rayState) {
+      emit(
+        state.copyWith(
+          state: v2rayState,
+          country: vpnConnection.country,
+          ip: vpnConnection.ip,
+          protocol: vpnConnection.protocol,
+          uploadSpeed: v2rayStatus.uploadSpeed,
+          downloadSpeed: v2rayStatus.downloadSpeed,
+        ),
+      );
+    } else if (localState == States.connected &&
+        v2rayState == States.disconnected) {
+      _connectFromLocal(vpnConnection, emit);
+    } else if (localState == States.disconnected &&
+        v2rayState == States.connected) {
+      _disconnectLocal();
+    }
   }
+
+  Future<void> _connectFromLocal(
+      VpnConnection vpnConnection, Emitter<VpnState> emit) async {
+    V2RayURL url = FlutterV2ray.parseFromURL(vpnConnection.shareLink!);
+
+    await flutterV2ray.startV2Ray(
+      remark: url.remark,
+      config: url.getFullConfiguration(),
+    );
+  }
+
+  Future<void> _disconnectLocal() async {
+    await flutterV2ray.stopV2Ray();
+  }
+
+  Future<void> onVpnConnectionExecuted(
+      VpnConnectionExecuted event, Emitter<VpnState> emit) async {}
 }

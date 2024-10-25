@@ -1,5 +1,6 @@
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/country.dart';
+import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
 import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
@@ -32,8 +33,10 @@ class VpnConnection extends Equatable {
   @HiveField(3)
   final String? shareLink;
 
-  bool get isEmpty =>
-      country == null && ip == null && protocol == null && shareLink == null;
+  States get state =>
+      country == null && ip == null && protocol == null && shareLink == null
+          ? States.disconnected
+          : States.connected;
 
   @override
   List<Object?> get props => [country, ip, protocol, shareLink];

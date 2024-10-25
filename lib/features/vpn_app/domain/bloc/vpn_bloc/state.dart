@@ -3,7 +3,7 @@ part of 'vpn_bloc.dart';
 extension EnumedV2RayStatus on V2RayStatus {
   States get status => States.values.firstWhere(
         (state) => state.name == this.state,
-        orElse: () => States.loading,
+        orElse: () => States.disconnected,
       );
 }
 
