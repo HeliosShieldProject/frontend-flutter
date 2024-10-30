@@ -6,14 +6,14 @@ class CreateSessionServerEntity implements BasicServerEntity {
   const CreateSessionServerEntity({
     required this.sessionId,
     required this.status,
-    required this.url,
+    required this.link,
   });
 
   const CreateSessionServerEntity.error({required this.status})
-      : url = null,
+      : link = null,
         sessionId = null;
 
-  final String? url;
+  final String? link;
   final String? sessionId;
 
   @override

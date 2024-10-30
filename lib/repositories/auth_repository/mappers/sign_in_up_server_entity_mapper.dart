@@ -8,11 +8,12 @@ SignInUpServerEntity signInUpServerEntityMapper(
     {required BasicResponse response}) {
   return switch (response.runtimeType) {
     (Response _) => SignInUpServerEntity(
-        accessToken:
-            ((response as Response).data as Map<String, dynamic>)["data"]
-                .toString(),
-        refreshToken:
-            (response.data as Map<String, dynamic>)["data"].toString(),
+        accessToken: ((response as Response).data
+                as Map<String, dynamic>)["data"]["access_token"]
+            .toString(),
+        refreshToken: (response.data as Map<String, dynamic>)["data"]
+                ["refresh_token"]
+            .toString(),
         status: Auth.success,
       ),
     (ErrorResponse _) => SignInUpServerEntity.error(

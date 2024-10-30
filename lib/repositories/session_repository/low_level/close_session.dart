@@ -8,9 +8,10 @@ import 'package:Helios/common/server/mappers/response_mapper.dart';
 
 import 'package:Helios/common/server/dio.dart';
 
-import 'package:Helios/repositories/vpn_repository/mappers/close_session_server_entity.dart';
+import 'package:Helios/repositories/session_repository/mappers/close_session_server_entity.dart';
 
-Future<BasicServerEntity> closeSession({required String accessToken}) async {
+Future<BasicServerEntity> serverCloseSession(
+    {required String accessToken}) async {
   final Map<String, dynamic> headers = {
     "Authentication": "Bearer $accessToken",
   };
