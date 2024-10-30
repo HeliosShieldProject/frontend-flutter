@@ -1,14 +1,16 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'package:Helios/common/server/dio.dart';
 
 import 'package:Helios/common/interafces/basic_response.dart';
 import 'package:Helios/common/interafces/basic_server_entity.dart';
 
-import 'package:Helios/common/server/mappers/error_response_mapper.dart';
-import 'package:Helios/common/server/mappers/response_mapper.dart';
+import 'package:Helios/common/server/mappers/mappers.dart';
 
 import 'package:Helios/repositories/session_repository/mappers/create_session_server_entity_mapper.dart';
-
-import 'package:Helios/common/server/dio.dart';
 
 Future<BasicServerEntity> serverCreateSession({
   required String accessToken,
@@ -24,14 +26,32 @@ Future<BasicServerEntity> serverCreateSession({
     "protocol": protocol,
   };
 
-  final result = await dio.request(
-    "session",
-    options: Options(
-      method: "POST",
-      headers: headers,
-    ),
-    data: data,
-  );
+  final Response<dynamic> result;
+
+  if (!kDebugMode) {
+    result = await dio.request(
+      "session",
+      options: Options(
+        method: "POST",
+        headers: headers,
+      ),
+      data: data,
+    );
+  } else {
+    await Future.delayed(const Duration(seconds: 1));
+
+    result = Response<dynamic>(
+      requestOptions: RequestOptions(),
+      data: <String, dynamic>{
+        "data": {
+          "link": dotenv.get("TEST_${protocol.toUpperCase()}_URL"),
+          "session_id": 1,
+        },
+        "message": "Session created successfully",
+      },
+      statusCode: 201,
+    );
+  }
 
   BasicResponse response = switch (result.statusCode) {
     201 => responseMapper(
