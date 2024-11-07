@@ -61,8 +61,7 @@ class _HeliosThemePickerState extends State<HeliosThemeButton>
 
   @override
   void didChangeDependencies() {
-    final SelectedTheme selectedTheme =
-        AppUserSettings.of(context, listen: true).selectedTheme!;
+    final SelectedTheme selectedTheme = SelectedTheme.dark;
 
     if (selectedTheme == widget.theme && !selected) {
       setState(() {

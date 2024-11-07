@@ -34,8 +34,8 @@ class VpnState extends Equatable {
   final States? state;
   final Country? country;
   final Protocols? protocol;
-  final int? uploadSpeed;
-  final int? downloadSpeed;
+  final double? uploadSpeed;
+  final double? downloadSpeed;
   final IP? ip;
 
   const VpnState.empty()
@@ -50,18 +50,26 @@ class VpnState extends Equatable {
     States? state,
     Country? country,
     Protocols? protocol,
-    int? uploadSpeed,
-    int? downloadSpeed,
+    double? uploadSpeed,
+    double? downloadSpeed,
     IP? ip,
   }) =>
-      VpnState(
-        state: state ?? this.state,
-        country: country ?? this.country,
-        protocol: protocol ?? this.protocol,
-        uploadSpeed: uploadSpeed ?? this.uploadSpeed,
-        downloadSpeed: downloadSpeed ?? this.downloadSpeed,
-        ip: ip ?? this.ip,
-      );
+      state != States.disconnected
+          ? VpnState(
+              state: state ?? this.state,
+              country: country ?? this.country,
+              protocol: protocol ?? this.protocol,
+              uploadSpeed: uploadSpeed ?? this.uploadSpeed,
+              downloadSpeed: downloadSpeed ?? this.downloadSpeed,
+              ip: ip ?? this.ip,
+            )
+          : VpnState(
+              state: state,
+              country: country,
+              protocol: protocol,
+              uploadSpeed: uploadSpeed,
+              downloadSpeed: downloadSpeed,
+              ip: ip);
 
   @override
   List<Object?> get props => [

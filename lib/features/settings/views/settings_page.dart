@@ -1,3 +1,4 @@
+import 'package:Helios/common/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Helios/common/enums/enums.dart';
@@ -15,7 +16,7 @@ class SettingsPage extends StatelessWidget {
 
   // Component style={hui} text={hui}
   Widget effectiveSubButton(BuildContext context) {
-    return switch (AppUserSettings.of(context).subscriptionType) {
+    return switch (SubscriptionType.free) {
       SubscriptionType.free => HeliosButton(
           labelWidget: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -26,7 +27,7 @@ class SettingsPage extends StatelessWidget {
               ),
             ],
           ),
-          color: Theme.of(context).colorScheme.onBackground,
+          color: Theme.of(context).colorScheme.onSurface,
           onTap: () => Navigator.pushNamed(
             context,
             RouteNames.subscription,
@@ -97,7 +98,7 @@ class SettingsPage extends StatelessWidget {
             RouteNames.subscription,
           ),
         ),
-      null => throw UnimplementedError(),
+      _ => throw UnimplementedError(),
     };
   }
 
@@ -109,8 +110,8 @@ class SettingsPage extends StatelessWidget {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_ios_new_rounded,
-              size: 20,
-              color: Theme.of(context).colorScheme.onBackground,
+              size: NumericConstants.appBarElementSize,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             onPressed: () => Navigator.of(context).maybePop(),
           ),
@@ -179,7 +180,7 @@ class SettingsPage extends StatelessWidget {
                           width: 15,
                         ),
                         Text(
-                          AppUser.of(context)!.email ?? "placeholder@email.com",
+                          "placeholder@email.com",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],

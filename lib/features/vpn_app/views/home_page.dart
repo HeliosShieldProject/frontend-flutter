@@ -1,7 +1,10 @@
 import 'package:Helios/common/constants/constants.dart';
 import 'package:Helios/common/constants/countries_constants.dart';
+import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/navigation/routes.dart';
+import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../widgets/widgets.dart';
 
@@ -19,72 +22,90 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leadingWidth: double.infinity,
-        leading: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: NumericConstants.horizontalPadding,
-            ),
-            child: SvgPicture.asset(
-              fit: BoxFit.scaleDown,
-              "assets/helios_icon.svg",
-              colorFilter: ColorFilter.mode(
-                colorScheme.onSurface,
-                BlendMode.src,
+    return BlocConsumer<VpnBloc, VpnState>(
+      listener: (context, state) => print(state.props),
+      builder: (context, state) => Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leadingWidth: double.infinity,
+          leading: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: NumericConstants.horizontalPadding,
               ),
-              height: NumericConstants.appBarElementSize,
+              child: SvgPicture.asset(
+                fit: BoxFit.contain,
+                "assets/images/helios_icon.svg",
+                colorFilter: ColorFilter.mode(
+                  colorScheme.onSurface,
+                  BlendMode.srcIn,
+                ),
+                height: NumericConstants.appBarElementSize,
+              ),
             ),
           ),
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 7),
-            child: IconButton(
-              icon: Icon(
-                Icons.settings,
-                color: colorScheme.surface,
-                size: NumericConstants.appBarElementSize,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 7),
+              child: IconButton(
+                icon: Icon(
+                  Icons.settings,
+                  color: colorScheme.onSurface,
+                  size: NumericConstants.appBarElementSize + 5,
+                ),
+                onPressed: () => _onTapAppBar(context),
               ),
-              onPressed: () => _onTapAppBar(context),
-            ),
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          left: NumericConstants.horizontalPadding,
-          right: NumericConstants.horizontalPadding,
-          bottom: NumericConstants.bottomPadding,
+            )
+          ],
         ),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Center(
-                child: GestureDetector(
-                  onTap: null,
-                  child: SvgPicture.asset(
-                    "assets/shield_icon.svg",
-                    colorFilter: ColorFilter.mode(
-                      colorScheme.surface,
-                      BlendMode.src,
+        body: Padding(
+          padding: const EdgeInsets.only(
+            left: NumericConstants.horizontalPadding,
+            right: NumericConstants.horizontalPadding,
+            bottom: NumericConstants.bottomPadding,
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      final VpnBloc bloc = context.read<VpnBloc>();
+                      if (state.state == States.disconnected) {
+                        bloc.add(
+                          VpnConnectionExecutedEvent(
+                            country: CountriesConstants.uk,
+                            protocol: Protocols.vless,
+                          ),
+                        );
+                      } else {
+                        bloc.add(
+                          VpnConnectionDisconnectedEvent(),
+                        );
+                      }
+                    },
+                    child: SvgPicture.asset(
+                      "assets/images/shield_icon.svg",
+                      colorFilter: ColorFilter.mode(
+                        colorScheme.onSurface,
+                        BlendMode.srcIn,
+                      ),
+                      height: 140,
+                      fit: BoxFit.scaleDown,
                     ),
-                    height: 140,
-                    fit: BoxFit.scaleDown,
                   ),
                 ),
               ),
-            ),
-            const HeliosVpnCard(
-              connected: false,
-              currentCountry: CountriesConstants.ru,
-              uploadSpeed: 21.7,
-              downloadSpeed: 15.6,
-            ),
-          ],
+              HeliosVpnCard(
+                connected: state.state == States.connected,
+                currentCountry: state.country,
+                uploadSpeed: state.uploadSpeed,
+                downloadSpeed: state.downloadSpeed,
+                countryIp: state.ip,
+              ),
+            ],
+          ),
         ),
       ),
     );

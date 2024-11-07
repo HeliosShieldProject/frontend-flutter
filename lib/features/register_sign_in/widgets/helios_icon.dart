@@ -54,7 +54,7 @@ class HeliosIcon extends StatelessWidget {
           Center(
             child: showHelios
                 ? SvgPicture.asset(
-                    "assets/helios_icon.svg",
+                    "assets/images/helios_icon.svg",
                     width: size.width / 2,
                   )
                 : null,
@@ -120,7 +120,7 @@ class FadingHeliosIcon extends HeliosIcon {
                 ? FadeTransition(
                     opacity: fadeAnimation,
                     child: SvgPicture.asset(
-                      "assets/helios_icon.svg",
+                      "assets/images/helios_icon.svg",
                       width: size.width / 2,
                     ),
                   )

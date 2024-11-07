@@ -1,7 +1,9 @@
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/welcome/welcome_bloc.dart';
+import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
 import 'package:Helios/repositories/user_repository/user_repository.dart';
+import 'package:Helios/repositories/vpn_connection_repository/vpn_connection_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Helios/features/register_sign_in/views/registration_page.dart';
@@ -30,7 +32,7 @@ abstract class RoutesBuilder {
       case (RouteNames.welcome):
         print("Welcome onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
+          builder: (context) => BlocProvider(
             create: (context) => WelcomeBloc(
               userRepository: context.read<UserRepository>(),
             )..add(
@@ -44,7 +46,15 @@ abstract class RoutesBuilder {
       case (RouteNames.home):
         print("Home onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const HomePage(),
+          builder: (_) => BlocProvider(
+            create: (context) => VpnBloc(
+              userRepository: context.read<UserRepository>(),
+              vpnConnectionRepository: context.read<VpnConnectionRepository>(),
+            )..add(
+                VpnAppInitEvent(),
+              ),
+            child: const HomePage(),
+          ),
           settings: settings,
         );
 

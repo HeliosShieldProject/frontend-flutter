@@ -23,6 +23,7 @@ SnackBar snackBar(BuildContext context,
         Text(
           title,
           style: textTheme.labelMedium,
+          overflow: TextOverflow.fade,
         ),
       ],
     ),

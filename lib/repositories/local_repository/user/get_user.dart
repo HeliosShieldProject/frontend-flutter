@@ -12,6 +12,7 @@ User getLocalUser() {
     final Box<User> userBox = Hive.box<User>(HiveKeys.userBox);
     user = userBox.get(HiveKeys.userKey, defaultValue: const UserImpl.empty())!;
   } catch (e) {
+    user = const UserImpl.empty();
     return user;
   }
 

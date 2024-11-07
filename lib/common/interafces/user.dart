@@ -1,6 +1,8 @@
-import 'package:Helios/common/enums/enums.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
+import 'package:equatable/equatable.dart';
+
+import 'package:Helios/common/enums/enums.dart';
 
 @immutable
 abstract interface class User extends Equatable {

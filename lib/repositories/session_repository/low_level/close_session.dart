@@ -18,7 +18,7 @@ Future<BasicServerEntity> serverCloseSession(
   };
 
   final Response<dynamic> result;
-  if (kDebugMode) {
+  if (!kDebugMode) {
     result = await dio.request(
       "session",
       options: Options(

@@ -14,6 +14,7 @@ UserSettings getLocalUserSettings() {
     userSettings = userSettingsBox.get(HiveKeys.userSettingsKey,
         defaultValue: const UserSettingsImpl.basic())!;
   } catch (e) {
+    userSettings = const UserSettingsImpl.empty();
     return userSettings;
   }
 

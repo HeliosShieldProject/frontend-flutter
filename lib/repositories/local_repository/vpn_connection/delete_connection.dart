@@ -6,7 +6,7 @@ bool deleteLocalConnection() {
   try {
     final Box<VpnConnection> vpnConnectionBox =
         Hive.box<VpnConnection>(HiveKeys.vpnConnectionBox);
-    vpnConnectionBox.delete(HiveKeys.userSettingsKey);
+    vpnConnectionBox.clear();
   } catch (e) {
     return false;
   }

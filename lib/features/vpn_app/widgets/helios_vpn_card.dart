@@ -1,3 +1,4 @@
+import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math';
@@ -16,6 +17,7 @@ class HeliosVpnCard extends StatefulWidget {
     super.key,
     required this.connected,
     this.currentCountry,
+    this.countryIp,
     this.uploadSpeed,
     this.downloadSpeed,
   });
@@ -24,6 +26,7 @@ class HeliosVpnCard extends StatefulWidget {
   final double? uploadSpeed;
   final double? downloadSpeed;
   final Country? currentCountry;
+  final IP? countryIp;
 
   @override
   State<HeliosVpnCard> createState() => _HeliosVpnCardState();
@@ -90,27 +93,29 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
           )
         : Text(
             widget.currentCountry!.countryName,
-            style: Theme.of(context)
-                .textTheme
-                .labelMedium!
-                .copyWith(color: Colors.white),
+            style: Theme.of(context).textTheme.titleLarge,
           );
   }
 
   Widget get effectiveCountryIp {
     final Size textSize = _countryIpTextSize;
 
-    return AnimatedBuilder(
-      animation: _gradientAnimation,
-      builder: (context, _) => Container(
-        width: textSize.width,
-        height: textSize.height,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          gradient: _gradientAnimation.value,
-        ),
-      ),
-    );
+    return widget.countryIp == null
+        ? AnimatedBuilder(
+            animation: _gradientAnimation,
+            builder: (context, _) => Container(
+              width: textSize.width,
+              height: textSize.height,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                gradient: _gradientAnimation.value,
+              ),
+            ),
+          )
+        : Text(
+            widget.countryIp.toString(),
+            style: textTheme.bodyMedium,
+          );
   }
 
   Widget get effectiveDownloadText {
@@ -231,14 +236,18 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
   void didUpdateWidget(covariant HeliosVpnCard oldWidget) {
     if ((widget.downloadSpeed == null ||
             widget.uploadSpeed == null ||
-            widget.currentCountry == null) &&
-        _gradientAnimationController.status != AnimationStatus.forward) {
+            widget.currentCountry == null ||
+            widget.countryIp == null) &&
+        (_gradientAnimationController.status != AnimationStatus.forward ||
+            _gradientAnimationController.status != AnimationStatus.reverse)) {
       _gradientAnimationController.repeat();
       setState(() {});
     } else if (!(widget.downloadSpeed == null ||
             widget.uploadSpeed == null ||
-            widget.currentCountry == null) &&
-        _gradientAnimationController.status == AnimationStatus.forward) {
+            widget.currentCountry == null ||
+            widget.countryIp == null) &&
+        (_gradientAnimationController.status == AnimationStatus.forward ||
+            _gradientAnimationController.status == AnimationStatus.reverse)) {
       _gradientAnimationController.stop();
       setState(() {});
     }
@@ -380,8 +389,10 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       effectiveUploadText,
-                      Text(
-                        Literals.upload,
+                      Text.rich(
+                        const TextSpan(
+                          text: Literals.upload,
+                        ),
                         style: textTheme.bodyMedium,
                       ),
                     ],

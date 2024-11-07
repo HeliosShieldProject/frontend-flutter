@@ -25,6 +25,12 @@ class IP {
   @HiveField(3)
   final int fourthByte;
 
+  const IP.unknown()
+      : firstByte = 196,
+        secondByte = 128,
+        thirdByte = 15,
+        fourthByte = 16;
+
   @override
   String toString() => "$firstByte.$secondByte.$thirdByte.$fourthByte";
 }

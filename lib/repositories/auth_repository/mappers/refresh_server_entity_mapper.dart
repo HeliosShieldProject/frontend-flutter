@@ -8,23 +8,21 @@ import 'package:Helios/repositories/auth_repository/entities/refresh_server_enti
 
 RefreshServerEntity refreshServerEntityMapper(
     {required BasicResponse response}) {
-  return switch (response.runtimeType) {
+  return switch (response) {
     (Response _) => RefreshServerEntity(
-        accessToken: ((response as Response).data
-                as Map<String, dynamic>)["data"]["access_token"]
-            .toString(),
-        refreshToken: (response.data as Map<String, dynamic>)["data"]
-                ["refresh_token"]
-            .toString(),
+        accessToken:
+            (response.data as Map<String, dynamic>)["access_token"].toString(),
+        refreshToken:
+            (response.data as Map<String, dynamic>)["refresh_token"].toString(),
         status: Auth.success,
       ),
     (ErrorResponse _) => RefreshServerEntity.error(
         status: Auth.values.firstWhere(
-          (status) => status.name == (response as ErrorResponse).error,
+          (status) => status.name == response.error,
           orElse: () => Auth.failed,
         ),
       ),
-    Type() => RefreshServerEntity(
+    _ => RefreshServerEntity(
         accessToken: null,
         refreshToken: null,
         status: Auth.failed,

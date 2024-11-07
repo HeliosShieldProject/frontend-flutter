@@ -9,21 +9,20 @@ import 'package:Helios/common/enums/enums.dart';
 
 CreateSessionServerEntity createSessionServerEntityMapper(
     {required BasicResponse response}) {
-  return switch (response.runtimeType) {
+  return switch (response) {
     (Response _) => CreateSessionServerEntity(
-        link: (response.message as Map<String, dynamic>)["link"].toString(),
-        sessionId: ((response as Response).message
-                as Map<String, dynamic>)["session_id"]
-            .toString(),
+        link: (response.data as Map<String, dynamic>)["link"].toString(),
+        sessionId:
+            (response.data as Map<String, dynamic>)["session_id"].toString(),
         status: Auth.success,
       ),
     (ErrorResponse _) => CreateSessionServerEntity.error(
         status: Auth.values.firstWhere(
-          (status) => status.name == (response as ErrorResponse).error,
+          (status) => status.name == response.error,
           orElse: () => Auth.failed,
         ),
       ),
-    Type() => const CreateSessionServerEntity.error(
+    (_) => const CreateSessionServerEntity.error(
         status: Auth.failed,
       ),
   };

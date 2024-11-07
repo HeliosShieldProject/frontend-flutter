@@ -94,9 +94,11 @@ class _LoginPageState extends State<LoginPage> {
       case Auth.loading:
         loadingIcon = LoadingIcon();
         loadingIcon.showLoadingIcon(context);
+        setState(() => canPop = false);
         break;
       case Auth.success:
         loadingIcon.removeLoadingIcon();
+        setState(() => canPop = true);
         Navigator.pushNamedAndRemoveUntil(
           context,
           RouteNames.home,
@@ -105,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
         break;
       default:
         loadingIcon.removeLoadingIcon();
+        setState(() => canPop = true);
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           snackBar(

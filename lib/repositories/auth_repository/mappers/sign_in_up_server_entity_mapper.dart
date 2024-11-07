@@ -6,23 +6,21 @@ import 'package:Helios/repositories/auth_repository/entities/sign_in_up_server_e
 
 SignInUpServerEntity signInUpServerEntityMapper(
     {required BasicResponse response}) {
-  return switch (response.runtimeType) {
+  return switch (response) {
     (Response _) => SignInUpServerEntity(
-        accessToken: ((response as Response).data
-                as Map<String, dynamic>)["data"]["access_token"]
-            .toString(),
-        refreshToken: (response.data as Map<String, dynamic>)["data"]
-                ["refresh_token"]
-            .toString(),
+        accessToken:
+            (response.data as Map<String, dynamic>)["access_token"].toString(),
+        refreshToken:
+            (response.data as Map<String, dynamic>)["refresh_token"].toString(),
         status: Auth.success,
       ),
     (ErrorResponse _) => SignInUpServerEntity.error(
         status: Auth.values.firstWhere(
-          (e) => e.name == (response as ErrorResponse).error,
+          (e) => e.name == response.error,
           orElse: () => Auth.failed,
         ),
       ),
-    Type() => const SignInUpServerEntity.error(
+    _ => const SignInUpServerEntity.error(
         status: Auth.failed,
       ),
   };

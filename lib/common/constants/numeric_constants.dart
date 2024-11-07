@@ -10,7 +10,7 @@ abstract interface class NumericConstants {
 
   static const double cardVerticalPadding = 15;
   static const double horizontalPadding = 20;
-  static const double bottomPadding = 60;
+  static const double bottomPadding = 25;
 
   static const double borderRadius = 20;
 }

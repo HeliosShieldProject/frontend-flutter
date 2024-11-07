@@ -33,6 +33,7 @@ dependencies:
 
   password_validator_package: ^0.0.1
   email_validator: ^3.0.0
+  dart_jsonwebtoken: ^2.14.1
 
 dev_dependencies:
   flutter_test:
@@ -46,22 +47,22 @@ flutter:
   generate: true
 
   assets:
-    - assets/
+    - assets/images/
     - .env
 
   fonts:
     - family: Ubuntu
       fonts:
-        - asset: fonts/Ubuntu-Light.ttf
-        - asset: fonts/Ubuntu-Regular.ttf
-        - asset: fonts/Ubuntu-Medium.ttf
-        - asset: fonts/Ubuntu-Bold.ttf
+        - asset: assets/fonts/Ubuntu-Light.ttf
+        - asset: assets/fonts/Ubuntu-Regular.ttf
+        - asset: assets/fonts/Ubuntu-Medium.ttf
+        - asset: assets/fonts/Ubuntu-Bold.ttf
 
-        - asset: fonts/Ubuntu-LightItalic.ttf
+        - asset: assets/fonts/Ubuntu-LightItalic.ttf
           style: italic
-        - asset: fonts/Ubuntu-Italic.ttf
+        - asset: assets/fonts/Ubuntu-Italic.ttf
           style: italic
-        - asset: fonts/Ubuntu-MediumItalic.ttf
+        - asset: assets/fonts/Ubuntu-MediumItalic.ttf
           style: italic
-        - asset: fonts/Ubuntu-BoldItalic.ttf
+        - asset: assets/fonts/Ubuntu-BoldItalic.ttf
           style: italic

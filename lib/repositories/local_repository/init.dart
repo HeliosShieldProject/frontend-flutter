@@ -25,6 +25,7 @@ Future<void> initHive() async {
     ..registerAdapter(IPAdapter())
     ..registerAdapter(VpnConnectionAdapter());
 
-  await Hive.openBox<UserSettings>(HiveKeys.userBox);
-  await Hive.openBox<User>(HiveKeys.userSettingsBox);
+  await Hive.openBox<User>(HiveKeys.userBox);
+  await Hive.openBox<UserSettings>(HiveKeys.userSettingsBox);
+  await Hive.openBox<VpnConnection>(HiveKeys.vpnConnectionBox);
 }

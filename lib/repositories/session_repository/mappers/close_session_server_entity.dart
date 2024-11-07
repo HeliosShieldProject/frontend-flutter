@@ -6,20 +6,18 @@ import 'package:Helios/repositories/session_repository/entities/close_session_se
 
 CloseSessionServerEntity closeSessionServerEntityMapper(
     {required BasicResponse response}) {
-  return switch (response.runtimeType) {
+  return switch (response) {
     (Response _) => CloseSessionServerEntity(
-        message:
-            ((response as Response).message as Map<String, dynamic>)["message"]
-                .toString(),
+        message: response.message,
         status: Auth.success,
       ),
     (ErrorResponse _) => CloseSessionServerEntity.error(
         status: Auth.values.firstWhere(
-          (status) => status.name == (response as ErrorResponse).error,
+          (status) => status.name == response.error,
           orElse: () => Auth.failed,
         ),
       ),
-    (Type()) => const CloseSessionServerEntity.error(
+    (_) => const CloseSessionServerEntity.error(
         status: Auth.failed,
       ),
   };

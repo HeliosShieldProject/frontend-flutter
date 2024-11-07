@@ -1,3 +1,4 @@
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 
 import 'package:Helios/common/server/dio.dart';
@@ -8,6 +9,7 @@ import 'package:Helios/common/interafces/basic_server_entity.dart';
 import 'package:Helios/common/server/mappers/mappers.dart';
 
 import 'package:Helios/repositories/auth_repository/mappers/refresh_server_entity_mapper.dart';
+import 'package:flutter/foundation.dart';
 
 Future<BasicServerEntity> serverRefresh(
     {required String jwtRefreshToken}) async {
@@ -15,13 +17,49 @@ Future<BasicServerEntity> serverRefresh(
     "Authorization": "Bearer $jwtRefreshToken",
   };
 
-  final result = await dio.request(
-    "auth/refresh",
-    options: Options(
-      method: "POST",
-      headers: headers,
-    ),
-  );
+  late final Response<dynamic> result;
+  if (!kDebugMode) {
+    result = await dio.request(
+      "auth/refresh",
+      options: Options(
+        method: "POST",
+        headers: headers,
+      ),
+    );
+  } else {
+    await Future.delayed(const Duration(seconds: 1));
+
+    JWT jwt = JWT(
+      {
+        "user": "Mock_user_id",
+      },
+    );
+    result = Response(
+      statusCode: 200,
+      requestOptions: RequestOptions(),
+      data: {
+        "data": {
+          "access_token": jwt.sign(
+            SecretKey(
+              "vey secret key",
+            ),
+            expiresIn: const Duration(
+              minutes: 15,
+            ),
+          ),
+          "refresh_token": jwt.sign(
+            SecretKey(
+              "vey secret key",
+            ),
+            expiresIn: const Duration(
+              minutes: 30,
+            ),
+          ),
+        },
+        "message": "Token refreshed succesfully"
+      },
+    );
+  }
 
   BasicResponse response = switch (result.statusCode) {
     200 => responseMapper(

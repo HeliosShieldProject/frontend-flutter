@@ -81,9 +81,17 @@ class UserImpl implements User {
 
   @override
   UserValidity get validity {
+    late final bool userExpired;
+
+    try {
+      userExpired = JwtDecoder.isExpired(jwtRefreshToken!);
+    } catch (e) {
+      userExpired = true;
+    }
+
     if (jwtToken == null || jwtRefreshToken == null) {
       return UserValidity.notValid;
-    } else if (JwtDecoder.isExpired(jwtRefreshToken!)) {
+    } else if (userExpired) {
       return UserValidity.notValid;
     }
     return UserValidity.needsRefreshment;
