@@ -8,7 +8,7 @@ extension EnumedV2RayStatus on V2RayStatus {
 }
 
 enum States {
-  loading(name: "LOADING"),
+  loading(name: "CONNECTING"),
   connected(name: "CONNECTED"),
   disconnected(name: "DISCONNECTED"),
   error(name: "ERROR");
@@ -46,6 +46,14 @@ class VpnState extends Equatable {
         downloadSpeed = null,
         ip = null;
 
+  const VpnState.disconnected()
+      : state = States.disconnected,
+        country = null,
+        protocol = null,
+        uploadSpeed = null,
+        downloadSpeed = null,
+        ip = null;
+
   VpnState copyWith({
     States? state,
     Country? country,
@@ -69,7 +77,8 @@ class VpnState extends Equatable {
               protocol: protocol,
               uploadSpeed: uploadSpeed,
               downloadSpeed: downloadSpeed,
-              ip: ip);
+              ip: ip,
+            );
 
   @override
   List<Object?> get props => [

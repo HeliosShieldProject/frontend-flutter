@@ -347,10 +347,11 @@ packages:
   flutter_v2ray:
     dependency: "direct main"
     description:
-      name: flutter_v2ray
-      sha256: "4c65c94c530f905b7518f0838082c00423d3c090c320b34dd53f25dd54780a86"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "124f8f52dc1b63d61b169f653a78c1bed0604882"
+      url: "git@github.com:Asbecov/flutter_v2ray.git"
+    source: git
     version: "1.0.8"
   flutter_web_plugins:
     dependency: transitive

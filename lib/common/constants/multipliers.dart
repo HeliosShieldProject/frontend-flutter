@@ -5,6 +5,6 @@ abstract interface class Multipliers {
   static const double element2BlankSpacer =
       NumericConstants.elementHieght / NumericConstants.spacerSize;
   static const double bottomPadding2BlankSpacer =
-      NumericConstants.bottomPadding / NumericConstants.spacerSize;
+      60 / NumericConstants.spacerSize;
   static const double bigGap2BlankSpacer = 4;
 }
