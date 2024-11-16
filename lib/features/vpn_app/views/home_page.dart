@@ -22,8 +22,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return BlocConsumer<VpnBloc, VpnState>(
-      listener: (context, state) => print(state.props),
+    return BlocBuilder<VpnBloc, VpnState>(
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -69,31 +68,25 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      final VpnBloc bloc = context.read<VpnBloc>();
-                      if (state.state == States.disconnected) {
-                        bloc.add(
-                          VpnConnectionExecutedEvent(
-                            country: CountriesConstants.uk,
-                            protocol: Protocols.vless,
-                          ),
-                        );
-                      } else {
-                        bloc.add(
-                          VpnConnectionDisconnectedEvent(),
-                        );
+                  child: HeliosConnectionButton(
+                    state: state.state ?? States.loading,
+                    duration: const Duration(milliseconds: 1000),
+                    onTap: (state) {
+                      if (state == States.connected) {
+                        context.read<VpnBloc>().add(
+                              VpnConnectionExecutedEvent(
+                                country: CountriesConstants.uk,
+                                protocol: Protocols.ss,
+                              ),
+                            );
+                      } else if (state == States.disconnected) {
+                        context.read<VpnBloc>().add(
+                              VpnConnectionDisconnectedEvent(),
+                            );
                       }
                     },
-                    child: SvgPicture.asset(
-                      "assets/images/shield_icon.svg",
-                      colorFilter: ColorFilter.mode(
-                        colorScheme.onSurface,
-                        BlendMode.srcIn,
-                      ),
-                      height: 140,
-                      fit: BoxFit.scaleDown,
-                    ),
+                    primary: colorScheme.primary,
+                    secondary: colorScheme.secondary,
                   ),
                 ),
               ),
@@ -110,4 +103,58 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class HeliosConnectionButton extends StatelessWidget {
+  HeliosConnectionButton({
+    super.key,
+    required this.state,
+    required this.duration,
+    required this.onTap,
+    required this.primary,
+    required this.secondary,
+  });
+
+  final States state;
+  final Duration duration;
+  final Color primary;
+  final Color secondary;
+  final void Function(States state) onTap;
+
+  void _handleTap(States state) {
+    if (this.state != States.loading && this.state != States.error) {
+      print(this.state);
+      onTap(state);
+    }
+  }
+
+  late final Widget firstChild = GestureDetector(
+    onTap: () => _handleTap(States.connected),
+    child: SvgPicture.asset(
+      "assets/images/disconnected_shield_icon.svg",
+      height: NumericConstants.connectionButtonHeight,
+      fit: BoxFit.fitHeight,
+    ),
+  );
+  late final Widget secondChild = GestureDetector(
+    onTap: () => _handleTap(States.disconnected),
+    child: SvgPicture.asset(
+      "assets/images/connected_shield_icon.svg",
+      height: NumericConstants.connectionButtonHeight,
+      fit: BoxFit.fitHeight,
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) => Opacity(
+        opacity: (state == States.error || state == States.loading) ? 0.5 : 1.0,
+        child: AnimatedCrossFade(
+          firstChild: firstChild,
+          secondChild: secondChild,
+          crossFadeState: state == States.connected
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+          duration: duration,
+        ),
+      );
 }

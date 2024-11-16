@@ -20,10 +20,13 @@ SnackBar snackBar(BuildContext context,
         const BlankSpacer(
           horizontal: true,
         ),
-        Text(
-          title,
-          style: textTheme.labelMedium,
-          overflow: TextOverflow.fade,
+        SizedBox(
+          width: 150,
+          child: Text(
+            title,
+            style: textTheme.labelMedium,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     ),

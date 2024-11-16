@@ -162,7 +162,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       BlankSpacer(
-                        multiplier: Multipliers.bottomPadding2BlankSpacer,
+                        multiplier: Multipliers.authBottomPadding2BlankSpacer,
                         child: Text.rich(
                           TextSpan(
                             children: <InlineSpan>[

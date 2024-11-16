@@ -123,7 +123,7 @@ class _WelcomePageState extends State<WelcomePage>
                 padding: const EdgeInsets.only(
                   left: NumericConstants.horizontalPadding,
                   right: NumericConstants.horizontalPadding,
-                  bottom: NumericConstants.bottomPadding,
+                  bottom: NumericConstants.authFlowBottomPadding,
                 ),
                 child: FadingButton(
                   onTap: () => Navigator.pushNamed(

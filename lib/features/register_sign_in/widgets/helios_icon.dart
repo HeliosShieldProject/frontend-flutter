@@ -113,7 +113,7 @@ class FadingHeliosIcon extends HeliosIcon {
               sigmaX: size.width / 4,
               sigmaY: size.height / 4,
             ),
-            child: Container(),
+            child: const SizedBox.expand(),
           ),
           Center(
             child: showHelios

@@ -54,6 +54,14 @@ class VpnState extends Equatable {
         downloadSpeed = null,
         ip = null;
 
+  const VpnState.error()
+      : state = States.error,
+        country = null,
+        protocol = null,
+        uploadSpeed = null,
+        downloadSpeed = null,
+        ip = null;
+
   VpnState copyWith({
     States? state,
     Country? country,

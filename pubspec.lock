@@ -349,8 +349,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "124f8f52dc1b63d61b169f653a78c1bed0604882"
-      url: "git@github.com:Asbecov/flutter_v2ray.git"
+      resolved-ref: "95ff08fcf27611688307da18b96a3a4fa3b3015c"
+      url: "https://github.com/Asbecov/flutter_v2ray.git"
     source: git
     version: "1.0.8"
   flutter_web_plugins:

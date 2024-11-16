@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       BlankSpacer(
-                        multiplier: Multipliers.bottomPadding2BlankSpacer,
+                        multiplier: Multipliers.authBottomPadding2BlankSpacer,
                         child: Text.rich(
                           TextSpan(
                             children: <InlineSpan>[
