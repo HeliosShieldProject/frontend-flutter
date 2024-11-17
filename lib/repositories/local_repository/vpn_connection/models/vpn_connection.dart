@@ -15,14 +15,12 @@ class VpnConnection extends Equatable {
     required this.country,
     required this.ip,
     required this.protocol,
-    required this.shareLink,
   });
 
   const VpnConnection.empty()
       : country = null,
         ip = null,
-        protocol = null,
-        shareLink = null;
+        protocol = null;
 
   @HiveField(0)
   final Country? country;
@@ -30,14 +28,11 @@ class VpnConnection extends Equatable {
   final IP? ip;
   @HiveField(2)
   final Protocols? protocol;
-  @HiveField(3)
-  final String? shareLink;
 
-  States get state =>
-      country == null && ip == null && protocol == null && shareLink == null
-          ? States.disconnected
-          : States.connected;
+  States get state => country == null && ip == null && protocol == null
+      ? States.disconnected
+      : States.connected;
 
   @override
-  List<Object?> get props => [country, ip, protocol, shareLink];
+  List<Object?> get props => [country, ip, protocol];
 }

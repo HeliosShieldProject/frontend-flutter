@@ -18,12 +18,13 @@ part 'state.dart';
 class WelcomeBloc extends Bloc<WelcomeEvent, WelcomeState> {
   WelcomeBloc({required this.userRepository})
       : super(const WelcomeState.empty()) {
-    on<AppInitEvent>(onAppInit);
+    on<WelcomeInitEvent>(onWelcomeInit);
   }
 
   UserRepository userRepository;
 
-  Future<void> onAppInit(AppInitEvent event, Emitter<WelcomeState> emit) async {
+  Future<void> onWelcomeInit(
+      WelcomeInitEvent event, Emitter<WelcomeState> emit) async {
     emit(
       state.copyWith(
         appInitStatus: AppInitStatus.loading,

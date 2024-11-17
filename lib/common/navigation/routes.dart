@@ -35,9 +35,7 @@ abstract class RoutesBuilder {
           builder: (context) => BlocProvider(
             create: (context) => WelcomeBloc(
               userRepository: context.read<UserRepository>(),
-            )..add(
-                AppInitEvent(),
-              ),
+            )..add(WelcomeInitEvent()),
             child: const WelcomePage(),
           ),
           settings: settings,
@@ -50,9 +48,7 @@ abstract class RoutesBuilder {
             create: (context) => VpnBloc(
               userRepository: context.read<UserRepository>(),
               vpnConnectionRepository: context.read<VpnConnectionRepository>(),
-            )..add(
-                VpnAppInitEvent(),
-              ),
+            )..add(VpnAppInitEvent()),
             child: const HomePage(),
           ),
           settings: settings,
@@ -62,10 +58,11 @@ abstract class RoutesBuilder {
         print("Login onGenerateRoute");
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-              create: (context) => SignInBloc(
-                    userRepository: context.read<UserRepository>(),
-                  ),
-              child: const LoginPage()),
+            create: (context) => SignInBloc(
+              userRepository: context.read<UserRepository>(),
+            ),
+            child: const LoginPage(),
+          ),
           settings: settings,
         );
 
@@ -73,10 +70,11 @@ abstract class RoutesBuilder {
         print("Reg onGenerateRoute");
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-              create: (context) => SignUpBloc(
-                    userRepository: context.read<UserRepository>(),
-                  ),
-              child: const RegistrationPage()),
+            create: (context) => SignUpBloc(
+              userRepository: context.read<UserRepository>(),
+            ),
+            child: const RegistrationPage(),
+          ),
           settings: settings,
         );
 

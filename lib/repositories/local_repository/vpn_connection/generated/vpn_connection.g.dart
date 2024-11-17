@@ -1,4 +1,10 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of '../models/vpn_connection.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class VpnConnectionAdapter extends TypeAdapter<VpnConnection> {
   @override
@@ -11,25 +17,22 @@ class VpnConnectionAdapter extends TypeAdapter<VpnConnection> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return VpnConnection(
-      country: fields[0] as Country,
-      ip: fields[1] as IP,
-      protocol: fields[2] as Protocols,
-      shareLink: fields[3] as String,
+      country: fields[0] as Country?,
+      ip: fields[1] as IP?,
+      protocol: fields[2] as Protocols?,
     );
   }
 
   @override
   void write(BinaryWriter writer, VpnConnection obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.country)
       ..writeByte(1)
       ..write(obj.ip)
       ..writeByte(2)
-      ..write(obj.protocol)
-      ..writeByte(3)
-      ..write(obj.shareLink);
+      ..write(obj.protocol);
   }
 
   @override

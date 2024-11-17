@@ -1,11 +1,15 @@
+import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+
+import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
+
 import 'package:Helios/common/constants/constants.dart';
 import 'package:Helios/common/constants/countries_constants.dart';
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/navigation/routes.dart';
-import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+
 import '../widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
@@ -123,7 +127,6 @@ class HeliosConnectionButton extends StatelessWidget {
 
   void _handleTap(States state) {
     if (this.state != States.loading && this.state != States.error) {
-      print(this.state);
       onTap(state);
     }
   }

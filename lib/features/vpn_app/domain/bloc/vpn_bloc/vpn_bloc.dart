@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:Helios/common/interafces/user.dart';
-import 'package:Helios/repositories/auth_repository/high_level/refresh_tokens.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
@@ -10,13 +8,15 @@ import 'package:flutter_v2ray/flutter_v2ray.dart';
 
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/country.dart';
+import 'package:Helios/common/interafces/user.dart';
 
 import 'package:Helios/repositories/local_repository/vpn_connection/models/vpn_connection.dart';
+import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
 import 'package:Helios/repositories/user_repository/user_repository.dart';
 import 'package:Helios/repositories/vpn_connection_repository/vpn_connection_repository.dart';
-import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
 import 'package:Helios/repositories/session_repository/high_level/close_session.dart';
 import 'package:Helios/repositories/session_repository/high_level/create_session.dart';
+import 'package:Helios/repositories/auth_repository/high_level/refresh_tokens.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -49,59 +49,40 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
   final VpnConnectionRepository _vpnConnectionRepository;
   late final FlutterV2ray _flutterV2ray;
 
+  bool _blockV2rayStatus = false;
+
   Future<void> _onVpnAppInit(
       VpnAppInitEvent event, Emitter<VpnState> emit) async {
     _flutterV2ray = FlutterV2ray(
-      onStatusChanged: (status) => add(
-        VpnStatusChangedEvent(
-          status: status,
-        ),
-      ),
+      onStatusChanged: (status) => add(VpnStatusChangedEvent(status: status)),
     );
 
     emit(
-      state.copyWith(
-        state: States.loading,
-      ),
+      state.copyWith(state: States.loading),
     );
 
     try {
       await _flutterV2ray.initializeV2Ray();
-    } catch (e) {
-      emit(
-        const VpnState.error(),
-      );
-    } finally {
+
       final States v2rayState = await _flutterV2ray.state;
-      final VpnConnection localConnection = _vpnConnectionRepository.get();
+      final States localState = _vpnConnectionRepository.get().state;
 
       if ((v2rayState == States.disconnected || v2rayState == States.error) &&
-          localConnection.state == States.connected) {
-        await _refreshUser(emit);
+          localState == States.connected) {
+        await _refreshUser();
 
-        await closeSession(user: _userRepository.get()).then(
-          (_) async {
-            _vpnConnectionRepository.delete();
+        await closeSession(user: _userRepository.get());
 
-            emit(
-              state.copyWith(
-                state: v2rayState,
-              ),
-            );
-          },
-          onError: (e, st) {
-            emit(
-              const VpnState.error(),
-            );
-          },
-        );
-      } else {
+        _vpnConnectionRepository.delete();
+
         emit(
-          state.copyWith(
-            state: v2rayState,
-          ),
+          state.copyWith(state: v2rayState),
         );
       }
+    } catch (e) {
+      emit(
+        const VpnState.error(errorMessage: "Init error"),
+      );
     }
   }
 
@@ -113,42 +94,44 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     switch ((v2rayStatus.status, localVpnConnection.state)) {
       case (States.error, _):
         emit(
-          const VpnState.error(),
+          const VpnState.error(errorMessage: 'V2ray error'),
         );
 
         if (localVpnConnection.state == States.connected) {
-          await _refreshUser(emit);
+          try {
+            await _refreshUser();
 
-          await closeSession(user: _userRepository.get()).then(
-            (_) async {
-              _vpnConnectionRepository.delete();
-            },
-            onError: (e, st) {
-              emit(
-                const VpnState.error(),
-              );
-            },
-          );
+            await closeSession(user: _userRepository.get());
+
+            _vpnConnectionRepository.delete();
+
+            await _flutterV2ray.stopV2Ray();
+          } catch (e) {
+            emit(
+              const VpnState.error(errorMessage: 'Disconnect error'),
+            );
+          }
         }
 
         break;
       case (States.disconnected, States.connected):
-        await _refreshUser(emit);
+        try {
+          await _refreshUser();
 
-        await closeSession(user: _userRepository.get()).then(
-          (_) async {
-            _vpnConnectionRepository.delete();
+          await closeSession(user: _userRepository.get());
 
-            emit(
-              const VpnState.disconnected(),
-            );
-          },
-          onError: (e, st) {
-            emit(
-              const VpnState.error(),
-            );
-          },
-        );
+          _vpnConnectionRepository.delete();
+
+          emit(
+            const VpnState.disconnected(),
+          );
+        } catch (e) {
+          emit(
+            const VpnState.error(errorMessage: 'Close session error'),
+          );
+        }
+
+        break;
       case (States.disconnected, States.disconnected):
         emit(
           const VpnState.disconnected(),
@@ -156,24 +139,27 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
         break;
       default:
-        emit(
-          state.copyWith(
-            state: v2rayStatus.status,
-            country: localVpnConnection.country,
-            ip: localVpnConnection.ip,
-            protocol: localVpnConnection.protocol,
-            uploadSpeed: num.parse(
-                    (v2rayStatus.uploadSpeed.toDouble() / pow(2, 20))
-                        .toStringAsFixed(2))
-                .toDouble(),
-            downloadSpeed: num.parse(
-                    (v2rayStatus.downloadSpeed.toDouble() / pow(2, 20))
-                        .toStringAsFixed(2))
-                .toDouble(),
-          ),
-        );
+        if (!_blockV2rayStatus) {
+          final double uploadSpeed = num.parse(
+                  (v2rayStatus.uploadSpeed.toDouble() / pow(2, 20))
+                      .toStringAsFixed(2))
+              .toDouble();
+          final double downloadSpeed = num.parse(
+                  (v2rayStatus.downloadSpeed.toDouble() / pow(2, 20))
+                      .toStringAsFixed(2))
+              .toDouble();
 
-        break;
+          emit(
+            state.copyWith(
+              state: v2rayStatus.status,
+              country: localVpnConnection.country,
+              ip: localVpnConnection.ip,
+              protocol: localVpnConnection.protocol,
+              uploadSpeed: uploadSpeed,
+              downloadSpeed: downloadSpeed,
+            ),
+          );
+        }
     }
   }
 
@@ -183,53 +169,43 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     final Protocols protocol = event.protocol;
 
     emit(
-      state.copyWith(
-        state: States.loading,
-      ),
+      state.copyWith(state: States.loading),
     );
 
-    await _refreshUser(emit);
+    try {
+      await _refreshUser();
 
-    await createSession(
-      user: _userRepository.get(),
-      country: country,
-      protocol: protocol,
-    ).then(
-      (String shareLink) async {
-        _vpnConnectionRepository.put(
-          vpnConnection: VpnConnection(
-            country: country,
-            ip: const IP.unknown(),
-            protocol: protocol,
-            shareLink: shareLink,
-          ),
+      final String url = await createSession(
+        user: _userRepository.get(),
+        country: country,
+        protocol: protocol,
+      );
+
+      _vpnConnectionRepository.put(
+        vpnConnection: VpnConnection(
+          country: country,
+          ip: const IP.unknown(),
+          protocol: protocol,
+        ),
+      );
+
+      final V2RayURL v2rayURL = FlutterV2ray.parseFromURL(url);
+
+      if (await _flutterV2ray.requestPermission()) {
+        await _flutterV2ray.startV2Ray(
+          config: v2rayURL.getFullConfiguration(),
+          remark: v2rayURL.remark,
         );
-
-        final V2RayURL url = FlutterV2ray.parseFromURL(shareLink);
-
-        try {
-          if (!(await _flutterV2ray.requestPermission())) {
-            emit(
-              const VpnState.error(),
-            );
-          } else {
-            await _flutterV2ray.startV2Ray(
-              remark: url.remark,
-              config: url.getFullConfiguration(),
-            );
-          }
-        } catch (e) {
-          emit(
-            const VpnState.error(),
-          );
-        }
-      },
-      onError: (error, st) {
+      } else {
         emit(
-          const VpnState.error(),
+          const VpnState.error(errorMessage: "Permission error"),
         );
-      },
-    );
+      }
+    } catch (e) {
+      emit(
+        const VpnState.error(errorMessage: "Connect error"),
+      );
+    }
   }
 
   Future<void> _onVpnConnectionDisconnected(
@@ -242,36 +218,27 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       ),
     );
 
-    await _refreshUser(emit);
+    _blockV2rayStatus = true;
 
-    await closeSession(user: _userRepository.get()).then(
-      (_) async {
-        _vpnConnectionRepository.delete();
-
-        try {
-          await _flutterV2ray.stopV2Ray();
-        } catch (e) {
-          emit(
-            const VpnState.error(),
-          );
-        }
-      },
-      onError: (e, st) {
-        emit(
-          const VpnState.error(),
-        );
-      },
-    );
-  }
-
-  Future<void> _refreshUser(Emitter<VpnState> emit) async {
     try {
-      final User refreshedUser = await refresh(_userRepository.get());
-      _userRepository.put(user: refreshedUser);
+      await _refreshUser();
+
+      await closeSession(user: _userRepository.get());
+
+      _vpnConnectionRepository.delete();
+
+      await _flutterV2ray.stopV2Ray();
+
+      _blockV2rayStatus = false;
     } catch (e) {
       emit(
-        const VpnState.error(),
+        const VpnState.error(errorMessage: 'Disconnect error'),
       );
     }
+  }
+
+  Future<void> _refreshUser() async {
+    final User refreshedUser = await refresh(_userRepository.get());
+    _userRepository.put(user: refreshedUser);
   }
 }
