@@ -7,6 +7,17 @@ extension EnumedV2RayStatus on V2RayStatus {
       );
 }
 
+extension EnumedFlutterV2ray on FlutterV2ray {
+  Future<States> get state async {
+    final String status = await getV2rayStatus();
+
+    return States.values.firstWhere(
+      (state) => status == state.name,
+      orElse: () => States.error,
+    );
+  }
+}
+
 enum States {
   loading(name: "CONNECTING"),
   connected(name: "CONNECTED"),

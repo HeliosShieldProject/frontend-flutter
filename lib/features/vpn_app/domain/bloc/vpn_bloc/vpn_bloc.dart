@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:Helios/common/constants/countries_constants.dart';
+import 'package:country_ip/country_ip.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
@@ -21,17 +23,6 @@ import 'package:Helios/repositories/auth_repository/high_level/refresh_tokens.da
 part 'event.dart';
 part 'state.dart';
 
-extension EnumedFlutterV2ray on FlutterV2ray {
-  Future<States> get state async {
-    final String status = await getV2rayStatus();
-
-    return States.values.firstWhere(
-      (state) => status == state.name,
-      orElse: () => States.error,
-    );
-  }
-}
-
 class VpnBloc extends Bloc<VpnEvent, VpnState> {
   VpnBloc({
     required UserRepository userRepository,
@@ -43,6 +34,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     on<VpnStatusChangedEvent>(_onVpnStatusChanged);
     on<VpnConnectionExecutedEvent>(_onVpnConnectionExecuted);
     on<VpnConnectionDisconnectedEvent>(_onVpnConnectionDisconnected);
+    on<DisconnectedStateEvent>(_onDisconnectedState);
   }
 
   final UserRepository _userRepository;
@@ -74,11 +66,11 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
         await closeSession(user: _userRepository.get());
 
         _vpnConnectionRepository.delete();
-
-        emit(
-          state.copyWith(state: v2rayState),
-        );
       }
+
+      emit(
+        state.copyWith(state: v2rayState),
+      );
     } catch (e) {
       emit(
         const VpnState.error(errorMessage: "Init error"),
@@ -235,6 +227,40 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
         const VpnState.error(errorMessage: 'Disconnect error'),
       );
     }
+  }
+
+  Future<void> _onDisconnectedState(
+      DisconnectedStateEvent event, Emitter<VpnState> emit) async {
+    final CountryResponse? countryInfo = await CountryIp.find();
+
+    if (countryInfo case CountryResponse _) {
+      final Country curCountry = CountriesConstants.values.firstWhere(
+        (val) => val.countryCode == countryInfo.countryCode,
+        orElse: () => CountriesConstants.unknown,
+      );
+
+      emit(
+        state.copyWith(
+          country: curCountry,
+          ip: IP.parse(countryInfo.ip),
+        ),
+      );
+    } else {
+      emit(
+        const VpnState.error(errorMessage: "Country lookup"),
+      );
+    }
+  }
+
+  @override
+  void onChange(Change<VpnState> change) {
+    if (change.currentState.state != States.disconnected &&
+        change.nextState.state == States.disconnected) {
+      add(
+        DisconnectedStateEvent(),
+      );
+    }
+    super.onChange(change);
   }
 
   Future<void> _refreshUser() async {

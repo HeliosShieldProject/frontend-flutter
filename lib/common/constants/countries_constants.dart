@@ -11,4 +11,14 @@ class CountriesConstants {
   static const Country de =
       CountryImpl(countryCode: "DE", countryName: "Германия");
   static const Country us = CountryImpl(countryCode: "US", countryName: "США");
+  static const Country unknown =
+      CountryImpl(countryCode: "NA", countryName: "Неизвестно");
+
+  static const List<Country> values = <Country>[
+    uk,
+    ru,
+    es,
+    de,
+    us,
+  ];
 }

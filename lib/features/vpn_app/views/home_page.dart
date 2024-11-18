@@ -22,11 +22,31 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  void _handleChange(bool val, VpnBloc bloc) => val
+      ? bloc.add(
+          VpnConnectionExecutedEvent(
+            country: CountriesConstants.uk,
+            protocol: Protocols.vless,
+          ),
+        )
+      : bloc.add(
+          VpnConnectionDisconnectedEvent(),
+        );
+
+  void _blocListener(BuildContext context, VpnState state) {
+    if (state.state == States.error) {
+      print((state as ErrorVpnState).errorMessage);
+    } else {
+      print(state.state);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return BlocBuilder<VpnBloc, VpnState>(
+    return BlocConsumer<VpnBloc, VpnState>(
+      listener: _blocListener,
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -72,25 +92,13 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Center(
-                  child: HeliosConnectionButton(
+                  child: HeliosConnectButton(
                     state: state.state ?? States.loading,
-                    duration: const Duration(milliseconds: 1000),
-                    onTap: (state) {
-                      if (state == States.connected) {
-                        context.read<VpnBloc>().add(
-                              VpnConnectionExecutedEvent(
-                                country: CountriesConstants.uk,
-                                protocol: Protocols.ss,
-                              ),
-                            );
-                      } else if (state == States.disconnected) {
-                        context.read<VpnBloc>().add(
-                              VpnConnectionDisconnectedEvent(),
-                            );
-                      }
-                    },
-                    primary: colorScheme.primary,
-                    secondary: colorScheme.secondary,
+                    onChange: (val) => _handleChange(
+                      val,
+                      context.read<VpnBloc>(),
+                    ),
+                    duration: const Duration(milliseconds: 500),
                   ),
                 ),
               ),
@@ -107,57 +115,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-class HeliosConnectionButton extends StatelessWidget {
-  HeliosConnectionButton({
-    super.key,
-    required this.state,
-    required this.duration,
-    required this.onTap,
-    required this.primary,
-    required this.secondary,
-  });
-
-  final States state;
-  final Duration duration;
-  final Color primary;
-  final Color secondary;
-  final void Function(States state) onTap;
-
-  void _handleTap(States state) {
-    if (this.state != States.loading && this.state != States.error) {
-      onTap(state);
-    }
-  }
-
-  late final Widget firstChild = GestureDetector(
-    onTap: () => _handleTap(States.connected),
-    child: SvgPicture.asset(
-      "assets/images/disconnected_shield_icon.svg",
-      height: NumericConstants.connectionButtonHeight,
-      fit: BoxFit.fitHeight,
-    ),
-  );
-  late final Widget secondChild = GestureDetector(
-    onTap: () => _handleTap(States.disconnected),
-    child: SvgPicture.asset(
-      "assets/images/connected_shield_icon.svg",
-      height: NumericConstants.connectionButtonHeight,
-      fit: BoxFit.fitHeight,
-    ),
-  );
-
-  @override
-  Widget build(BuildContext context) => Opacity(
-        opacity: (state == States.error || state == States.loading) ? 0.5 : 1.0,
-        child: AnimatedCrossFade(
-          firstChild: firstChild,
-          secondChild: secondChild,
-          crossFadeState: state == States.connected
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: duration,
-        ),
-      );
 }

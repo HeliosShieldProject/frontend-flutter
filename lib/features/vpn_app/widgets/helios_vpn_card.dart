@@ -112,7 +112,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
               ),
             ),
           )
-        : Text(
+        : SelectableText(
             widget.countryIp.toString(),
             style: textTheme.bodyMedium,
           );

@@ -22,14 +22,6 @@ class VpnConnectionExecutedEvent extends VpnEvent {
   final Protocols protocol;
 }
 
-class VpnConnectionTriggeredEvent extends VpnEvent {
-  VpnConnectionTriggeredEvent({
-    required this.country,
-    required this.protocol,
-  });
-
-  final Country country;
-  final Protocols protocol;
-}
-
 class VpnConnectionDisconnectedEvent extends VpnEvent {}
+
+class DisconnectedStateEvent extends VpnEvent {}
