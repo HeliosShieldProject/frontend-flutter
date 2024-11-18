@@ -1,46 +1,56 @@
+import 'package:Helios/common/constants/multipliers.dart';
+import 'package:Helios/common/constants/numeric_constants.dart';
+import 'package:Helios/common/ui/utils/blank_spacer.dart';
 import 'package:flutter/material.dart';
 
-class HeliosListTile extends StatelessWidget {
+class HeliosListTile<T> extends StatelessWidget {
   const HeliosListTile({
     super.key,
     this.titleWidget,
     required this.children,
+    required this.builder,
   });
 
   final Widget? titleWidget;
-  final List<Widget> children;
+  final List<T> children;
 
-  List<Widget> effectiveChildren(BuildContext context) {
-    var _children = <Widget>[];
-    titleWidget != null
-        ? _children.addAll(<Widget>[
-            titleWidget!,
-            const SizedBox(
-              height: 20,
-            ),
-          ])
-        : null;
+  final Widget Function(T) builder;
+
+  List<Widget> _effectiveChildren(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    final List<Widget> result = <Widget>[];
+
     for (int i = 0; i < children.length; i++) {
-      i == 0
-          ? _children.add(children[i])
-          : _children.addAll(
-              <Widget>[
-                const SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  height: 0,
-                  thickness: 2,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                children[i],
-              ],
-            );
+      result.addAll(
+        <Widget>[
+          builder(children[i]),
+          BlankSpacer(
+            multiplier: Multipliers.heliosListTileDivider2BlankSpacer,
+            child: Divider(
+              thickness: 2,
+              color: colorScheme.onTertiary,
+            ),
+          ),
+        ],
+      );
     }
-    return _children;
+
+    result.removeLast();
+
+    if (titleWidget != null) {
+      result.addAll(
+        <Widget>[
+          titleWidget!,
+          const BlankSpacer(
+            multiplier: Multipliers.heliosListTileDivider2BlankSpacer,
+          ),
+        ],
+      );
+    }
+
+    return result;
   }
 
   @override
@@ -48,13 +58,13 @@ class HeliosListTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(NumericConstants.borderRadius),
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(NumericConstants.horizontalPadding),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: effectiveChildren(context),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _effectiveChildren(context),
       ),
     );
   }

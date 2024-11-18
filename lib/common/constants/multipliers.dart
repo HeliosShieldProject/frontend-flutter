@@ -6,5 +6,7 @@ abstract interface class Multipliers {
       NumericConstants.elementHieght / NumericConstants.spacerSize;
   static const double authBottomPadding2BlankSpacer =
       NumericConstants.authFlowBottomPadding / NumericConstants.spacerSize;
-  static const double bigGap2BlankSpacer = 4;
+  static const double authBigGap2BlankSpacer = 4;
+
+  static const double heliosListTileDivider2BlankSpacer = 2;
 }

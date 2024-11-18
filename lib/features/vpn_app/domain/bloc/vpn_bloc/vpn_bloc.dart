@@ -233,7 +233,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       DisconnectedStateEvent event, Emitter<VpnState> emit) async {
     final CountryResponse? countryInfo = await CountryIp.find();
 
-    if (countryInfo case CountryResponse _) {
+    if (countryInfo != null) {
       final Country curCountry = CountriesConstants.values.firstWhere(
         (val) => val.countryCode == countryInfo.countryCode,
         orElse: () => CountriesConstants.unknown,

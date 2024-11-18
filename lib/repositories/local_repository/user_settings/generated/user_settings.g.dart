@@ -17,8 +17,8 @@ class UserSettingsImplAdapter extends TypeAdapter<UserSettingsImpl> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserSettingsImpl(
-      selectedTheme: fields[0] as SelectedTheme?,
-      subscriptionType: fields[1] as SubscriptionType?,
+      selectedTheme: fields[0] as SelectedTheme,
+      subscriptionType: fields[1] as SubscriptionType,
     );
   }
 

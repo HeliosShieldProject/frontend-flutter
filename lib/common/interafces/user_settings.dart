@@ -9,9 +9,9 @@ abstract interface class UserSettings extends Equatable {
     required this.subscriptionType,
   });
 
-  final SubscriptionType? subscriptionType;
+  final SubscriptionType subscriptionType;
 
-  final SelectedTheme? selectedTheme;
+  final SelectedTheme selectedTheme;
 
   UserSettings copyWith({
     SubscriptionType? subscriptionType,

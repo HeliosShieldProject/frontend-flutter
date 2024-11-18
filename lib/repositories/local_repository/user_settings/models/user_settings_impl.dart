@@ -13,15 +13,11 @@ class UserSettingsImpl implements UserSettings {
 
   @HiveField(0)
   @override
-  final SelectedTheme? selectedTheme;
+  final SelectedTheme selectedTheme;
 
   @HiveField(1)
   @override
-  final SubscriptionType? subscriptionType;
-
-  const UserSettingsImpl.empty()
-      : selectedTheme = null,
-        subscriptionType = null;
+  final SubscriptionType subscriptionType;
 
   const UserSettingsImpl.basic()
       : selectedTheme = SelectedTheme.dark,
