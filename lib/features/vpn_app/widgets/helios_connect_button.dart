@@ -24,14 +24,23 @@ class HeliosConnectButton extends StatelessWidget {
       ? CrossFadeState.showFirst
       : CrossFadeState.showSecond;
 
-  Widget get _firstChild => GestureDetector(
-        onTap: () => _handleChange(true),
-        child: SvgPicture.asset(
-          "assets/images/disconnected_shield_icon.svg",
-          fit: BoxFit.fitHeight,
-          height: NumericConstants.connectionButtonHeight,
+  Widget _firstChild(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return GestureDetector(
+      onTap: () => _handleChange(true),
+      child: SvgPicture.asset(
+        "assets/images/disconnected_shield_icon.svg",
+        fit: BoxFit.fitHeight,
+        height: NumericConstants.connectionButtonHeight,
+        colorFilter: ColorFilter.mode(
+          colorScheme.onSurface,
+          BlendMode.srcIn,
         ),
-      );
+      ),
+    );
+  }
+
   Widget get _secondChild => GestureDetector(
         onTap: () => _handleChange(false),
         child: SvgPicture.asset(
@@ -51,7 +60,7 @@ class HeliosConnectButton extends StatelessWidget {
   Widget build(BuildContext context) => Opacity(
         opacity: _effectiveOpacity,
         child: AnimatedCrossFade(
-          firstChild: _firstChild,
+          firstChild: _firstChild(context),
           secondChild: _secondChild,
           crossFadeState: _effectiveCrossFadeState,
           duration: duration,

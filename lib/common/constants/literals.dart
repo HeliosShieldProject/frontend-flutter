@@ -38,4 +38,8 @@ abstract interface class Literals {
   static const String upload = "выгрузка";
 
   static const String mbs = "Mb/s";
+
+  static const String dark = "Тёмная";
+  static const String light = "Светлая";
+  static const String system = "Системная";
 }

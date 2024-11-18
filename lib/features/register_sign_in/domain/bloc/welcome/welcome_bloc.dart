@@ -1,4 +1,3 @@
-import 'package:Helios/repositories/local_repository/init.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
@@ -31,7 +30,6 @@ class WelcomeBloc extends Bloc<WelcomeEvent, WelcomeState> {
       ),
     );
 
-    await initHive();
     await dotenv.load();
 
     final User user = userRepository.get();

@@ -18,8 +18,6 @@ Future<User> signIn({required String email, required String password}) async {
       user: user,
     );
   } catch (e) {
-    print(e);
-
     throw Auth.failed;
   }
 

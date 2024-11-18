@@ -1,12 +1,21 @@
-import 'package:Helios/common/user_settings/user_settings_provider.dart';
+import 'package:Helios/common/constants/literals.dart';
+import 'package:Helios/common/constants/numeric_constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Helios/common/enums/enums.dart';
 
 class HeliosThemeButton extends StatefulWidget {
-  const HeliosThemeButton({super.key, required this.theme});
+  const HeliosThemeButton({
+    super.key,
+    required this.theme,
+    required this.currentTheme,
+    required this.onTap,
+  });
 
   final SelectedTheme theme;
+  final SelectedTheme currentTheme;
+
+  final void Function(SelectedTheme) onTap;
 
   @override
   State<HeliosThemeButton> createState() => _HeliosThemePickerState();
@@ -16,27 +25,32 @@ class _HeliosThemePickerState extends State<HeliosThemeButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  bool selected = false;
 
-  Color get effectiveColor {
-    return selected ? Colors.white : Colors.white.withOpacity(0.5);
-  }
+  final Animatable<double> curveTween = Tween<double>(
+    begin: 0.0,
+    end: 1.0,
+  ).chain(
+    CurveTween(curve: Curves.easeIn),
+  );
 
-  String get effectiveText {
-    return switch (widget.theme) {
-      (SelectedTheme.dark) => "Тёмная",
-      (SelectedTheme.light) => "Светлая",
-      (SelectedTheme.system) => "Системная",
-    };
-  }
+  late ThemeData theme;
+  late ColorScheme colorScheme;
+  late TextTheme textTheme;
 
-  IconData get effectiveIcon {
-    return switch (widget.theme) {
-      (SelectedTheme.dark) => Icons.dark_mode,
-      (SelectedTheme.light) => Icons.light_mode,
-      (SelectedTheme.system) => Icons.sunny_snowing,
-    };
-  }
+  double get effectiveOpacity =>
+      widget.theme == widget.currentTheme ? 1.0 : 0.5;
+
+  String get effectiveText => switch (widget.theme) {
+        (SelectedTheme.dark) => Literals.dark,
+        (SelectedTheme.light) => Literals.light,
+        (SelectedTheme.system) => Literals.system,
+      };
+
+  IconData get effectiveIcon => switch (widget.theme) {
+        (SelectedTheme.dark) => Icons.dark_mode,
+        (SelectedTheme.light) => Icons.light_mode,
+        (SelectedTheme.system) => Icons.sunny_snowing,
+      };
 
   @override
   void initState() {
@@ -44,38 +58,37 @@ class _HeliosThemePickerState extends State<HeliosThemeButton>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(
-        milliseconds: 500,
-      ),
+      duration: const Duration(milliseconds: 500),
     );
 
-    _animation = Tween(begin: 0.0, end: 1.0)
-        .chain(CurveTween(curve: Curves.ease))
-        .animate(_controller);
+    _animation = curveTween.animate(_controller);
 
-    if (widget.theme == AppUserSettings.of(context).selectedTheme) {
-      selected = true;
-      _controller.value = 1.0;
+    if (widget.theme == widget.currentTheme) {
+      _controller.value = _controller.upperBound;
     }
   }
 
   @override
   void didChangeDependencies() {
-    final SelectedTheme selectedTheme = SelectedTheme.dark;
+    theme = Theme.of(context);
 
-    if (selectedTheme == widget.theme && !selected) {
-      setState(() {
-        selected = true;
-      });
-      _controller.forward();
-    } else if (selectedTheme != widget.theme && selected) {
-      setState(() {
-        selected = false;
-      });
-      _controller.reverse();
-    }
+    colorScheme = theme.colorScheme;
+    textTheme = theme.textTheme;
 
     super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant HeliosThemeButton oldWidget) {
+    if (oldWidget.theme == oldWidget.currentTheme &&
+        widget.theme != widget.currentTheme) {
+      _controller.animateTo(_controller.lowerBound);
+    } else if (oldWidget.theme != oldWidget.currentTheme &&
+        widget.theme == widget.currentTheme) {
+      _controller.animateTo(_controller.upperBound);
+    }
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -85,26 +98,32 @@ class _HeliosThemePickerState extends State<HeliosThemeButton>
       children: <Widget>[
         FadeTransition(
           opacity: _animation,
-          child: Icon(effectiveIcon, color: effectiveColor, size: 20),
+          child: Icon(
+            effectiveIcon,
+            color: Colors.white,
+            size: NumericConstants.iconSize,
+          ),
         ),
         AnimatedBuilder(
             animation: _animation,
-            builder: (context, _) {
+            builder: (context, child) {
               return MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
-                  onTap: () =>
-                      AppUserSettings.changeTheme(context, widget.theme),
+                  onTap: () => widget.onTap(widget.theme),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       SizedBox(
-                        width: _animation.value * 30,
+                        width: _animation.value *
+                            (NumericConstants.iconSize +
+                                NumericConstants.spacerSize),
                       ),
                       Text(
                         effectiveText,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: effectiveColor,
-                            ),
+                        style: textTheme.titleMedium!.copyWith(
+                          color: Colors.white.withOpacity(effectiveOpacity),
+                        ),
                       ),
                     ],
                   ),

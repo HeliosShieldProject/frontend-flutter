@@ -33,20 +33,11 @@ class HomePage extends StatelessWidget {
           VpnConnectionDisconnectedEvent(),
         );
 
-  void _blocListener(BuildContext context, VpnState state) {
-    if (state.state == States.error) {
-      print((state as ErrorVpnState).errorMessage);
-    } else {
-      print(state.state);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return BlocConsumer<VpnBloc, VpnState>(
-      listener: _blocListener,
+    return BlocBuilder<VpnBloc, VpnState>(
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -64,7 +55,7 @@ class HomePage extends StatelessWidget {
                   colorScheme.onSurface,
                   BlendMode.srcIn,
                 ),
-                height: NumericConstants.appBarElementSize,
+                height: NumericConstants.iconSize,
               ),
             ),
           ),
@@ -75,7 +66,7 @@ class HomePage extends StatelessWidget {
                 icon: Icon(
                   Icons.settings,
                   color: colorScheme.onSurface,
-                  size: NumericConstants.appBarElementSize + 5,
+                  size: NumericConstants.iconSize + 5,
                 ),
                 onPressed: () => _onTapAppBar(context),
               ),

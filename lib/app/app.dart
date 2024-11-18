@@ -1,43 +1,34 @@
-import 'package:Helios/common/theme/theme.dart';
-import 'package:Helios/repositories/local_repository/close_hive.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:Helios/features/settings/domain/bloc/settings_bloc/settings_bloc.dart';
+
+import 'package:Helios/common/theme/theme.dart';
+import 'package:Helios/common/theme/utils/get_theme.dart';
+
+import 'package:Helios/common/interafces/interfaces.dart';
 import 'package:Helios/common/navigation/routes.dart';
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({super.key});
 
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  late final AppLifecycleListener _listener;
+  bool _buildWhen(UserSettings oldSettings, UserSettings newSettings) =>
+      oldSettings.selectedTheme != newSettings.selectedTheme;
 
   @override
-  void initState() {
-    super.initState();
-
-    _listener = AppLifecycleListener(
-      onDetach: closeHive,
-    );
-  }
-
-  @override
-  void dispose() {
-    _listener.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        darkTheme: darkTheme,
-        theme: lightTheme,
-        themeMode: ThemeMode.dark,
-        onGenerateRoute: RoutesBuilder.onGenerateRoute,
-        onUnknownRoute: RoutesBuilder.onUnknownRoute,
-        initialRoute: RouteNames.welcome,
+  Widget build(BuildContext context) => BlocBuilder<SettingsBloc, UserSettings>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            darkTheme: darkTheme,
+            theme: lightTheme,
+            themeMode: getThemeMode(state.selectedTheme),
+            onGenerateRoute: RoutesBuilder.onGenerateRoute,
+            onUnknownRoute: RoutesBuilder.onUnknownRoute,
+            initialRoute: RouteNames.welcome,
+          );
+        },
+        buildWhen: _buildWhen,
       );
 }
