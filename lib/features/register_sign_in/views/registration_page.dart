@@ -152,7 +152,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         passwordController1: _passwordController1,
                       ),
                       const BlankSpacer(
-                        multiplier: Multipliers.bigGap2BlankSpacer,
+                        multiplier: Multipliers.authBigGap2BlankSpacer,
                       ),
                       HeliosButton(
                         label: Literals.toSignUp,

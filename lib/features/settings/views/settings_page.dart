@@ -126,83 +126,59 @@ class SettingsPage extends StatelessWidget {
           style: textTheme.headlineMedium,
         ),
       ),
-      body: SingleChildScrollView(
-        clipBehavior: Clip.antiAlias,
-        padding: const EdgeInsets.only(
-          top: NumericConstants.topPadding,
-          left: NumericConstants.horizontalPadding,
-          right: NumericConstants.horizontalPadding,
-        ),
-        child: Column(
-          children: [
-            _effectiveSubButton(
-              context,
-              userSettings.subscriptionType,
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            clipBehavior: Clip.antiAlias,
+            padding: const EdgeInsets.only(
+              top: NumericConstants.topPadding,
+              left: NumericConstants.horizontalPadding,
+              right: NumericConstants.horizontalPadding,
             ),
-            const BlankSpacer(),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  HeliosThemeButton(theme: SelectedTheme.values[2]),
-                  HeliosThemeButton(theme: SelectedTheme.values[1]),
-                  HeliosThemeButton(theme: SelectedTheme.values[0]),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            HeliosListTile(
-              titleWidget: Row(
-                children: <Widget>[
-                  Text(
-                    "Аккаунт",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Icon(
-                    Icons.menu_rounded,
-                    size: 17,
-                    color: Colors.white.withOpacity(0.5),
-                  ),
-                ],
-              ),
-              children: <Widget>[
-                SizedBox(
-                  height: 40,
+            child: Column(
+              children: [
+                _effectiveSubButton(
+                  context,
+                  userSettings.subscriptionType,
+                ),
+                const BlankSpacer(),
+                Container(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Icon(
-                        Icons.email_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                        size: NumericConstants.iconSize,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "placeholder@email.com",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                      HeliosThemeButton(theme: SelectedTheme.values[2]),
+                      HeliosThemeButton(theme: SelectedTheme.values[1]),
+                      HeliosThemeButton(theme: SelectedTheme.values[0]),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        RouteNames.password,
+                const SizedBox(
+                  height: 10,
+                ),
+                HeliosListTile(
+                  titleWidget: Row(
+                    children: <Widget>[
+                      Text(
+                        "Аккаунт",
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Icon(
+                        Icons.menu_rounded,
+                        size: 17,
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                    ],
+                  ),
+                  children: <Widget>[
+                    SizedBox(
+                      height: 40,
                       child: Row(
                         children: <Widget>[
                           Icon(
-                            Icons.lock,
+                            Icons.email_rounded,
                             color: Colors.white.withOpacity(0.5),
                             size: NumericConstants.iconSize,
                           ),
@@ -210,129 +186,158 @@ class SettingsPage extends StatelessWidget {
                             width: 15,
                           ),
                           Text(
-                            "Сменить пароль",
+                            "placeholder@email.com",
                             style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: Colors.white.withOpacity(0.5),
-                            size: 15,
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.logout,
-                        color: Colors.red.shade400,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "Выйти",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Colors.red.shade400,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            HeliosListTile(
-              children: <Widget>[
-                SizedBox(
-                  height: 40,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          RouteNames.history,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.public,
-                              color: Colors.white.withOpacity(0.5),
-                              size: 20,
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              "История",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            Expanded(
-                              child: Container(),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: Colors.white.withOpacity(0.5),
-                              size: 15,
-                            ),
-                          ],
+                    SizedBox(
+                      height: 40,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            RouteNames.password,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.lock,
+                                color: Colors.white.withOpacity(0.5),
+                                size: NumericConstants.iconSize,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Сменить пароль",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: Colors.white.withOpacity(0.5),
+                                size: 15,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      height: 40,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.logout,
+                            color: Colors.red.shade400,
+                            size: 20,
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "Выйти",
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      color: Colors.red.shade400,
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 40,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.accessible_forward_rounded,
-                              color: Colors.white.withOpacity(0.5),
-                              size: 23,
+                const SizedBox(
+                  height: 10,
+                ),
+                HeliosListTile(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 40,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              RouteNames.history,
                             ),
-                            const SizedBox(
-                              width: 15,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.public,
+                                  color: Colors.white.withOpacity(0.5),
+                                  size: 20,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  "История",
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                                Expanded(
+                                  child: Container(),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.white.withOpacity(0.5),
+                                  size: 15,
+                                ),
+                              ],
                             ),
-                            Text(
-                              "Поддержка",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            Expanded(
-                              child: Container(),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: Colors.white.withOpacity(0.5),
-                              size: 15,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
+                    SizedBox(
+                      height: 40,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {},
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.accessible_forward_rounded,
+                                  color: Colors.white.withOpacity(0.5),
+                                  size: 23,
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  "Поддержка",
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                                Expanded(
+                                  child: Container(),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.white.withOpacity(0.5),
+                                  size: 15,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

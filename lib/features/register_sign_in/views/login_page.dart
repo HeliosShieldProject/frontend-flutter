@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                         passwordController: _passwordController,
                       ),
                       BlankSpacer(
-                        multiplier: Multipliers.bigGap2BlankSpacer,
+                        multiplier: Multipliers.authBigGap2BlankSpacer,
                         child: Text.rich(
                           TextSpan(
                             recognizer: _underFieldTextRecognizer,
