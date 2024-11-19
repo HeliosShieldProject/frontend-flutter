@@ -34,9 +34,13 @@ class BlankSpacer extends StatelessWidget {
             height: !(horizontal)
                 ? (NumericConstants.spacerSize * multiplier)
                 : null,
-            padding: const EdgeInsets.only(
-              top: NumericConstants.spacerSize,
-            ),
+            padding: !(horizontal)
+                ? const EdgeInsets.only(
+                    top: NumericConstants.spacerSize,
+                  )
+                : const EdgeInsets.only(
+                    left: NumericConstants.spacerSize,
+                  ),
             child: child,
           ),
         );

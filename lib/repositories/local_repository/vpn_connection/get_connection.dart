@@ -11,6 +11,7 @@ VpnConnection getLocalConnection() {
     vpnConnection = vpnConnectionBox.get(HiveKeys.vpnConnectionKey,
         defaultValue: const VpnConnection.empty())!;
   } catch (e) {
+    vpnConnection = const VpnConnection.empty();
     return vpnConnection;
   }
 

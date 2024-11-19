@@ -37,8 +37,8 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
   late AnimationController _gradientAnimationController;
   late Animation<Gradient> _gradientAnimation;
 
-  late final ColorScheme colorScheme;
-  late final TextTheme textTheme;
+  late ColorScheme colorScheme;
+  late TextTheme textTheme;
 
   Size get _downloadUploadTextSize => textSize(
         "00.0",
@@ -93,7 +93,10 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
           )
         : Text(
             widget.currentCountry!.countryName,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(color: Colors.white),
           );
   }
 
@@ -150,7 +153,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
               children: [
                 TextSpan(
                   text: widget.downloadSpeed!.toString(),
-                  style: textTheme.titleMedium,
+                  style: textTheme.titleMedium!.copyWith(color: Colors.white),
                 ),
                 TextSpan(
                   text: " ${Literals.mbs}",
@@ -193,7 +196,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
               children: [
                 TextSpan(
                   text: widget.uploadSpeed!.toString(),
-                  style: textTheme.titleMedium,
+                  style: textTheme.titleMedium!.copyWith(color: Colors.white),
                 ),
                 TextSpan(
                   text: " ${Literals.mbs}",
@@ -219,7 +222,8 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
 
     if (widget.downloadSpeed == null ||
         widget.uploadSpeed == null ||
-        widget.currentCountry == null) _gradientAnimationController.repeat();
+        widget.currentCountry == null ||
+        widget.countryIp == null) _gradientAnimationController.repeat();
   }
 
   @override

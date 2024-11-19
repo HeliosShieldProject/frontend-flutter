@@ -14,7 +14,7 @@ class HeliosListTile<T> extends StatelessWidget {
   final Widget? titleWidget;
   final List<T> children;
 
-  final Widget Function(T) builder;
+  final Widget Function(BuildContext, T) builder;
 
   List<Widget> _effectiveChildren(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -25,14 +25,16 @@ class HeliosListTile<T> extends StatelessWidget {
     for (int i = 0; i < children.length; i++) {
       result.addAll(
         <Widget>[
-          builder(children[i]),
-          BlankSpacer(
-            multiplier: Multipliers.heliosListTileDivider2BlankSpacer,
+          builder(context, children[i]),
+          Container(
+            alignment: Alignment.center,
+            height: NumericConstants.spacerSize * 2.0,
             child: Divider(
-              thickness: 2,
               color: colorScheme.onTertiary,
+              height: 0.0,
+              thickness: 2.0,
             ),
-          ),
+          )
         ],
       );
     }
@@ -40,7 +42,8 @@ class HeliosListTile<T> extends StatelessWidget {
     result.removeLast();
 
     if (titleWidget != null) {
-      result.addAll(
+      result.insertAll(
+        0,
         <Widget>[
           titleWidget!,
           const BlankSpacer(
@@ -57,7 +60,7 @@ class HeliosListTile<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.tertiary,
         borderRadius: BorderRadius.circular(NumericConstants.borderRadius),
       ),
       padding: const EdgeInsets.all(NumericConstants.horizontalPadding),

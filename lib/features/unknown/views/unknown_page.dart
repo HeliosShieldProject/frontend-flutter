@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+
+import 'package:Helios/common/constants/constants.dart';
 
 class UnknownPage extends StatelessWidget {
   const UnknownPage({super.key});
@@ -11,40 +15,79 @@ class UnknownPage extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
+            Icons.arrow_back_ios_rounded,
             size: 20,
-            color: Theme.of(context).colorScheme.onBackground,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Извините",
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 60,
-                  ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              NumericConstants.horizontalPadding,
+              NumericConstants.horizontalPadding,
+              NumericConstants.bottomPadding,
+              NumericConstants.topPadding,
             ),
-            const SizedBox(
-              height: 5,
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: Text.rich(
+                TextSpan(
+                  children: <InlineSpan>[
+                    TextSpan(
+                      text: "404 ",
+                      style:
+                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 60,
+                              ),
+                    ),
+                    TextSpan(
+                      text: "такой страницы пока не сущетвует :)",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Text(
-              """
-но данной страницы пока 
-не существует :)""",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(color: Theme.of(context).colorScheme.onBackground),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class UnknownPageBg extends StatefulWidget {
+  const UnknownPageBg({super.key});
+
+  @override
+  State<UnknownPageBg> createState() => _UnknownPageBgState();
+}
+
+class _UnknownPageBgState extends State<UnknownPageBg>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final Animation<AlignmentGeometry> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) => const Placeholder();
+}
+
+class SinTween<T extends num> extends Tween<Point<T>> {
+  SinTween({
+    required super.begin,
+    required super.end,
+  });
+
+  @override
+  Point<T> lerp(double t) {
+    return super.lerp(t);
   }
 }

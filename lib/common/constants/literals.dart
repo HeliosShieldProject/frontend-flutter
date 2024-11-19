@@ -44,4 +44,8 @@ abstract interface class Literals {
   static const String system = "Системная";
 
   static const String settings = "Параметры";
+  static const String changePassword = "Смените пароль";
+  static const String toLogOut = "Выйти";
+  static const String history = "История подключений";
+  static const String feedback = "Обратная связь";
 }

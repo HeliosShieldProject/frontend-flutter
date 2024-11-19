@@ -19,83 +19,132 @@ class SettingsPage extends StatelessWidget {
     super.key,
   });
 
+  List<HeliosListElement> _elements1(String email) => <HeliosListElement>[
+        HeliosListElement(
+          icon: Icons.email_rounded,
+          label: email,
+          showArrow: false,
+        ),
+        HeliosListElement(
+          icon: Icons.lock_rounded,
+          label: Literals.changePassword,
+          onTap: (context) => Navigator.pushNamed(context, RouteNames.password),
+        ),
+        const HeliosListElement(
+          icon: Icons.logout_rounded,
+          label: Literals.toLogOut,
+          showArrow: false,
+          color: Colors.red,
+        ),
+      ];
+
+  List<HeliosListElement> get _elements2 => <HeliosListElement>[
+        HeliosListElement(
+          icon: Icons.public_outlined,
+          label: Literals.history,
+          onTap: (context) => Navigator.pushNamed(context, RouteNames.history),
+        ),
+        const HeliosListElement(
+          icon: Icons.accessible_forward_rounded,
+          label: Literals.feedback,
+        ),
+      ];
+
   Widget _effectiveSubButton(
       BuildContext context, SubscriptionType subscriptionType) {
-    return switch (subscriptionType) {
-      SubscriptionType.free => HeliosButton(
-          label: "Обновитесь до Premium",
-          color: Theme.of(context).colorScheme.onSurface,
-          onTap: () => Navigator.pushNamed(
-            context,
-            RouteNames.subscription,
+    final ThemeData theme = Theme.of(context);
+
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    final TextStyle titleLarge = theme.textTheme.titleLarge!.copyWith(
+      color: Colors.white,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: NumericConstants.topPadding,
+        left: NumericConstants.horizontalPadding,
+        right: NumericConstants.horizontalPadding,
+      ),
+      child: switch (subscriptionType) {
+        SubscriptionType.free => HeliosButton(
+            label: "Обновитесь до Premium",
+            color: colorScheme.onSurface,
+            onTap: () => Navigator.pushNamed(
+              context,
+              RouteNames.subscription,
+            ),
           ),
-        ),
-      SubscriptionType.premium => HeliosButton(
-          labelWidget: Row(
-            children: [
-              Text(
-                "Premium",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Text(
-                "1/2",
-                style: Theme.of(context).textTheme.headlineMedium,
-              )
-            ],
-          ),
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            colors: <Color>[
-              Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.secondary
-            ],
-            stops: const <double>[
-              0.3,
-              0.7,
-            ],
-          ),
-          onTap: () => Navigator.pushNamed(
-            context,
-            RouteNames.subscription,
-          ),
-        ),
-      SubscriptionType.superPremium => HeliosButton(
-          labelWidget: Row(
-            children: [
-              Text(
-                "Super Premium",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Text(
-                "2/2",
-                style: Theme.of(context).textTheme.headlineMedium,
-              )
-            ],
-          ),
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
+        SubscriptionType.premium => HeliosButton(
+            labelWidget: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Premium",
+                  style: titleLarge,
+                ),
+                Text(
+                  "1/2",
+                  style: titleLarge,
+                )
+              ],
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
               colors: <Color>[
-                Theme.of(context).colorScheme.primary,
-                Theme.of(context).colorScheme.secondary
+                colorScheme.primary,
+                colorScheme.secondary,
               ],
               stops: const <double>[
                 0.3,
                 0.7,
-              ]),
-          onTap: () => Navigator.pushNamed(
-            context,
-            RouteNames.subscription,
+              ],
+            ),
+            onTap: () => Navigator.pushNamed(
+              context,
+              RouteNames.subscription,
+            ),
           ),
-        ),
-    };
+        SubscriptionType.superPremium => HeliosButton(
+            labelWidget: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Super Premium",
+                  style: titleLarge,
+                ),
+                Text(
+                  "2/2",
+                  style: titleLarge,
+                )
+              ],
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: <Color>[colorScheme.primary, colorScheme.secondary],
+              stops: const <double>[
+                0.3,
+                0.7,
+              ],
+            ),
+            onTap: () => Navigator.pushNamed(
+              context,
+              RouteNames.subscription,
+            ),
+          ),
+      },
+    );
+  }
+
+  void _onTapThemeButton(
+    SettingsBloc bloc,
+    SelectedTheme newTheme,
+  ) {
+    bloc.add(
+      SettingsChangedThemeEvent(newTheme: newTheme),
+    );
   }
 
   void _onTapAppBar(BuildContext context) => Navigator.of(context).maybePop();
@@ -123,216 +172,90 @@ class SettingsPage extends StatelessWidget {
         ),
         title: Text(
           Literals.settings,
-          style: textTheme.headlineMedium,
+          style: textTheme.titleLarge,
         ),
       ),
       body: Column(
         children: [
+          _effectiveSubButton(
+            context,
+            userSettings.subscriptionType,
+          ),
           SingleChildScrollView(
             clipBehavior: Clip.antiAlias,
             padding: const EdgeInsets.only(
-              top: NumericConstants.topPadding,
+              top: NumericConstants.spacerSize,
               left: NumericConstants.horizontalPadding,
               right: NumericConstants.horizontalPadding,
             ),
             child: Column(
               children: [
-                _effectiveSubButton(
-                  context,
-                  userSettings.subscriptionType,
-                ),
-                const BlankSpacer(),
                 Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.tertiary,
+                    borderRadius:
+                        BorderRadius.circular(NumericConstants.borderRadius),
+                  ),
+                  padding:
+                      const EdgeInsets.all(NumericConstants.horizontalPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      HeliosThemeButton(theme: SelectedTheme.values[2]),
-                      HeliosThemeButton(theme: SelectedTheme.values[1]),
-                      HeliosThemeButton(theme: SelectedTheme.values[0]),
+                      HeliosThemeButton(
+                        theme: SelectedTheme.values[2],
+                        currentTheme: userSettings.selectedTheme,
+                        onTap: (newTheme) => _onTapThemeButton(
+                          context.read<SettingsBloc>(),
+                          newTheme,
+                        ),
+                      ),
+                      HeliosThemeButton(
+                        theme: SelectedTheme.values[1],
+                        currentTheme: userSettings.selectedTheme,
+                        onTap: (newTheme) => _onTapThemeButton(
+                          context.read<SettingsBloc>(),
+                          newTheme,
+                        ),
+                      ),
+                      HeliosThemeButton(
+                        theme: SelectedTheme.values[0],
+                        currentTheme: userSettings.selectedTheme,
+                        onTap: (newTheme) => _onTapThemeButton(
+                          context.read<SettingsBloc>(),
+                          newTheme,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                HeliosListTile(
+                const BlankSpacer(),
+                HeliosListTile<HeliosListElement>(
                   titleWidget: Row(
                     children: <Widget>[
                       Text(
                         "Аккаунт",
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: textTheme.titleMedium!
+                            .copyWith(color: Colors.white),
                       ),
                       Expanded(
                         child: Container(),
                       ),
                       Icon(
                         Icons.menu_rounded,
-                        size: 17,
+                        size: 15,
                         color: Colors.white.withOpacity(0.5),
                       ),
                     ],
                   ),
-                  children: <Widget>[
-                    SizedBox(
-                      height: 40,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.email_rounded,
-                            color: Colors.white.withOpacity(0.5),
-                            size: NumericConstants.iconSize,
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Text(
-                            "placeholder@email.com",
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => Navigator.pushNamed(
-                            context,
-                            RouteNames.password,
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.lock,
-                                color: Colors.white.withOpacity(0.5),
-                                size: NumericConstants.iconSize,
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                "Сменить пароль",
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                              Expanded(
-                                child: Container(),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: Colors.white.withOpacity(0.5),
-                                size: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.logout,
-                            color: Colors.red.shade400,
-                            size: 20,
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Text(
-                            "Выйти",
-                            style:
-                                Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      color: Colors.red.shade400,
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  builder: HeliosListElement.builder,
+                  children: _elements1(user.email ?? "placeholder@test.com"),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                HeliosListTile(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 40,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              RouteNames.history,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.public,
-                                  color: Colors.white.withOpacity(0.5),
-                                  size: 20,
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  "История",
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: Colors.white.withOpacity(0.5),
-                                  size: 15,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.accessible_forward_rounded,
-                                  color: Colors.white.withOpacity(0.5),
-                                  size: 23,
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  "Поддержка",
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: Colors.white.withOpacity(0.5),
-                                  size: 15,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                HeliosListTile<HeliosListElement>(
+                  builder: HeliosListElement.builder,
+                  children: _elements2,
                 ),
               ],
             ),
@@ -341,4 +264,69 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
+}
+
+class HeliosListElement {
+  const HeliosListElement({
+    required this.icon,
+    required this.label,
+    this.onTap,
+    this.color = Colors.white,
+    this.showArrow = true,
+  });
+
+  final IconData icon;
+  final String label;
+  final void Function(BuildContext context)? onTap;
+  final Color color;
+  final bool showArrow;
+
+  List<Widget> _effectiveChildren(BuildContext context) {
+    final List<Widget> result = <Widget>[
+      Icon(
+        icon,
+        color: color.withOpacity(0.7),
+        size: NumericConstants.listElementIconSize,
+      ),
+      const BlankSpacer(
+        horizontal: true,
+      ),
+      Text(
+        label,
+        style: Theme.of(context).textTheme.titleMedium!.copyWith(color: color),
+      ),
+    ];
+
+    if (showArrow) {
+      result.addAll(
+        <Widget>[
+          const Expanded(
+            child: SizedBox(),
+          ),
+          Icon(
+            Icons.arrow_forward_ios_rounded,
+            color: color.withOpacity(0.5),
+            size: NumericConstants.listElementIconSize,
+          ),
+        ],
+      );
+    }
+
+    return result;
+  }
+
+  static Widget builder(BuildContext context, HeliosListElement element) =>
+      SizedBox(
+        height: NumericConstants.listElementHeight,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: element.onTap != null ? () => element.onTap!(context) : null,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: element._effectiveChildren(context),
+            ),
+          ),
+        ),
+      );
 }

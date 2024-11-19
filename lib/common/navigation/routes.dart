@@ -81,7 +81,7 @@ abstract class RoutesBuilder {
       case (RouteNames.settings):
         print("Settings onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const SettingsPage(),
+          builder: (_) => SettingsPage(),
           settings: settings,
         );
     }
