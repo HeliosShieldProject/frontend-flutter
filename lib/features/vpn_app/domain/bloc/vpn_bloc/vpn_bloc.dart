@@ -187,6 +187,9 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
         await _flutterV2ray.startV2Ray(
           config: v2rayURL.getFullConfiguration(),
           remark: v2rayURL.remark,
+          notificationTitle:
+              "Подключено ${country.countryName} ${protocol.name}",
+          notificationDisconnectButtonName: "Отключиться",
         );
       } else {
         emit(
