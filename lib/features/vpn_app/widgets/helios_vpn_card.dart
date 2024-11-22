@@ -412,11 +412,23 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
 }
 
 class GradientTween extends Tween<Gradient> {
+  GradientTween({
+    this.gradientBegin = Alignment.centerLeft,
+    this.gradientEnd = Alignment.centerRight,
+  });
+
+  GradientTween.vertical()
+      : gradientBegin = Alignment.topCenter,
+        gradientEnd = Alignment.bottomCenter;
+
+  final Alignment gradientBegin;
+  final Alignment gradientEnd;
+
   @override
   Gradient lerp(double t) {
     return LinearGradient(
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
+      begin: gradientBegin,
+      end: gradientEnd,
       colors: <Color>[
         Colors.white.withOpacity(0.1),
         Colors.white.withOpacity(

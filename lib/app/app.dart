@@ -13,8 +13,10 @@ import 'package:Helios/common/navigation/routes.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
-  bool _buildWhen(UserSettings oldSettings, UserSettings newSettings) =>
-      oldSettings.selectedTheme != newSettings.selectedTheme;
+  bool _buildWhen(UserSettings oldSettings, UserSettings newSettings) {
+    return getThemeMode(oldSettings.selectedTheme) !=
+        getThemeMode(newSettings.selectedTheme);
+  }
 
   @override
   Widget build(BuildContext context) => BlocBuilder<SettingsBloc, UserSettings>(
