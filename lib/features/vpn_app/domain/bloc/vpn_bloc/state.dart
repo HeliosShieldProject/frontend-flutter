@@ -65,7 +65,9 @@ class VpnState extends Equatable {
         downloadSpeed = null,
         ip = null;
 
-  const factory VpnState.error({required String errorMessage}) = ErrorVpnState;
+  const factory VpnState.error({required String error}) = ErrorVpnState;
+
+  const factory VpnState.authError({required Auth error}) = ErrorVpnState;
 
   VpnState copyWith({
     States? state,
@@ -105,9 +107,9 @@ class VpnState extends Equatable {
 }
 
 @immutable
-class ErrorVpnState extends VpnState {
+class ErrorVpnState<T> extends VpnState {
   const ErrorVpnState({
-    required this.errorMessage,
+    required this.error,
   }) : super(
           state: States.error,
           country: null,
@@ -117,5 +119,5 @@ class ErrorVpnState extends VpnState {
           ip: null,
         );
 
-  final String errorMessage;
+  final T error;
 }

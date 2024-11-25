@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:Helios/common/constants/countries_constants.dart';
 import 'package:country_ip/country_ip.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
@@ -73,11 +74,11 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       );
     } on Auth catch (e) {
       emit(
-        VpnState.error(errorMessage: e.name),
+        VpnState.authError(error: e),
       );
     } catch (e) {
       emit(
-        const VpnState.error(errorMessage: "Init error"),
+        const VpnState.error(error: "Init error"),
       );
     }
   }
@@ -90,7 +91,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     switch ((v2rayStatus.status, localVpnConnection.state)) {
       case (States.error, _):
         emit(
-          const VpnState.error(errorMessage: 'V2ray error'),
+          const VpnState.error(error: 'V2ray error'),
         );
 
         if (localVpnConnection.state == States.connected) {
@@ -104,11 +105,11 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
             await _flutterV2ray.stopV2Ray();
           } on Auth catch (e) {
             emit(
-              VpnState.error(errorMessage: e.name),
+              VpnState.authError(error: e),
             );
           } catch (e) {
             emit(
-              const VpnState.error(errorMessage: 'Disconnect error'),
+              const VpnState.error(error: 'Disconnect error'),
             );
           }
         }
@@ -127,11 +128,11 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
           );
         } on Auth catch (e) {
           emit(
-            VpnState.error(errorMessage: e.name),
+            VpnState.authError(error: e),
           );
         } catch (e) {
           emit(
-            const VpnState.error(errorMessage: 'Close session error'),
+            const VpnState.error(error: 'Close session error'),
           );
         }
 
@@ -205,16 +206,16 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
         );
       } else {
         emit(
-          const VpnState.error(errorMessage: "Permission error"),
+          const VpnState.error(error: "Permission error"),
         );
       }
     } on Auth catch (e) {
       emit(
-        VpnState.error(errorMessage: e.name),
+        VpnState.authError(error: e),
       );
     } catch (e) {
       emit(
-        const VpnState.error(errorMessage: "Connect error"),
+        const VpnState.error(error: "Connect error"),
       );
     }
   }
@@ -233,7 +234,6 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
     try {
       await _refreshUser();
-
       await closeSession(user: _userRepository.get());
 
       _vpnConnectionRepository.delete();
@@ -243,11 +243,11 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       _blockV2rayStatus = false;
     } on Auth catch (e) {
       emit(
-        VpnState.error(errorMessage: e.name),
+        VpnState.authError(error: e),
       );
     } catch (e) {
       emit(
-        const VpnState.error(errorMessage: 'Disconnect error'),
+        const VpnState.error(error: 'Disconnect error'),
       );
     }
   }
@@ -270,7 +270,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       );
     } else {
       emit(
-        const VpnState.error(errorMessage: "Country lookup"),
+        const VpnState.error(error: "Country lookup"),
       );
     }
   }

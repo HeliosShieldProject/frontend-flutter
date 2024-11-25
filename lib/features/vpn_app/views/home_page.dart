@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
 
   void _blocListener(BuildContext context, VpnState state) {
     if (state.state == States.error) {
-      print((state as ErrorVpnState).errorMessage);
+      print((state as ErrorVpnState).error);
     } else {
       print(state.state);
     }
