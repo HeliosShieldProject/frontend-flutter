@@ -71,6 +71,10 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       emit(
         state.copyWith(state: v2rayState),
       );
+    } on Auth catch (e) {
+      emit(
+        VpnState.error(errorMessage: e.name),
+      );
     } catch (e) {
       emit(
         const VpnState.error(errorMessage: "Init error"),
@@ -98,6 +102,10 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
             _vpnConnectionRepository.delete();
 
             await _flutterV2ray.stopV2Ray();
+          } on Auth catch (e) {
+            emit(
+              VpnState.error(errorMessage: e.name),
+            );
           } catch (e) {
             emit(
               const VpnState.error(errorMessage: 'Disconnect error'),
@@ -116,6 +124,10 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
           emit(
             const VpnState.disconnected(),
+          );
+        } on Auth catch (e) {
+          emit(
+            VpnState.error(errorMessage: e.name),
           );
         } catch (e) {
           emit(
@@ -196,6 +208,10 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
           const VpnState.error(errorMessage: "Permission error"),
         );
       }
+    } on Auth catch (e) {
+      emit(
+        VpnState.error(errorMessage: e.name),
+      );
     } catch (e) {
       emit(
         const VpnState.error(errorMessage: "Connect error"),
@@ -225,6 +241,10 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       await _flutterV2ray.stopV2Ray();
 
       _blockV2rayStatus = false;
+    } on Auth catch (e) {
+      emit(
+        VpnState.error(errorMessage: e.name),
+      );
     } catch (e) {
       emit(
         const VpnState.error(errorMessage: 'Disconnect error'),
