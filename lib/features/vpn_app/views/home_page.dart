@@ -34,12 +34,36 @@ class HomePage extends StatelessWidget {
         );
 
   void _blocListener(BuildContext context, VpnState state) {
-    if (state.state == States.error) {
-      print((state as ErrorVpnState).error);
-    } else {
-      print(state.state);
+    switch (state.state) {
+      case States.error:
+        state as ErrorVpnState;
+
+        if (state.error case Auth _) {
+          showDialog(
+            context: context,
+            builder: (context) => CustomDialog(
+              dialogTitle: state.error.name,
+              buttonLabel: Literals.dialogButton,
+            ),
+          );
+        } else if (state.error case String _) {
+          showDialog(
+            context: context,
+            builder: (context) => CustomDialog(
+              dialogTitle: state.error,
+              buttonLabel: Literals.dialogButton,
+            ),
+          );
+        }
+        break;
+      default:
+        print(state.state);
+        break;
     }
   }
+
+  bool _listenWhen(VpnState oldState, VpnState newState) =>
+      (newState.state == States.error || newState.state == States.loading);
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +71,7 @@ class HomePage extends StatelessWidget {
 
     return BlocConsumer<VpnBloc, VpnState>(
       listener: _blocListener,
+      listenWhen: _listenWhen,
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,

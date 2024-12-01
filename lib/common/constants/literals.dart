@@ -48,4 +48,6 @@ abstract interface class Literals {
   static const String toLogOut = "Выйти";
   static const String history = "История подключений";
   static const String feedback = "Обратная связь";
+
+  static const String dialogButton = "Понятно";
 }
