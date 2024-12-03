@@ -32,7 +32,10 @@ class CustomDialog extends StatelessWidget {
           ),
         ),
         padding: const EdgeInsets.all(NumericConstants.horizontalPadding),
+        margin: const EdgeInsets.all(NumericConstants.horizontalPadding),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               dialogTitle,
@@ -43,6 +46,7 @@ class CustomDialog extends StatelessWidget {
             ),
             HeliosButton(
               label: buttonLabel,
+              color: Colors.white,
               onTap: () => Navigator.pop(context),
             )
           ],

@@ -44,7 +44,7 @@ Future<BasicServerEntity> serverRefresh(
               "vey secret key",
             ),
             expiresIn: const Duration(
-              minutes: 15,
+              days: 1,
             ),
           ),
           "refresh_token": jwt.sign(
@@ -52,7 +52,7 @@ Future<BasicServerEntity> serverRefresh(
               "vey secret key",
             ),
             expiresIn: const Duration(
-              minutes: 30,
+              days: 2,
             ),
           ),
         },

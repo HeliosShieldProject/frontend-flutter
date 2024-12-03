@@ -12,8 +12,10 @@ class VpnStatusChangedEvent extends VpnEvent {
   final V2RayStatus status;
 }
 
-class VpnConnectionExecutedEvent extends VpnEvent {
-  VpnConnectionExecutedEvent({
+class VpnConnectionExecutedEvent extends VpnEvent {}
+
+class ChangeSelectedServerEvent extends VpnEvent {
+  ChangeSelectedServerEvent({
     required this.country,
     required this.protocol,
   });
@@ -23,5 +25,3 @@ class VpnConnectionExecutedEvent extends VpnEvent {
 }
 
 class VpnConnectionDisconnectedEvent extends VpnEvent {}
-
-class DisconnectedStateEvent extends VpnEvent {}

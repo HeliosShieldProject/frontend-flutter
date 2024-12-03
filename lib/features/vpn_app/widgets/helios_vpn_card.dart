@@ -1,3 +1,4 @@
+import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,10 @@ class HeliosVpnCard extends StatefulWidget {
   const HeliosVpnCard({
     super.key,
     required this.connected,
+    required this.onTap,
     this.currentCountry,
     this.countryIp,
+    this.protocol,
     this.uploadSpeed,
     this.downloadSpeed,
   });
@@ -27,6 +30,9 @@ class HeliosVpnCard extends StatefulWidget {
   final double? downloadSpeed;
   final Country? currentCountry;
   final IP? countryIp;
+  final Protocols? protocol;
+
+  final VoidCallback onTap;
 
   @override
   State<HeliosVpnCard> createState() => _HeliosVpnCardState();
@@ -68,11 +74,14 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
               width: NumericConstants.cardCountryIconSize,
             ),
           )
-        : CountryFlag.fromCountryCode(
-            widget.currentCountry!.countryCode,
-            shape: const Circle(),
-            height: NumericConstants.cardCountryIconSize,
-            width: NumericConstants.cardCountryIconSize,
+        : GestureDetector(
+            onTap: !widget.connected ? widget.onTap : null,
+            child: CountryFlag.fromCountryCode(
+              widget.currentCountry!.countryCode,
+              shape: const Circle(),
+              height: NumericConstants.cardCountryIconSize,
+              width: NumericConstants.cardCountryIconSize,
+            ),
           );
   }
 
@@ -288,49 +297,73 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                 vertical: NumericConstants.cardVerticalPadding,
               ),
               child: Row(
-                children: <Widget>[
-                  Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      ConstrainedBox(
-                        constraints: const BoxConstraints.tightFor(
-                          width: NumericConstants.cardCountryIconTrimSize,
-                          height: NumericConstants.cardCountryIconTrimSize,
-                        ),
-                        child: CustomPaint(
-                          painter: CustomTrim(
-                            colors: widget.connected
-                                ? <Color>[
-                                    colorScheme.secondary,
-                                    colorScheme.primary
-                                  ]
-                                : null,
-                          ),
-                        ),
-                      ),
-                      _effectiveCountryIcon,
-                    ],
-                  ),
-                  const BlankSpacer(
-                    horizontal: true,
-                    multiplier: 2,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Expanded(
-                        child: _effectiveCountryName,
+                      Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          ConstrainedBox(
+                            constraints: const BoxConstraints.tightFor(
+                              width: NumericConstants.cardCountryIconTrimSize,
+                              height: NumericConstants.cardCountryIconTrimSize,
+                            ),
+                            child: CustomPaint(
+                              painter: CustomTrim(
+                                colors: widget.connected
+                                    ? <Color>[
+                                        colorScheme.secondary,
+                                        colorScheme.primary
+                                      ]
+                                    : null,
+                              ),
+                            ),
+                          ),
+                          _effectiveCountryIcon,
+                        ],
                       ),
                       const BlankSpacer(
-                        multiplier: 0.5,
+                        horizontal: true,
+                        multiplier: 2,
                       ),
-                      Expanded(
-                        child: effectiveCountryIp,
-                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Expanded(
+                            child: _effectiveCountryName,
+                          ),
+                          const BlankSpacer(
+                            multiplier: 0.5,
+                          ),
+                          Expanded(
+                            child: effectiveCountryIp,
+                          ),
+                        ],
+                      )
                     ],
-                  )
+                  ),
+                  if (widget.protocol != null)
+                    Container(
+                      padding: const EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2.0,
+                          color: colorScheme.onTertiary,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                            NumericConstants.borderRadius),
+                      ),
+                      child: Text(
+                        widget.protocol!.name,
+                        style: textTheme.labelMedium!.copyWith(
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

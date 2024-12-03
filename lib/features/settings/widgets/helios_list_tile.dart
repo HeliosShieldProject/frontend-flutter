@@ -28,7 +28,8 @@ class HeliosListTile<T> extends StatelessWidget {
           builder(context, children[i]),
           Container(
             alignment: Alignment.center,
-            height: NumericConstants.spacerSize * 2.0,
+            height: NumericConstants.spacerSize *
+                Multipliers.heliosListTileDivider2BlankSpacer,
             child: Divider(
               color: colorScheme.onTertiary,
               height: 0.0,

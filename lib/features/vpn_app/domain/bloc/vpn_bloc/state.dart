@@ -65,6 +65,14 @@ class VpnState extends Equatable {
         downloadSpeed = null,
         ip = null;
 
+  const VpnState.loading()
+      : state = States.loading,
+        country = null,
+        protocol = null,
+        uploadSpeed = null,
+        downloadSpeed = null,
+        ip = null;
+
   const factory VpnState.error({required String error}) = ErrorVpnState;
 
   const factory VpnState.authError({required Auth error}) = ErrorVpnState;
