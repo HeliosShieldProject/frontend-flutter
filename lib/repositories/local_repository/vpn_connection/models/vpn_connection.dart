@@ -1,3 +1,4 @@
+import 'package:Helios/common/constants/countries_constants.dart';
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/interafces/country.dart';
 import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
@@ -15,24 +16,38 @@ class VpnConnection extends Equatable {
     required this.country,
     required this.ip,
     required this.protocol,
+    required this.state,
   });
 
-  const VpnConnection.empty()
-      : country = null,
-        ip = null,
-        protocol = null;
+  static const VpnConnection basic = VpnConnection(
+    country: CountriesConstants.uk,
+    ip: IP.unknown(),
+    protocol: Protocols.vless,
+    state: States.disconnected,
+  );
+
+  VpnConnection copyWith({
+    Country? country,
+    IP? ip,
+    Protocols? protocol,
+    States? state,
+  }) =>
+      VpnConnection(
+        country: country ?? this.country,
+        ip: ip ?? this.ip,
+        protocol: protocol ?? this.protocol,
+        state: state ?? this.state,
+      );
 
   @HiveField(0)
-  final Country? country;
+  final Country country;
   @HiveField(1)
-  final IP? ip;
+  final IP ip;
   @HiveField(2)
-  final Protocols? protocol;
-
-  States get state => country == null && ip == null && protocol == null
-      ? States.disconnected
-      : States.connected;
+  final Protocols protocol;
+  @HiveField(3)
+  final States state;
 
   @override
-  List<Object?> get props => [country, ip, protocol];
+  List<Object?> get props => [country, ip, protocol, state];
 }

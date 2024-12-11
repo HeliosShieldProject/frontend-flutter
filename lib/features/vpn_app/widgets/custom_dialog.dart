@@ -39,6 +39,8 @@ class CustomDialog extends StatelessWidget {
           children: <Widget>[
             Text(
               dialogTitle,
+              softWrap: true,
+              overflow: TextOverflow.fade,
               style: textTheme.titleLarge!.copyWith(color: Colors.white),
             ),
             const BlankSpacer(
@@ -47,7 +49,7 @@ class CustomDialog extends StatelessWidget {
             HeliosButton(
               label: buttonLabel,
               color: Colors.white,
-              onTap: () => Navigator.pop(context),
+              onTap: () => Navigator.pop(context, true),
             )
           ],
         ),

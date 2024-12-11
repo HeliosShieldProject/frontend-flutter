@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:Helios/common/constants/countries_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +18,12 @@ import 'package:Helios/repositories/vpn_connection_repository/vpn_connection_rep
 import 'package:Helios/repositories/session_repository/high_level/close_session.dart';
 import 'package:Helios/repositories/session_repository/high_level/create_session.dart';
 import 'package:Helios/repositories/auth_repository/high_level/refresh_tokens.dart';
+import 'package:hive/hive.dart';
 
 part 'event.dart';
 part 'state.dart';
+
+part 'generated/vpn_bloc.g.dart';
 
 class VpnBloc extends Bloc<VpnEvent, VpnState> {
   VpnBloc({
@@ -29,7 +31,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     required VpnConnectionRepository vpnConnectionRepository,
   })  : _userRepository = userRepository,
         _vpnConnectionRepository = vpnConnectionRepository,
-        super(const VpnState.empty()) {
+        super(VpnState.empty) {
     on<VpnAppInitEvent>(_onVpnAppInit);
     on<VpnStatusChangedEvent>(_onVpnStatusChanged);
     on<VpnConnectionExecutedEvent>(_onVpnConnectionExecuted);
@@ -37,9 +39,10 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     on<ChangeSelectedServerEvent>(_onChangeSelectedServer);
   }
 
+  late final FlutterV2ray _flutterV2ray;
+
   final UserRepository _userRepository;
   final VpnConnectionRepository _vpnConnectionRepository;
-  late final FlutterV2ray _flutterV2ray;
 
   bool _blockConnectedV2rayStatus = false;
 
@@ -51,7 +54,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
       },
     );
 
-    emit(const VpnState.loading());
+    emit(state.copyWith(state: States.loading));
 
     try {
       await _flutterV2ray.initializeV2Ray();
@@ -67,18 +70,19 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
         await closeSession(user: _userRepository.get());
 
-        _vpnConnectionRepository.delete();
+        _vpnConnectionRepository.reset();
       }
 
       emit(state.copyWith(
         state: v2rayState,
-        country: localConnection.country ?? CountriesConstants.uk,
-        ip: localConnection.ip ?? const IP.unknown(),
+        country: localConnection.country,
+        protocol: localConnection.protocol,
+        ip: localConnection.ip,
       ));
     } on Auth catch (e) {
-      emit(VpnState.authError(error: e));
+      emit(VpnState.authError(error: e, thrownBy: event));
     } catch (e) {
-      emit(const VpnState.error(error: "Init error"));
+      emit(VpnState.error(error: "Init error", thrownBy: event));
     }
   }
 
@@ -90,7 +94,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
     switch ((v2rayStatus.status, localConnection.state)) {
       case (States.error, _):
-        emit(const VpnState.error(error: 'V2ray error'));
+        emit(VpnState.error(error: 'V2ray error', thrownBy: event));
 
         if (localConnection.state == States.connected) {
           try {
@@ -98,13 +102,13 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
             await closeSession(user: _userRepository.get());
 
-            _vpnConnectionRepository.delete();
+            _vpnConnectionRepository.reset();
 
             await _flutterV2ray.stopV2Ray();
           } on Auth catch (e) {
-            emit(VpnState.authError(error: e));
+            emit(VpnState.authError(error: e, thrownBy: event));
           } catch (e) {
-            emit(const VpnState.error(error: 'Disconnect error'));
+            emit(VpnState.error(error: 'Disconnect error', thrownBy: event));
           }
         }
 
@@ -115,21 +119,18 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
           await closeSession(user: _userRepository.get());
 
-          _vpnConnectionRepository.delete();
+          _vpnConnectionRepository.reset();
 
           add(VpnStatusChangedEvent(status: v2rayStatus));
         } on Auth catch (e) {
-          emit(VpnState.authError(error: e));
+          emit(VpnState.authError(error: e, thrownBy: event));
         } catch (e) {
-          emit(const VpnState.error(error: 'Close session error'));
+          emit(VpnState.error(error: 'Close session error', thrownBy: event));
         }
 
         break;
       case (States.disconnected, States.disconnected):
-        emit(const VpnState.disconnected().copyWith(
-          country: localConnection.country ?? CountriesConstants.uk,
-          ip: localConnection.ip ?? const IP.unknown(),
-        ));
+        emit(state.copyWith(state: States.disconnected));
 
         break;
       default:
@@ -164,7 +165,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     final Country country = state.country!;
     final Protocols protocol = state.protocol!;
 
-    emit(const VpnState.loading());
+    emit(state.copyWith(state: States.loading));
 
     try {
       await _refreshUser();
@@ -177,6 +178,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
       _vpnConnectionRepository.put(
         vpnConnection: VpnConnection(
+          state: States.connected,
           country: country,
           ip: const IP.unknown(),
           protocol: protocol,
@@ -194,12 +196,12 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
           notificationDisconnectButtonName: "Отключиться",
         );
       } else {
-        emit(const VpnState.error(error: "Permission error"));
+        emit(VpnState.error(error: "Permission error", thrownBy: event));
       }
     } on Auth catch (e) {
-      emit(VpnState.authError(error: e));
+      emit(VpnState.authError(error: e, thrownBy: event));
     } catch (e) {
-      emit(const VpnState.error(error: "Connect error"));
+      emit(VpnState.error(error: "Connect error", thrownBy: event));
     }
   }
 
@@ -207,7 +209,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
     VpnConnectionDisconnectedEvent event,
     Emitter<VpnState> emit,
   ) async {
-    emit(const VpnState.loading());
+    emit(state.copyWith(state: States.loading));
 
     _blockConnectedV2rayStatus = true;
 
@@ -216,7 +218,7 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
       _blockConnectedV2rayStatus = false;
     } catch (e) {
-      emit(const VpnState.error(error: 'Disconnect error'));
+      emit(VpnState.error(error: 'Disconnect error', thrownBy: event));
     }
   }
 

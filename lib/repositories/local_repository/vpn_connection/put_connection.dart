@@ -8,6 +8,7 @@ bool putLocalConnection({required VpnConnection vpnConnection}) {
         Hive.box<VpnConnection>(HiveKeys.vpnConnectionBox);
     vpnConnectionBox.put(HiveKeys.vpnConnectionKey, vpnConnection);
   } catch (e) {
+    print(e);
     return false;
   }
 

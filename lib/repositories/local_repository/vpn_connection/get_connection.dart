@@ -8,10 +8,13 @@ VpnConnection getLocalConnection() {
   try {
     final Box<VpnConnection> vpnConnectionBox =
         Hive.box<VpnConnection>(HiveKeys.vpnConnectionBox);
-    vpnConnection = vpnConnectionBox.get(HiveKeys.vpnConnectionKey,
-        defaultValue: const VpnConnection.empty())!;
+    vpnConnection = vpnConnectionBox.get(
+      HiveKeys.vpnConnectionKey,
+      defaultValue: VpnConnection.basic,
+    )!;
   } catch (e) {
-    vpnConnection = const VpnConnection.empty();
+    print("$e get");
+    vpnConnection = VpnConnection.basic;
     return vpnConnection;
   }
 

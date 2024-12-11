@@ -1,20 +1,17 @@
-part of 'settings_bloc.dart';
+part of "bloc.dart";
 
-@immutable
 sealed class SettingsEvent {}
 
-class SettingsChangedThemeEvent extends SettingsEvent {
-  SettingsChangedThemeEvent({
-    required this.newTheme,
+class _ChangeSettingsEvent extends SettingsEvent {
+  _ChangeSettingsEvent({
+    required this.userSettings,
   });
 
-  final SelectedTheme newTheme;
+  final UserSettings userSettings;
 }
 
-class SettingsChangedSubscriptionEvent extends SettingsEvent {
-  SettingsChangedSubscriptionEvent({
-    required this.newSubscription,
-  });
+class ChangeSelectedThemeEvent extends SettingsEvent {
+  ChangeSelectedThemeEvent({required this.selectedTheme});
 
-  final SubscriptionType newSubscription;
+  final SelectedTheme selectedTheme;
 }

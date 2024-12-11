@@ -18,10 +18,15 @@ extension EnumedFlutterV2ray on FlutterV2ray {
   }
 }
 
+@HiveType(typeId: 9)
 enum States {
+  @HiveField(0)
   loading(name: "CONNECTING"),
+  @HiveField(1)
   connected(name: "CONNECTED"),
+  @HiveField(2)
   disconnected(name: "DISCONNECTED"),
+  @HiveField(3)
   error(name: "ERROR");
 
   const States({
@@ -49,33 +54,20 @@ class VpnState extends Equatable {
   final double? downloadSpeed;
   final IP? ip;
 
-  const VpnState.empty()
-      : state = null,
-        country = null,
-        protocol = null,
-        uploadSpeed = null,
-        downloadSpeed = null,
-        ip = null;
+  static const VpnState empty = VpnState(
+    state: null,
+    country: null,
+    protocol: null,
+    uploadSpeed: null,
+    downloadSpeed: null,
+    ip: null,
+  );
 
-  const VpnState.disconnected()
-      : state = States.disconnected,
-        country = null,
-        protocol = null,
-        uploadSpeed = null,
-        downloadSpeed = null,
-        ip = null;
+  const factory VpnState.error(
+      {required String error, required VpnEvent thrownBy}) = ErrorVpnState;
 
-  const VpnState.loading()
-      : state = States.loading,
-        country = null,
-        protocol = null,
-        uploadSpeed = null,
-        downloadSpeed = null,
-        ip = null;
-
-  const factory VpnState.error({required String error}) = ErrorVpnState;
-
-  const factory VpnState.authError({required Auth error}) = ErrorVpnState;
+  const factory VpnState.authError(
+      {required Auth error, required VpnEvent thrownBy}) = ErrorVpnState;
 
   VpnState copyWith({
     States? state,
@@ -85,23 +77,14 @@ class VpnState extends Equatable {
     double? downloadSpeed,
     IP? ip,
   }) =>
-      state != States.disconnected
-          ? VpnState(
-              state: state ?? this.state,
-              country: country ?? this.country,
-              protocol: protocol ?? this.protocol,
-              uploadSpeed: uploadSpeed ?? this.uploadSpeed,
-              downloadSpeed: downloadSpeed ?? this.downloadSpeed,
-              ip: ip ?? this.ip,
-            )
-          : VpnState(
-              state: state,
-              country: country,
-              protocol: protocol,
-              uploadSpeed: uploadSpeed,
-              downloadSpeed: downloadSpeed,
-              ip: ip,
-            );
+      VpnState(
+        state: state ?? this.state,
+        country: country ?? this.country,
+        protocol: protocol ?? this.protocol,
+        uploadSpeed: uploadSpeed ?? this.uploadSpeed,
+        downloadSpeed: downloadSpeed ?? this.downloadSpeed,
+        ip: ip ?? this.ip,
+      );
 
   @override
   List<Object?> get props => [
@@ -118,6 +101,7 @@ class VpnState extends Equatable {
 class ErrorVpnState<T> extends VpnState {
   const ErrorVpnState({
     required this.error,
+    required this.thrownBy,
   }) : super(
           state: States.error,
           country: null,
@@ -128,4 +112,5 @@ class ErrorVpnState<T> extends VpnState {
         );
 
   final T error;
+  final VpnEvent thrownBy;
 }

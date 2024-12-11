@@ -1,4 +1,4 @@
-import 'package:Helios/repositories/local_repository/vpn_connection/delete_connection.dart';
+import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
 import 'package:Helios/repositories/local_repository/vpn_connection/get_connection.dart';
 import 'package:Helios/repositories/local_repository/vpn_connection/models/vpn_connection.dart';
 import 'package:Helios/repositories/local_repository/vpn_connection/put_connection.dart';
@@ -6,6 +6,7 @@ import 'package:Helios/repositories/local_repository/vpn_connection/put_connecti
 class VpnConnectionRepository {
   VpnConnection? _vpnConnection;
 
+  /// get the current stored VpnConnection
   VpnConnection get() {
     if (_vpnConnection != null) {
       return _vpnConnection!;
@@ -14,15 +15,20 @@ class VpnConnectionRepository {
     return _vpnConnection!;
   }
 
+  /// put new VpnConnection
   bool put({required VpnConnection vpnConnection}) {
     _vpnConnection = vpnConnection;
     return putLocalConnection(
-      vpnConnection: _vpnConnection ?? const VpnConnection.empty(),
+      vpnConnection: _vpnConnection ?? VpnConnection.basic,
     );
   }
 
-  bool delete() {
-    _vpnConnection = null;
-    return deleteLocalConnection();
+  /// reset current storred VpnConnection
+  /// to have Disconnected state
+  bool reset() {
+    _vpnConnection = _vpnConnection?.copyWith(state: States.disconnected);
+    return putLocalConnection(
+      vpnConnection: _vpnConnection ?? VpnConnection.basic,
+    );
   }
 }

@@ -17,22 +17,25 @@ class VpnConnectionAdapter extends TypeAdapter<VpnConnection> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return VpnConnection(
-      country: fields[0] as Country?,
-      ip: fields[1] as IP?,
-      protocol: fields[2] as Protocols?,
+      country: fields[0] as Country,
+      ip: fields[1] as IP,
+      protocol: fields[2] as Protocols,
+      state: fields[3] as States,
     );
   }
 
   @override
   void write(BinaryWriter writer, VpnConnection obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.country)
       ..writeByte(1)
       ..write(obj.ip)
       ..writeByte(2)
-      ..write(obj.protocol);
+      ..write(obj.protocol)
+      ..writeByte(3)
+      ..write(obj.state);
   }
 
   @override

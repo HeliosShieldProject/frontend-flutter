@@ -1,9 +1,11 @@
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/welcome/welcome_bloc.dart';
+import 'package:Helios/features/settings/domain/bloc/settings_bloc/bloc.dart';
 import 'package:Helios/features/settings/views/history_page.dart';
 import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
 import 'package:Helios/repositories/user_repository/user_repository.dart';
+import 'package:Helios/repositories/user_settings_repository/user_settings_repository.dart';
 import 'package:Helios/repositories/vpn_connection_repository/vpn_connection_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -82,7 +84,13 @@ abstract class RoutesBuilder {
       case (RouteNames.settings):
         print("Settings onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const SettingsPage(),
+          builder: (_) => BlocProvider(
+            create: (context) => SettingsBloc(
+              userRepository: context.read<UserRepository>(),
+              userSettingsRepository: context.read<UserSettingsRepository>(),
+            ),
+            child: const SettingsPage(),
+          ),
           settings: settings,
         );
       case (RouteNames.history):

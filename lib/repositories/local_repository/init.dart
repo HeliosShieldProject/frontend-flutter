@@ -1,3 +1,4 @@
+import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:Helios/repositories/local_repository/hive_keys.dart';
@@ -23,7 +24,8 @@ Future<void> initHive() async {
     ..registerAdapter(CountryImplAdapter())
     ..registerAdapter(ProtocolsAdapter())
     ..registerAdapter(IPAdapter())
-    ..registerAdapter(VpnConnectionAdapter());
+    ..registerAdapter(VpnConnectionAdapter())
+    ..registerAdapter(StatesAdapter());
 
   await Hive.openBox<User>(HiveKeys.userBox);
   await Hive.openBox<UserSettings>(HiveKeys.userSettingsBox);
