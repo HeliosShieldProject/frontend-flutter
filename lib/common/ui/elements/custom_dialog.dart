@@ -40,6 +40,7 @@ class CustomDialog extends StatelessWidget {
             Text(
               dialogTitle,
               softWrap: true,
+              textAlign: TextAlign.center,
               overflow: TextOverflow.fade,
               style: textTheme.titleLarge!.copyWith(color: Colors.white),
             ),
@@ -49,6 +50,7 @@ class CustomDialog extends StatelessWidget {
             HeliosButton(
               label: buttonLabel,
               color: Colors.white,
+              labelColor: Colors.black,
               onTap: () => Navigator.pop(context, true),
             )
           ],

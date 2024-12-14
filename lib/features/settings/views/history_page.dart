@@ -33,16 +33,18 @@ class HistoryPage extends StatelessWidget {
           style: textTheme.titleLarge,
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-          left: NumericConstants.horizontalPadding,
-          top: NumericConstants.topPadding,
-          right: NumericConstants.horizontalPadding,
-        ),
-        child: Column(
-          children: <Widget>[
-            HistoryPageCard(values: const <double>[15, 10]),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+            left: NumericConstants.horizontalPadding,
+            top: NumericConstants.topPadding,
+            right: NumericConstants.horizontalPadding,
+          ),
+          child: Column(
+            children: <Widget>[
+              HistoryPageCard(values: const <double>[15, 10]),
+            ],
+          ),
         ),
       ),
     );

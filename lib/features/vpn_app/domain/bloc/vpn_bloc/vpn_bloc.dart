@@ -130,7 +130,12 @@ class VpnBloc extends Bloc<VpnEvent, VpnState> {
 
         break;
       case (States.disconnected, States.disconnected):
-        emit(state.copyWith(state: States.disconnected));
+        emit(VpnState.empty.copyWith(
+          state: States.disconnected,
+          country: state.country,
+          protocol: state.protocol,
+          ip: state.ip,
+        ));
 
         break;
       default:

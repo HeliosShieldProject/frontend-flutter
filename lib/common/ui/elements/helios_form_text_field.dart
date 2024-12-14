@@ -102,7 +102,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
               cursorColor: themeData.colorScheme.primary,
               cursorErrorColor: themeData.colorScheme.primary,
               style: themeData.textTheme.labelMedium!.copyWith(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
               ),
               textInputAction: widget.textInputAction,
               decoration: InputDecoration(
@@ -131,11 +131,10 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
       ? Theme.of(context).textTheme.labelMedium!.copyWith(
             color: Colors.red,
           )
-      : Theme.of(context).textTheme.labelMedium!.copyWith(
-            color: Colors.white.withOpacity(
-              0.5,
-            ),
-          );
+      : Theme.of(context)
+          .textTheme
+          .labelMedium!
+          .copyWith(color: Colors.white.withValues(alpha: 0.5));
 
   TextStyle get _errorStyle => const TextStyle(
         color: Colors.transparent,
@@ -151,7 +150,7 @@ class _HeliosFormTextFieldState extends State<HeliosFormTextField> {
               obscureText
                   ? Icons.visibility_rounded
                   : Icons.visibility_off_rounded,
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
             ),
             onPressed: () {
               setState(() {

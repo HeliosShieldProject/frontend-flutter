@@ -24,6 +24,7 @@ class HeliosButton extends StatelessWidget {
     this.onTap,
     this.label,
     this.labelWidget,
+    this.labelColor,
     this.color,
     this.gradient,
   })  : assert(
@@ -38,6 +39,7 @@ class HeliosButton extends StatelessWidget {
   final String? label;
   final Widget? labelWidget;
   final Color? color;
+  final Color? labelColor;
   final Gradient? gradient;
   final GestureTapCallback? onTap;
 
@@ -46,13 +48,14 @@ class HeliosButton extends StatelessWidget {
         ? Text(
             label!,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: labelColor ?? Theme.of(context).colorScheme.surface,
                 ),
           )
         : labelWidget!;
   }
 
-  Color? get effectiveColor => onTap != null ? color : color?.withOpacity(0.5);
+  Color? get effectiveColor =>
+      onTap != null ? color : color?.withValues(alpha: 0.5);
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +82,10 @@ class HeliosButton extends StatelessWidget {
                   child: effectiveTitle(context),
                 ),
                 InkWell(
-                  splashColor:
-                      Theme.of(context).colorScheme.surface.withOpacity(0.5),
+                  splashColor: Theme.of(context)
+                      .colorScheme
+                      .surface
+                      .withValues(alpha: 0.5),
                   onTap: onTap,
                 ),
               ],

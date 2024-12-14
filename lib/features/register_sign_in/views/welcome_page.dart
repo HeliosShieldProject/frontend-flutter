@@ -110,32 +110,35 @@ class _WelcomePageState extends State<WelcomePage>
         listener: _blocListener,
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          body: Column(
-            children: <Widget>[
-              Expanded(
-                child: FadingHeliosIcon(
-                  radius: screenSize.width * Multipliers.screenWidth2IconRadius,
-                  showHelios: _initEnded,
-                  fadeAnimation: _fadeAnimation,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: NumericConstants.horizontalPadding,
-                  right: NumericConstants.horizontalPadding,
-                  bottom: NumericConstants.authFlowBottomPadding,
-                ),
-                child: FadingButton(
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteNames.login,
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: FadingHeliosIcon(
+                    radius:
+                        screenSize.width * Multipliers.screenWidth2IconRadius,
+                    showHelios: _initEnded,
+                    fadeAnimation: _fadeAnimation,
                   ),
-                  label: Literals.toContinue,
-                  shouldStartFading: _initEnded,
-                  fadeAnimation: _fadeAnimation,
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: NumericConstants.horizontalPadding,
+                    right: NumericConstants.horizontalPadding,
+                    bottom: NumericConstants.authFlowBottomPadding,
+                  ),
+                  child: FadingButton(
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteNames.login,
+                    ),
+                    label: Literals.toContinue,
+                    shouldStartFading: _initEnded,
+                    fadeAnimation: _fadeAnimation,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );

@@ -127,33 +127,35 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(
-            left: NumericConstants.horizontalPadding,
-            right: NumericConstants.horizontalPadding,
-            bottom: NumericConstants.bottomPadding,
-          ),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Center(
-                  child: HeliosConnectButton(
-                    state: state.state ?? States.loading,
-                    onChange: (val) => _handleChange(context, val),
-                    duration: const Duration(milliseconds: 500),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: NumericConstants.horizontalPadding,
+              right: NumericConstants.horizontalPadding,
+              bottom: NumericConstants.bottomPadding,
+            ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Center(
+                    child: HeliosConnectButton(
+                      state: state.state ?? States.loading,
+                      onChange: (val) => _handleChange(context, val),
+                      duration: const Duration(milliseconds: 500),
+                    ),
                   ),
                 ),
-              ),
-              HeliosVpnCard(
-                connected: state.state == States.connected,
-                onTap: () => _handleCardTap(context),
-                protocol: state.protocol,
-                currentCountry: state.country,
-                uploadSpeed: state.uploadSpeed,
-                downloadSpeed: state.downloadSpeed,
-                countryIp: state.ip,
-              ),
-            ],
+                HeliosVpnCard(
+                  connected: state.state == States.connected,
+                  onTap: () => _handleCardTap(context),
+                  protocol: state.protocol,
+                  currentCountry: state.country,
+                  uploadSpeed: state.uploadSpeed,
+                  downloadSpeed: state.downloadSpeed,
+                  countryIp: state.ip,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -220,7 +222,7 @@ class ServerSelector extends StatelessWidget {
                         child: Text(
                           protocol.name,
                           style: textTheme.labelMedium!.copyWith(
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.white.withValues(alpha: 0.5),
                           ),
                         ),
                       ),
@@ -276,7 +278,7 @@ class ServerSelector extends StatelessWidget {
                 child: Text(
                   "Доступные подключения",
                   style: textTheme.labelMedium!.copyWith(
-                    color: Colors.white.withOpacity(0.5),
+                    color: Colors.white.withValues(alpha: 0.5),
                   ),
                 ),
               ),

@@ -133,71 +133,74 @@ class _LoginPageState extends State<LoginPage> {
         child: PopScope(
           canPop: canPop,
           child: Scaffold(
-            body: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(
-                parent: NeverScrollableScrollPhysics(),
-              ),
-              child: SizedBox(
-                height: screenSize.height,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: NumericConstants.horizontalPadding,
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: HeliosIcon(
-                          radius: Multipliers.screenWidth2IconRadius *
-                              screenSize.width,
-                          showHelios: true,
-                        ),
-                      ),
-                      const BlankSpacer(
-                        multiplier: Multipliers.element2BlankSpacer + 1,
-                      ),
-                      LoginForm(
-                        formState: _formState,
-                        emailController: _emailController,
-                        passwordController: _passwordController,
-                      ),
-                      BlankSpacer(
-                        multiplier: Multipliers.authBigGap2BlankSpacer,
-                        child: Text.rich(
-                          TextSpan(
-                            recognizer: _underFieldTextRecognizer,
-                            text: Literals.forgotPassword,
-                            style: textTheme.labelMedium,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(
+                  parent: NeverScrollableScrollPhysics(),
+                ),
+                child: SizedBox(
+                  height: screenSize.height,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: NumericConstants.horizontalPadding,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: HeliosIcon(
+                            radius: Multipliers.screenWidth2IconRadius *
+                                screenSize.width,
+                            showHelios: true,
                           ),
                         ),
-                      ),
-                      HeliosButton(
-                        label: Literals.toSignIn,
-                        color: colorScheme.onSurface,
-                        onTap: () => _onTapSignIn(
-                          signInBloc: context.read<SignInBloc>(),
+                        const BlankSpacer(
+                          multiplier: Multipliers.element2BlankSpacer + 1,
                         ),
-                      ),
-                      BlankSpacer(
-                        multiplier: Multipliers.authBottomPadding2BlankSpacer,
-                        child: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              TextSpan(
-                                text: "${Literals.noAccount} ",
-                                style: textTheme.labelMedium!.copyWith(
-                                  color: colorScheme.onSurface.withOpacity(0.5),
+                        LoginForm(
+                          formState: _formState,
+                          emailController: _emailController,
+                          passwordController: _passwordController,
+                        ),
+                        BlankSpacer(
+                          multiplier: Multipliers.authBigGap2BlankSpacer,
+                          child: Text.rich(
+                            TextSpan(
+                              recognizer: _underFieldTextRecognizer,
+                              text: Literals.forgotPassword,
+                              style: textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                        HeliosButton(
+                          label: Literals.toSignIn,
+                          color: colorScheme.onSurface,
+                          onTap: () => _onTapSignIn(
+                            signInBloc: context.read<SignInBloc>(),
+                          ),
+                        ),
+                        BlankSpacer(
+                          multiplier: Multipliers.authBottomPadding2BlankSpacer,
+                          child: Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  text: "${Literals.noAccount} ",
+                                  style: textTheme.labelMedium!.copyWith(
+                                    color: colorScheme.onSurface
+                                        .withValues(alpha: 0.5),
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                recognizer: _underButtonTextRecognizer,
-                                text: Literals.signUp,
-                                style: textTheme.labelMedium,
-                              )
-                            ],
+                                TextSpan(
+                                  recognizer: _underButtonTextRecognizer,
+                                  text: Literals.signUp,
+                                  style: textTheme.labelMedium,
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

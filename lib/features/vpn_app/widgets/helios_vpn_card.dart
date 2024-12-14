@@ -360,7 +360,7 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
                       child: Text(
                         widget.protocol!.name,
                         style: textTheme.labelMedium!.copyWith(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.white.withValues(alpha: 0.5),
                         ),
                       ),
                     ),
@@ -463,11 +463,10 @@ class GradientTween extends Tween<Gradient> {
       begin: gradientBegin,
       end: gradientEnd,
       colors: <Color>[
-        Colors.white.withOpacity(0.1),
-        Colors.white.withOpacity(
-          0.1 + 0.1 * (-pow(t * 2 - 1, 2).toDouble() + 1),
-        ),
-        Colors.white.withOpacity(0.1),
+        Colors.white.withValues(alpha: 0.1),
+        Colors.white
+            .withValues(alpha: 0.1 + 0.1 * (-pow(t * 2 - 1, 2).toDouble() + 1)),
+        Colors.white.withValues(alpha: 0.1),
       ],
       stops: <double>[0.0, t, 1.0],
       tileMode: TileMode.clamp,

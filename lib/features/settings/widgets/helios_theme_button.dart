@@ -121,7 +121,8 @@ class _HeliosThemePickerState extends State<HeliosThemeButton>
                       Text(
                         effectiveText,
                         style: textTheme.titleMedium!.copyWith(
-                          color: Colors.white.withOpacity(effectiveOpacity),
+                          color:
+                              Colors.white.withValues(alpha: effectiveOpacity),
                         ),
                       ),
                     ],

@@ -25,7 +25,7 @@ class HeliosListElement {
         children: [
           Icon(
             icon,
-            color: color.withOpacity(0.7),
+            color: color.withValues(alpha: 0.5),
             size: NumericConstants.listElementIconSize,
           ),
           const BlankSpacer(
@@ -41,7 +41,7 @@ class HeliosListElement {
       if (showArrow)
         Icon(
           Icons.arrow_forward_ios_rounded,
-          color: color.withOpacity(0.5),
+          color: color.withValues(alpha: 0.5),
           size: NumericConstants.listElementIconSize,
         ),
     ];
