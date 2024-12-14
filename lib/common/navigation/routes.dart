@@ -2,7 +2,9 @@ import 'package:Helios/features/register_sign_in/domain/bloc/sign_in_bloc/sign_i
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/welcome/welcome_bloc.dart';
 import 'package:Helios/features/settings/domain/bloc/settings_bloc/bloc.dart';
+import 'package:Helios/features/settings/domain/bloc/sign_out_bloc/bloc.dart';
 import 'package:Helios/features/settings/views/history_page.dart';
+import 'package:Helios/features/settings/views/password_page.dart';
 import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
 import 'package:Helios/repositories/user_repository/user_repository.dart';
 import 'package:Helios/repositories/user_settings_repository/user_settings_repository.dart';
@@ -56,7 +58,6 @@ abstract class RoutesBuilder {
           ),
           settings: settings,
         );
-
       case (RouteNames.login):
         print("Login onGenerateRoute");
         return MaterialPageRoute(
@@ -84,11 +85,25 @@ abstract class RoutesBuilder {
       case (RouteNames.settings):
         print("Settings onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => SettingsBloc(
-              userRepository: context.read<UserRepository>(),
-              userSettingsRepository: context.read<UserSettingsRepository>(),
-            ),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => SettingsBloc(
+                  userRepository: context.read<UserRepository>(),
+                  userSettingsRepository:
+                      context.read<UserSettingsRepository>(),
+                ),
+              ),
+              BlocProvider(
+                create: (context) => SignOutBloc(
+                  vpnConnectionRepository:
+                      context.read<VpnConnectionRepository>(),
+                  userRepository: context.read<UserRepository>(),
+                  userSettingsRepository:
+                      context.read<UserSettingsRepository>(),
+                ),
+              )
+            ],
             child: const SettingsPage(),
           ),
           settings: settings,
@@ -97,6 +112,12 @@ abstract class RoutesBuilder {
         print("History onGenerateRoute");
         return MaterialPageRoute(
           builder: (_) => const HistoryPage(),
+          settings: settings,
+        );
+      case (RouteNames.password):
+        print("Password onGenerateRoute");
+        return MaterialPageRoute(
+          builder: (_) => const PasswordPage(),
           settings: settings,
         );
     }

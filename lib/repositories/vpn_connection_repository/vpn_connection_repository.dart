@@ -1,7 +1,6 @@
 import 'package:Helios/features/vpn_app/domain/bloc/vpn_bloc/vpn_bloc.dart';
-import 'package:Helios/repositories/local_repository/vpn_connection/get_connection.dart';
 import 'package:Helios/repositories/local_repository/vpn_connection/models/vpn_connection.dart';
-import 'package:Helios/repositories/local_repository/vpn_connection/put_connection.dart';
+import 'package:Helios/repositories/local_repository/vpn_connection/vpn_connection.dart';
 
 class VpnConnectionRepository {
   VpnConnection? _vpnConnection;
@@ -30,5 +29,11 @@ class VpnConnectionRepository {
     return putLocalConnection(
       vpnConnection: _vpnConnection ?? VpnConnection.basic,
     );
+  }
+
+  /// delet the currently stored connection info
+  Future<void> delete() async {
+    _vpnConnection = null;
+    await deleteLocalConnection();
   }
 }

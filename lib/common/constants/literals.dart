@@ -1,6 +1,15 @@
 abstract interface class Literals {
   static const String passwordFeild = "Введите пароль";
   static const String passwordFieldOnError = "Введите корректный пароль";
+  static const String password = "Смените пароль";
+
+  static const String enterPreviousPassword = "Введите предыдущий пароль";
+  static const String previousPassword = "Предыдущй пароль";
+  static const String enterNewPassword = "Введите новый пароль";
+  static const String enterNewPasswordOnError = "Введите корректный пароль";
+  static const String repeatNewPassword = "Повторите новый пароль";
+  static const String repeatNewPasswordOnError = "Пароли должны совпадать";
+  static const String newPassword = "Новый пароль";
 
   static const String emailField = "Введите email";
   static const String emailFieldOnError = "Введите существующий email";
@@ -14,6 +23,7 @@ abstract interface class Literals {
 
   static const String toSignIn = "Войти";
   static const String signIn = "Войдите!";
+  static const String toSubmit = "Подтвердить";
 
   static const String toSignUp = "Зарегистрироваться";
   static const String signUp = "Зарегистрируйтесь!";

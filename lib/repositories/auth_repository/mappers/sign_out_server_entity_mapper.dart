@@ -5,11 +5,10 @@ import 'package:Helios/repositories/auth_repository/entities/sign_out_server_ent
 
 SignOutServerEntity signOutServerEntityMapper(
     {required BasicResponse response}) {
-  return switch (response.runtimeType) {
+  return switch (response) {
     (Response _) => const SignOutServerEntity(status: Auth.success),
     (ErrorResponse _) => SignOutServerEntity(
-        status: Auth.values.firstWhere(
-            (val) => val.name == (response as ErrorResponse).error)),
+        status: Auth.values.firstWhere((val) => val.name == response.error)),
     _ => const SignOutServerEntity(status: Auth.failed),
   };
 }

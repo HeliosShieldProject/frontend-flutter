@@ -34,7 +34,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late final TapGestureRecognizer _underButtonTextRecognizer;
 
   bool canPop = true;
-  late LoadingIcon loadingIcon;
+  LoadingIcon? loadingIcon;
 
   late Size screenSize;
   late TextTheme textTheme;
@@ -86,14 +86,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
   void _blocListener(BuildContext context, SignUpState state) {
     switch (state.signInStatus) {
       case null:
-        loadingIcon.removeLoadingIcon();
+        _handleCanPop();
+        loadingIcon?.removeLoadingIcon();
         break;
       case Auth.loading:
-        loadingIcon = LoadingIcon();
-        loadingIcon.showLoadingIcon(context);
+        setState(() {
+          canPop = false;
+          loadingIcon = LoadingIcon()..showLoadingIcon(context);
+        });
         break;
       case Auth.success:
-        loadingIcon.removeLoadingIcon();
+        _handleCanPop();
+        loadingIcon?.removeLoadingIcon();
         Navigator.pushNamedAndRemoveUntil(
           context,
           RouteNames.home,
@@ -101,7 +105,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         );
         break;
       default:
-        loadingIcon.removeLoadingIcon();
+        _handleCanPop();
+        loadingIcon?.removeLoadingIcon();
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           snackBar(
@@ -109,6 +114,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
             title: state.signInStatus!.name,
           ),
         );
+    }
+  }
+
+  void _handleCanPop() {
+    if (!canPop) {
+      setState(() {
+        canPop = true;
+      });
     }
   }
 

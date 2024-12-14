@@ -1,7 +1,5 @@
 import 'package:Helios/common/interafces/user.dart';
-
-import 'package:Helios/repositories/local_repository/user/get_user.dart';
-import 'package:Helios/repositories/local_repository/user/put_user.dart';
+import 'package:Helios/repositories/local_repository/user/user.dart';
 
 class UserRepository {
   User? _user;
@@ -19,5 +17,10 @@ class UserRepository {
     return putLocalUser(
       user: _user!,
     );
+  }
+
+  Future<void> delete() async {
+    _user = null;
+    await deletLocalUser();
   }
 }
