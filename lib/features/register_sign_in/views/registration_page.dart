@@ -37,6 +37,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   LoadingIcon? loadingIcon;
 
   late Size screenSize;
+  late double scrollableHeight;
   late TextTheme textTheme;
   late ColorScheme colorScheme;
 
@@ -61,6 +62,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
     colorScheme = themeData.colorScheme;
 
     screenSize = MediaQuery.sizeOf(context);
+    final double bottomPadding = MediaQuery.viewPaddingOf(context).bottom;
+    scrollableHeight = screenSize.height - bottomPadding;
   }
 
   @override
@@ -138,67 +141,61 @@ class _RegistrationPageState extends State<RegistrationPage> {
         child: PopScope(
           canPop: canPop,
           child: Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(
-                  parent: NeverScrollableScrollPhysics(),
-                ),
-                child: SizedBox(
-                  height: screenSize.height,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: NumericConstants.horizontalPadding,
-                      right: NumericConstants.horizontalPadding,
+            body: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(
+                parent: NeverScrollableScrollPhysics(),
+              ),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: NumericConstants.horizontalPadding),
+              child: SizedBox(
+                height: scrollableHeight,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: HeliosIcon(
+                        radius: Multipliers.screenWidth2IconRadius *
+                            screenSize.width,
+                        showHelios: true,
+                      ),
                     ),
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: HeliosIcon(
-                            radius: Multipliers.screenWidth2IconRadius *
-                                screenSize.width,
-                            showHelios: true,
-                          ),
-                        ),
-                        RegisterForm(
-                          formState: _formState,
-                          emailController: _emailController,
-                          passwordController0: _passwordController0,
-                          passwordController1: _passwordController1,
-                        ),
-                        const BlankSpacer(
-                          multiplier: Multipliers.authBigGap2BlankSpacer,
-                        ),
-                        HeliosButton(
-                          label: Literals.toSignUp,
-                          color: colorScheme.onSurface,
-                          onTap: () => _onTapSignUp(
-                            signUpBloc: context.read<SignUpBloc>(),
-                          ),
-                        ),
-                        BlankSpacer(
-                          multiplier: Multipliers.authBottomPadding2BlankSpacer,
-                          child: Text.rich(
+                    RegisterForm(
+                      formState: _formState,
+                      emailController: _emailController,
+                      passwordController0: _passwordController0,
+                      passwordController1: _passwordController1,
+                    ),
+                    const BlankSpacer(
+                      multiplier: Multipliers.authBigGap2BlankSpacer,
+                    ),
+                    HeliosButton(
+                      label: Literals.toSignUp,
+                      color: colorScheme.onSurface,
+                      onTap: () => _onTapSignUp(
+                        signUpBloc: context.read<SignUpBloc>(),
+                      ),
+                    ),
+                    BlankSpacer(
+                      multiplier: Multipliers.authBottomPadding2BlankSpacer,
+                      child: Text.rich(
+                        TextSpan(
+                          children: <InlineSpan>[
                             TextSpan(
-                              children: <InlineSpan>[
-                                TextSpan(
-                                  text: "${Literals.haveAccount} ",
-                                  style: textTheme.labelMedium!.copyWith(
-                                    color: colorScheme.onSurface
-                                        .withValues(alpha: 0.5),
-                                  ),
-                                ),
-                                TextSpan(
-                                  recognizer: _underButtonTextRecognizer,
-                                  text: Literals.signIn,
-                                  style: textTheme.labelMedium,
-                                )
-                              ],
+                              text: "${Literals.haveAccount} ",
+                              style: textTheme.labelMedium!.copyWith(
+                                color: colorScheme.onSurface
+                                    .withValues(alpha: 0.5),
+                              ),
                             ),
-                          ),
+                            TextSpan(
+                              recognizer: _underButtonTextRecognizer,
+                              text: Literals.signIn,
+                              style: textTheme.labelMedium,
+                            )
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),

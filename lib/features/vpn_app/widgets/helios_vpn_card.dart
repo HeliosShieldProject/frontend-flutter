@@ -232,7 +232,9 @@ class _HeliosVpnCardState extends State<HeliosVpnCard>
     if (widget.downloadSpeed == null ||
         widget.uploadSpeed == null ||
         widget.currentCountry == null ||
-        widget.countryIp == null) _gradientAnimationController.repeat();
+        widget.countryIp == null) {
+      _gradientAnimationController.repeat();
+    }
   }
 
   @override

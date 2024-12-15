@@ -13,7 +13,6 @@ VpnConnection getLocalConnection() {
       defaultValue: VpnConnection.basic,
     )!;
   } catch (e) {
-    print("$e get");
     vpnConnection = VpnConnection.basic;
     return vpnConnection;
   }

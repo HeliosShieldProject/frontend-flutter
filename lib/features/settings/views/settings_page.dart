@@ -186,7 +186,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _signOutListener(BuildContext context, SignOutState state) {
-    print(state.signOutStatus);
     switch (state.signOutStatus) {
       case null:
         _handleCanPop();

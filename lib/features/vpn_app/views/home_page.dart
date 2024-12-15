@@ -77,7 +77,6 @@ class HomePage extends StatelessWidget {
         }
         break;
       default:
-        print(state.state);
         break;
     }
   }

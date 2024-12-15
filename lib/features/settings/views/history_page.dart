@@ -1,54 +1,219 @@
 import 'package:Helios/common/constants/literals.dart';
 import 'package:Helios/common/constants/multipliers.dart';
 import 'package:Helios/common/constants/numeric_constants.dart';
+import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/ui/utils/blank_spacer.dart';
+import 'package:Helios/features/register_sign_in/widgets/snackbar.dart';
+import 'package:Helios/features/settings/domain/bloc/history_bloc/bloc.dart';
 import 'package:Helios/features/vpn_app/widgets/helios_vpn_card.dart';
+import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
+import 'package:Helios/repositories/session_repository/entities/get_history_server_entity.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
+
+  @override
+  State<HistoryPage> createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
+  late ColorScheme colorScheme;
+  late TextTheme textTheme;
+
+  late final ScrollController _scrollController;
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9999);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void didChangeDependencies() {
+    final ThemeData theme = Theme.of(context);
+    colorScheme = theme.colorScheme;
+    textTheme = theme.textTheme;
+
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   void _onTapAppBar(BuildContext context) => Navigator.maybePop(context);
 
+  void _scrollListener() {
+    if (_isBottom) context.read<HistoryBloc>().add(BottomHitEvent());
+  }
+
+  void _historyBlocListener(BuildContext context, HistoryState state) {
+    switch (state.status) {
+      case Auth.loading:
+        break;
+      case Auth.success:
+        break;
+      default:
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          snackBar(context, title: state.status!.name),
+        );
+        break;
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    final TextTheme textTheme = theme.textTheme;
-
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-            size: NumericConstants.iconSize,
-            color: Theme.of(context).colorScheme.onSurface,
+  Widget build(BuildContext context) => BlocConsumer<HistoryBloc, HistoryState>(
+        listener: _historyBlocListener,
+        builder: (context, state) => Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_rounded,
+                size: NumericConstants.iconSize,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              onPressed: () => _onTapAppBar(context),
+            ),
+            title: Text(
+              Literals.history,
+              style: textTheme.titleLarge,
+            ),
           ),
-          onPressed: () => _onTapAppBar(context),
-        ),
-        title: Text(
-          Literals.history,
-          style: textTheme.titleLarge,
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            left: NumericConstants.horizontalPadding,
-            top: NumericConstants.topPadding,
-            right: NumericConstants.horizontalPadding,
-          ),
-          child: Column(
+          body: Column(
+            spacing: NumericConstants.spacerSize,
             children: <Widget>[
-              HistoryPageCard(values: const <double>[15, 10]),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: NumericConstants.horizontalPadding),
+                child: HistoryPageCard(values: state.lastWeek),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.tertiary,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(NumericConstants.borderRadius),
+                      topRight: Radius.circular(NumericConstants.borderRadius),
+                    ),
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: NumericConstants.horizontalPadding,
+                  ),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(
+                      NumericConstants.horizontalPadding,
+                    ),
+                    itemCount: state.historyInfo.length,
+                    itemBuilder: (context, index) {
+                      final HistoryInfo info = state.historyInfo[index];
+
+                      return Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        width: 2,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    height: NumericConstants.listElementHeight,
+                                    width: NumericConstants.listElementHeight,
+                                    alignment: Alignment.center,
+                                    child: CountryFlag.fromCountryCode(
+                                      info.country.countryCode,
+                                      shape: const Circle(),
+                                      width: 32,
+                                      height: 32,
+                                    ),
+                                  ),
+                                  const BlankSpacer(horizontal: true),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Text(
+                                        info.country.countryName,
+                                        style: textTheme.titleMedium!.copyWith(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        const IP.unknown().toString(),
+                                        style: textTheme.labelMedium!.copyWith(
+                                          color: Colors.white
+                                              .withValues(alpha: 0.5),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Text(
+                                    "${info.duration.inHours}:${info.duration.inMinutes.remainder(60)}:${info.duration.inSeconds.remainder(60)}",
+                                    style: textTheme.labelMedium!.copyWith(
+                                        color: Colors.white
+                                            .withValues(alpha: 0.5)),
+                                  ),
+                                  Text(
+                                    "${info.dateTimeOpened.day}.${info.dateTimeOpened.month}.${info.dateTimeOpened.year}",
+                                    style: textTheme.labelMedium!.copyWith(
+                                        color: Colors.white
+                                            .withValues(alpha: 0.5)),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          if (index != state.historyInfo.length - 1) ...[
+                            const BlankSpacer(),
+                            Divider(
+                              color: colorScheme.onTertiary,
+                              thickness: 2,
+                              height: 0,
+                            ),
+                            const BlankSpacer(),
+                          ]
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              )
             ],
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class HistoryPageCard extends StatefulWidget {
@@ -165,7 +330,8 @@ class _HistoryPageCardState extends State<HistoryPageCard>
             ),
             child: CustomPaint(
               painter: GraphPainter(
-                value: (widget.values.elementAtOrNull(i) ?? 0) / maxValue,
+                value: (widget.values.elementAtOrNull(i) ?? 0) /
+                    (maxValue != 0 ? maxValue : 1),
                 borderRadius: NumericConstants.borderRadius,
                 bgColor: colorScheme.onTertiary,
                 fgColor: Colors.white,

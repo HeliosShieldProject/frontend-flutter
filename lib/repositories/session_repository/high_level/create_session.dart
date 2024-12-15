@@ -13,7 +13,7 @@ Future<String> createSession(
   try {
     response = await serverCreateSession(
       accessToken: user.jwtToken!,
-      country: country.countryName,
+      country: country.countryCode,
       protocol: protocol.name,
     );
   } catch (e) {

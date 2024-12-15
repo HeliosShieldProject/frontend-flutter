@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 
@@ -9,7 +11,6 @@ import 'package:Helios/common/interafces/basic_server_entity.dart';
 import 'package:Helios/common/server/mappers/mappers.dart';
 
 import 'package:Helios/repositories/auth_repository/mappers/refresh_server_entity_mapper.dart';
-import 'package:flutter/foundation.dart';
 
 Future<BasicServerEntity> serverRefresh(
     {required String jwtRefreshToken}) async {

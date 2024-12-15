@@ -1,6 +1,8 @@
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_in_bloc/sign_in_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:Helios/features/register_sign_in/domain/bloc/welcome/welcome_bloc.dart';
+import 'package:Helios/features/settings/domain/bloc/history_bloc/bloc.dart';
+import 'package:Helios/features/settings/domain/bloc/password_bloc/bloc.dart';
 import 'package:Helios/features/settings/domain/bloc/settings_bloc/bloc.dart';
 import 'package:Helios/features/settings/domain/bloc/sign_out_bloc/bloc.dart';
 import 'package:Helios/features/settings/views/history_page.dart';
@@ -111,13 +113,23 @@ abstract class RoutesBuilder {
       case (RouteNames.history):
         print("History onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const HistoryPage(),
+          builder: (context) => BlocProvider(
+            create: (context) => HistoryBloc(
+              userRepository: context.read<UserRepository>(),
+            )..add(InitHistoryEvent()),
+            child: const HistoryPage(),
+          ),
           settings: settings,
         );
       case (RouteNames.password):
         print("Password onGenerateRoute");
         return MaterialPageRoute(
-          builder: (_) => const PasswordPage(),
+          builder: (_) => BlocProvider(
+            create: (context) => PasswordBloc(
+              userRepository: context.read<UserRepository>(),
+            ),
+            child: const PasswordPage(),
+          ),
           settings: settings,
         );
     }

@@ -8,7 +8,8 @@ SignOutServerEntity signOutServerEntityMapper(
   return switch (response) {
     (Response _) => const SignOutServerEntity(status: Auth.success),
     (ErrorResponse _) => SignOutServerEntity(
-        status: Auth.values.firstWhere((val) => val.name == response.error)),
+        status: Auth.values.firstWhere((val) => val.name == response.error,
+            orElse: () => Auth.failed)),
     _ => const SignOutServerEntity(status: Auth.failed),
   };
 }

@@ -2,6 +2,10 @@ abstract interface class Literals {
   static const String passwordFeild = "Введите пароль";
   static const String passwordFieldOnError = "Введите корректный пароль";
   static const String password = "Смените пароль";
+  static const String passwordTestimonial =
+      "После изменения пароля, вы сможете изменить его снова по истечении срока в 30 дней";
+
+  static const String changedPasswordSuccessfully = "Пароль сменен успешно";
 
   static const String enterPreviousPassword = "Введите предыдущий пароль";
   static const String previousPassword = "Предыдущй пароль";

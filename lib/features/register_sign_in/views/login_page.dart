@@ -36,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   bool canPop = true;
   late LoadingIcon loadingIcon;
 
+  late double scrollableHeight;
   late Size screenSize;
   late TextTheme textTheme;
   late ColorScheme colorScheme;
@@ -62,7 +63,10 @@ class _LoginPageState extends State<LoginPage> {
     textTheme = themeData.textTheme;
     colorScheme = themeData.colorScheme;
 
+    final double bottomPadding = MediaQuery.viewPaddingOf(context).bottom;
     screenSize = MediaQuery.sizeOf(context);
+
+    scrollableHeight = screenSize.height - bottomPadding;
   }
 
   @override
@@ -133,75 +137,71 @@ class _LoginPageState extends State<LoginPage> {
         child: PopScope(
           canPop: canPop,
           child: Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(
-                  parent: NeverScrollableScrollPhysics(),
-                ),
-                child: SizedBox(
-                  height: screenSize.height,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: NumericConstants.horizontalPadding,
+            body: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(
+                parent: NeverScrollableScrollPhysics(),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: NumericConstants.horizontalPadding,
+              ),
+              child: SizedBox(
+                height: scrollableHeight,
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: HeliosIcon(
+                        radius: Multipliers.screenWidth2IconRadius *
+                            screenSize.width,
+                        showHelios: true,
+                      ),
                     ),
-                    child: Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: HeliosIcon(
-                            radius: Multipliers.screenWidth2IconRadius *
-                                screenSize.width,
-                            showHelios: true,
-                          ),
+                    const BlankSpacer(
+                      multiplier: Multipliers.element2BlankSpacer + 1,
+                    ),
+                    LoginForm(
+                      formState: _formState,
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                    ),
+                    BlankSpacer(
+                      multiplier: Multipliers.authBigGap2BlankSpacer,
+                      child: Text.rich(
+                        TextSpan(
+                          recognizer: _underFieldTextRecognizer,
+                          text: Literals.forgotPassword,
+                          style: textTheme.labelMedium,
                         ),
-                        const BlankSpacer(
-                          multiplier: Multipliers.element2BlankSpacer + 1,
-                        ),
-                        LoginForm(
-                          formState: _formState,
-                          emailController: _emailController,
-                          passwordController: _passwordController,
-                        ),
-                        BlankSpacer(
-                          multiplier: Multipliers.authBigGap2BlankSpacer,
-                          child: Text.rich(
+                      ),
+                    ),
+                    HeliosButton(
+                      label: Literals.toSignIn,
+                      color: colorScheme.onSurface,
+                      onTap: () => _onTapSignIn(
+                        signInBloc: context.read<SignInBloc>(),
+                      ),
+                    ),
+                    BlankSpacer(
+                      multiplier: Multipliers.authBottomPadding2BlankSpacer,
+                      child: Text.rich(
+                        TextSpan(
+                          children: <InlineSpan>[
                             TextSpan(
-                              recognizer: _underFieldTextRecognizer,
-                              text: Literals.forgotPassword,
+                              text: "${Literals.noAccount} ",
+                              style: textTheme.labelMedium!.copyWith(
+                                color: colorScheme.onSurface
+                                    .withValues(alpha: 0.5),
+                              ),
+                            ),
+                            TextSpan(
+                              recognizer: _underButtonTextRecognizer,
+                              text: Literals.signUp,
                               style: textTheme.labelMedium,
-                            ),
-                          ),
+                            )
+                          ],
                         ),
-                        HeliosButton(
-                          label: Literals.toSignIn,
-                          color: colorScheme.onSurface,
-                          onTap: () => _onTapSignIn(
-                            signInBloc: context.read<SignInBloc>(),
-                          ),
-                        ),
-                        BlankSpacer(
-                          multiplier: Multipliers.authBottomPadding2BlankSpacer,
-                          child: Text.rich(
-                            TextSpan(
-                              children: <InlineSpan>[
-                                TextSpan(
-                                  text: "${Literals.noAccount} ",
-                                  style: textTheme.labelMedium!.copyWith(
-                                    color: colorScheme.onSurface
-                                        .withValues(alpha: 0.5),
-                                  ),
-                                ),
-                                TextSpan(
-                                  recognizer: _underButtonTextRecognizer,
-                                  text: Literals.signUp,
-                                  style: textTheme.labelMedium,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),

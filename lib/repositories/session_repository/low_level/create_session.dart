@@ -17,6 +17,14 @@ Future<BasicServerEntity> serverCreateSession({
   required String country,
   required String protocol,
 }) async {
+  final Map<String, String> countryMap = <String, String>{
+    "GB": "UK",
+    "US": "US",
+    "DE": "Germany",
+  };
+
+  country = countryMap[country] ?? "UK";
+
   final headers = {
     "Authorization": "Bearer $accessToken",
   };
