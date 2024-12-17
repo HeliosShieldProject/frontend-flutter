@@ -42,23 +42,24 @@ Follow these instructions to get a copy of the project up and running on your lo
 
     <details>
     <summary>See dependencies</summary>
-        * jwt_decoder - used to decode JWT expiration date
-        * flutter_svg - used to render .svg pictures
-        * flutter_dotenv - used to access the evironment variables
-        * dio - used to send requests to the backend
-        * device_info_plus - used to determin device's model
-        * country_flags - widgets with country flags
-        * flutter_v2ray - custom flutter_v2ray fork to create vpn connections, available at: https://github.com/Asbecov/flutter_v2ray.git
-        * hive, hive_flutter - used to persist data 
-        * bloc, flutter_bloc, equatable - state management
-        * email_validator, password_validator_package - regex pattern matching package for password and email validation
-        * url_launcher - used to launch deeplinks
-        * package_info_plus - used to know the exact app version to show it in the app itself 
-
-        # dev_dependencies:
-        * hive_generator: ^2.0.1
-        * build_runner: ^2.4.11
-        * flutter_lints: ^4.0.0
+        <ul>
+            <li>* jwt_decoder - used to decode JWT expiration date</li>
+            <li>* flutter_svg - used to render .svg pictures</li>
+            <li>* flutter_dotenv - used to access the evironment variables</li>
+            <li>* dio - used to send requests to the backend</li>
+            <li>* device_info_plus - used to determin device's model</li>
+            <li>* country_flags - widgets with country flags</li>
+            <li>* flutter_v2ray - custom flutter_v2ray fork to create vpn connections, available at: https://github.com/Asbecov/flutter_v2ray.git</li>
+            <li>* hive, hive_flutter - used to persist data</li>
+            <li>* bloc, flutter_bloc, equatable - state management</li>
+            <li>* email_validator, password_validator_package - regex pattern matching package for password and email validation</li>
+            <li>* url_launcher - used to launch deeplinks</li>
+            <li>* package_info_plus - used to know the exact app version to show it in the app itself </li>
+            dev_dependencies:</li>
+            <li>* hive_generator</li>
+            <li>* build_runner</li>
+            <li>* flutter_lints</li>
+        </ul>
     </details>
 
 4. **Set up environment variables**

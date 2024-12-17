@@ -145,60 +145,60 @@ class _PasswordPageState extends State<PasswordPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    SingleChildScrollView(
-                      physics: const ClampingScrollPhysics(
-                          parent: NeverScrollableScrollPhysics()),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              Literals.previousPassword,
-                              style: textTheme.titleLarge,
-                            ),
-                            const BlankSpacer(
-                              multiplier: 1.5,
-                            ),
-                            HeliosFormTextField(
-                              controller: _previousPasswordController,
-                              obscureText: true,
-                              text: Literals.enterPreviousPassword,
-                              textOnError: Literals.enterPreviousPassword,
-                              validityCriteria: (value) =>
-                                  value?.isNotEmpty ?? false,
-                            ),
-                            const BlankSpacer(
-                              multiplier: 4,
-                            ),
-                            Text(
-                              Literals.newPassword,
-                              style: textTheme.titleLarge,
-                            ),
-                            const BlankSpacer(
-                              multiplier: 1.5,
-                            ),
-                            HeliosFormTextField(
-                              controller: _newPasswordController,
-                              obscureText: true,
-                              text: Literals.enterNewPassword,
-                              textOnError: Literals.enterNewPasswordOnError,
-                              validityCriteria: (password) =>
-                                  PasswordValidator.validatePassword(
-                                      password ?? ""),
-                            ),
-                            const BlankSpacer(),
-                            HeliosFormTextField(
-                              controller: _newPasswordController1,
-                              obscureText: true,
-                              text: Literals.repeatNewPassword,
-                              textOnError: Literals.repeatNewPasswordOnError,
-                              validityCriteria: (value) =>
-                                  value == _newPasswordController.text &&
-                                  _newPasswordController1.text.isNotEmpty,
-                            ),
-                          ],
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                Literals.previousPassword,
+                                style: textTheme.titleLarge,
+                              ),
+                              const BlankSpacer(
+                                multiplier: 1.5,
+                              ),
+                              HeliosFormTextField(
+                                controller: _previousPasswordController,
+                                obscureText: true,
+                                text: Literals.enterPreviousPassword,
+                                textOnError: Literals.enterPreviousPassword,
+                                validityCriteria: (value) =>
+                                    value?.isNotEmpty ?? false,
+                              ),
+                              const BlankSpacer(
+                                multiplier: 4,
+                              ),
+                              Text(
+                                Literals.newPassword,
+                                style: textTheme.titleLarge,
+                              ),
+                              const BlankSpacer(
+                                multiplier: 1.5,
+                              ),
+                              HeliosFormTextField(
+                                controller: _newPasswordController,
+                                obscureText: true,
+                                text: Literals.enterNewPassword,
+                                textOnError: Literals.enterNewPasswordOnError,
+                                validityCriteria: (password) =>
+                                    PasswordValidator.validatePassword(
+                                        password ?? ""),
+                              ),
+                              const BlankSpacer(),
+                              HeliosFormTextField(
+                                controller: _newPasswordController1,
+                                obscureText: true,
+                                text: Literals.repeatNewPassword,
+                                textOnError: Literals.repeatNewPasswordOnError,
+                                validityCriteria: (value) =>
+                                    value == _newPasswordController.text &&
+                                    _newPasswordController1.text.isNotEmpty,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

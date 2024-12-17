@@ -278,102 +278,111 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: textTheme.titleLarge,
                   ),
                 ),
-                body: SafeArea(
-                  child: Column(
-                    children: [
-                      _effectiveSubButton(
-                        context,
-                        state.subscriptionType,
-                      ),
-                      SingleChildScrollView(
-                        clipBehavior: Clip.antiAlias,
-                        padding: const EdgeInsets.only(
-                          top: NumericConstants.spacerSize,
-                          left: NumericConstants.horizontalPadding,
-                          right: NumericConstants.horizontalPadding,
+                body: Column(
+                  children: [
+                    _effectiveSubButton(
+                      context,
+                      state.subscriptionType,
+                    ),
+                    const BlankSpacer(),
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft:
+                              Radius.circular(NumericConstants.borderRadius),
+                          topRight:
+                              Radius.circular(NumericConstants.borderRadius),
                         ),
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: colorScheme.tertiary,
-                                borderRadius: BorderRadius.circular(
-                                  NumericConstants.borderRadius,
+                        child: SingleChildScrollView(
+                          clipBehavior: Clip.antiAlias,
+                          padding: const EdgeInsets.only(
+                            left: NumericConstants.horizontalPadding,
+                            right: NumericConstants.horizontalPadding,
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: colorScheme.tertiary,
+                                  borderRadius: BorderRadius.circular(
+                                    NumericConstants.borderRadius,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(
+                                  NumericConstants.horizontalPadding,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    HeliosThemeButton(
+                                      value: SelectedTheme.values[2],
+                                      groupValue: state.selectedTheme,
+                                      onChange: (newTheme) => _onTapThemeButton(
+                                        context.read<SettingsBloc>(),
+                                        newTheme,
+                                      ),
+                                    ),
+                                    HeliosThemeButton(
+                                      value: SelectedTheme.values[1],
+                                      groupValue: state.selectedTheme,
+                                      onChange: (newTheme) => _onTapThemeButton(
+                                        context.read<SettingsBloc>(),
+                                        newTheme,
+                                      ),
+                                    ),
+                                    HeliosThemeButton(
+                                      value: SelectedTheme.values[0],
+                                      groupValue: state.selectedTheme,
+                                      onChange: (newTheme) => _onTapThemeButton(
+                                        context.read<SettingsBloc>(),
+                                        newTheme,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              padding: const EdgeInsets.all(
-                                NumericConstants.horizontalPadding,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  HeliosThemeButton(
-                                    value: SelectedTheme.values[2],
-                                    groupValue: state.selectedTheme,
-                                    onChange: (newTheme) => _onTapThemeButton(
-                                      context.read<SettingsBloc>(),
-                                      newTheme,
+                              const BlankSpacer(),
+                              HeliosListTile<HeliosListElement>(
+                                titleWidget: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      "Аккаунт",
+                                      style: textTheme.titleMedium!
+                                          .copyWith(color: Colors.white),
                                     ),
-                                  ),
-                                  HeliosThemeButton(
-                                    value: SelectedTheme.values[1],
-                                    groupValue: state.selectedTheme,
-                                    onChange: (newTheme) => _onTapThemeButton(
-                                      context.read<SettingsBloc>(),
-                                      newTheme,
+                                    Icon(
+                                      Icons.menu_rounded,
+                                      size: 15,
+                                      color:
+                                          Colors.white.withValues(alpha: 0.5),
                                     ),
-                                  ),
-                                  HeliosThemeButton(
-                                    value: SelectedTheme.values[0],
-                                    groupValue: state.selectedTheme,
-                                    onChange: (newTheme) => _onTapThemeButton(
-                                      context.read<SettingsBloc>(),
-                                      newTheme,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                builder: HeliosListElement.builder,
+                                children: _elements1(state.email),
                               ),
-                            ),
-                            const BlankSpacer(),
-                            HeliosListTile<HeliosListElement>(
-                              titleWidget: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Аккаунт",
-                                    style: textTheme.titleMedium!
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                  Icon(
-                                    Icons.menu_rounded,
-                                    size: 15,
-                                    color: Colors.white.withValues(alpha: 0.5),
-                                  ),
-                                ],
+                              const BlankSpacer(),
+                              HeliosListTile<HeliosListElement>(
+                                builder: HeliosListElement.builder,
+                                children: _elements2,
                               ),
-                              builder: HeliosListElement.builder,
-                              children: _elements1(state.email),
-                            ),
-                            const BlankSpacer(),
-                            HeliosListTile<HeliosListElement>(
-                              builder: HeliosListElement.builder,
-                              children: _elements2,
-                            ),
-                            const BlankSpacer(),
-                            Text(
-                              buildText,
-                              style: textTheme.bodyMedium!.copyWith(
-                                color: colorScheme.onSurface
-                                    .withValues(alpha: 0.5),
+                              const BlankSpacer(),
+                              Text(
+                                buildText,
+                                style: textTheme.bodyMedium!.copyWith(
+                                  color: colorScheme.onSurface
+                                      .withValues(alpha: 0.5),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             },
