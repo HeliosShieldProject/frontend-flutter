@@ -40,15 +40,39 @@ class HistoryState extends Equatable {
     late final List<double> lastWeekDurations;
 
     if (historyInfo.isNotEmpty) {
-      final now = DateTime.now();
+      final DateTime now = DateTime.now();
       lastWeekDurations = List<double>.filled(7, 0.0);
 
       for (final info in historyInfo) {
-        final daysAgo = now.difference(info.dateTimeOpened).inDays;
-        if (daysAgo < 7) {
-          lastWeekDurations[6 - daysAgo] += info.duration.inSeconds.toDouble();
-        } else {
+        final DateTime sessionStart = info.dateTimeOpened;
+        final DateTime sessionEnd = info.dateTimeClosed;
+
+        if (sessionEnd.isBefore(DateTime(now.year, now.month, now.day)
+            .subtract(const Duration(days: 6)))) {
           break;
+        }
+
+        DateTime current =
+            sessionStart.isBefore(now.subtract(const Duration(days: 6)))
+                ? now.subtract(const Duration(days: 6))
+                : sessionStart;
+        DateTime end = sessionEnd.isAfter(now) ? now : sessionEnd;
+
+        while (current.isBefore(end)) {
+          final nextDay =
+              DateTime(current.year, current.month, current.day + 1);
+          final segmentEnd = nextDay.isBefore(end) ? nextDay : end;
+
+          final int daysAgo = DateTime(now.year, now.month, now.day)
+              .difference(DateTime(current.year, current.month, current.day))
+              .inDays;
+
+          if (daysAgo >= 0 && daysAgo < 7) {
+            lastWeekDurations[6 - daysAgo] +=
+                segmentEnd.difference(current).inSeconds.toDouble();
+          }
+
+          current = segmentEnd;
         }
       }
     } else {

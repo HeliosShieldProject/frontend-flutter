@@ -11,7 +11,7 @@ import 'package:country_flags/country_flags.dart';
 
 import 'package:Helios/common/ui/utils/blank_spacer.dart';
 
-import 'package:Helios/features/register_sign_in/domain/utils/text_size.dart';
+import 'package:Helios/common/ui/utils/text_size.dart';
 
 class HeliosVpnCard extends StatefulWidget {
   const HeliosVpnCard({

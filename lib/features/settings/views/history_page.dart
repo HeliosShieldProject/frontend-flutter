@@ -3,6 +3,7 @@ import 'package:Helios/common/constants/multipliers.dart';
 import 'package:Helios/common/constants/numeric_constants.dart';
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/ui/utils/blank_spacer.dart';
+import 'package:Helios/common/ui/utils/text_size.dart';
 import 'package:Helios/features/register_sign_in/widgets/snackbar.dart';
 import 'package:Helios/features/settings/domain/bloc/history_bloc/bloc.dart';
 import 'package:Helios/features/vpn_app/widgets/helios_vpn_card.dart';
@@ -59,7 +60,12 @@ class _HistoryPageState extends State<HistoryPage> {
   void _onTapAppBar(BuildContext context) => Navigator.maybePop(context);
 
   void _scrollListener() {
-    if (_isBottom) context.read<HistoryBloc>().add(BottomHitEvent());
+    final HistoryBloc bloc = context.read<HistoryBloc>();
+    if (!bloc.state.reachedEnd &&
+        bloc.state.status != Auth.loading &&
+        _isBottom) {
+      bloc.add(BottomHitEvent());
+    }
   }
 
   void _historyBlocListener(BuildContext context, HistoryState state) {
@@ -122,79 +128,16 @@ class _HistoryPageState extends State<HistoryPage> {
                     padding: const EdgeInsets.all(
                       NumericConstants.horizontalPadding,
                     ),
-                    itemCount: state.historyInfo.length,
+                    itemCount: state.status != Auth.loading
+                        ? state.historyInfo.length
+                        : 10,
                     itemBuilder: (context, index) {
-                      final HistoryInfo info = state.historyInfo[index];
+                      final HistoryInfo? info =
+                          state.historyInfo.elementAtOrNull(index);
 
                       return Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        width: 2,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    height: NumericConstants.listElementHeight,
-                                    width: NumericConstants.listElementHeight,
-                                    alignment: Alignment.center,
-                                    child: CountryFlag.fromCountryCode(
-                                      info.country.countryCode,
-                                      shape: const Circle(),
-                                      width: 32,
-                                      height: 32,
-                                    ),
-                                  ),
-                                  const BlankSpacer(horizontal: true),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Text(
-                                        info.country.countryName,
-                                        style: textTheme.titleMedium!.copyWith(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        const IP.unknown().toString(),
-                                        style: textTheme.labelMedium!.copyWith(
-                                          color: Colors.white
-                                              .withValues(alpha: 0.5),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                    "${info.duration.inHours}:${info.duration.inMinutes.remainder(60)}:${info.duration.inSeconds.remainder(60)}",
-                                    style: textTheme.labelMedium!.copyWith(
-                                        color: Colors.white
-                                            .withValues(alpha: 0.5)),
-                                  ),
-                                  Text(
-                                    "${info.dateTimeOpened.day}.${info.dateTimeOpened.month}.${info.dateTimeOpened.year}",
-                                    style: textTheme.labelMedium!.copyWith(
-                                        color: Colors.white
-                                            .withValues(alpha: 0.5)),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
+                          HistoryInfoCard(info: info),
                           if (index != state.historyInfo.length - 1) ...[
                             const BlankSpacer(),
                             Divider(
@@ -430,4 +373,218 @@ class GraphPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant GraphPainter oldDelegate) =>
       (oldDelegate.value != value);
+}
+
+class HistoryInfoCard extends StatefulWidget {
+  const HistoryInfoCard({
+    super.key,
+    this.info,
+  });
+
+  final HistoryInfo? info;
+
+  @override
+  State<HistoryInfoCard> createState() => _HistoryInfoCardState();
+}
+
+class _HistoryInfoCardState extends State<HistoryInfoCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final Animation<Gradient> _gradientAnimation;
+
+  final GradientTween _gradientTween = GradientTween();
+
+  late ColorScheme colorScheme;
+  late TextTheme textTheme;
+
+  Widget get _effectiveCountryIcon => widget.info == null
+      ? AnimatedBuilder(
+          animation: _gradientAnimation,
+          builder: (context, child) => Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: _gradientAnimation.value,
+            ),
+          ),
+        )
+      : CountryFlag.fromCountryCode(
+          widget.info!.country.countryCode,
+          shape: const Circle(),
+          width: 32,
+          height: 32,
+        );
+
+  Widget get _effectiveCountryName {
+    final Size countryTextSize = textSize("Россия", textTheme.titleMedium!);
+
+    return widget.info == null
+        ? AnimatedBuilder(
+            animation: _gradientAnimation,
+            builder: (context, child) => Container(
+              margin: const EdgeInsets.only(bottom: 5),
+              width: countryTextSize.width,
+              height: countryTextSize.height - 5,
+              decoration: BoxDecoration(
+                gradient: _gradientAnimation.value,
+                borderRadius:
+                    BorderRadius.circular(NumericConstants.borderRadius),
+              ),
+            ),
+          )
+        : Text(
+            widget.info!.country.countryName,
+            style: textTheme.titleMedium!.copyWith(
+              color: Colors.white,
+            ),
+          );
+  }
+
+  Widget get _effectiveIp {
+    final Size ipTextSize =
+        textSize(const IP.unknown().toString(), textTheme.labelMedium!);
+
+    return widget.info == null
+        ? AnimatedBuilder(
+            animation: _gradientAnimation,
+            builder: (context, child) => Container(
+              width: ipTextSize.width,
+              height: ipTextSize.height - 5,
+              decoration: BoxDecoration(
+                gradient: _gradientAnimation.value,
+                borderRadius:
+                    BorderRadius.circular(NumericConstants.borderRadius),
+              ),
+            ),
+          )
+        : Text(
+            const IP.unknown().toString(),
+            style: textTheme.labelMedium!.copyWith(
+              color: Colors.white.withValues(alpha: 0.5),
+            ),
+          );
+  }
+
+  Widget get _effectiveDuration {
+    final Size durationTextSize = textSize("00:00:00", textTheme.labelMedium!);
+
+    return widget.info == null
+        ? AnimatedBuilder(
+            animation: _gradientAnimation,
+            builder: (context, child) => Container(
+              margin: const EdgeInsets.only(bottom: 5),
+              width: durationTextSize.width,
+              height: durationTextSize.height - 5,
+              decoration: BoxDecoration(
+                gradient: _gradientAnimation.value,
+                borderRadius:
+                    BorderRadius.circular(NumericConstants.borderRadius),
+              ),
+            ),
+          )
+        : Text(
+            "${widget.info!.duration.inHours.toString().padLeft(2, '0')}:${widget.info!.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${widget.info!.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}",
+            style: textTheme.labelMedium!.copyWith(
+              color: Colors.white.withValues(alpha: 0.5),
+            ),
+          );
+  }
+
+  Widget get _effectiveDate {
+    final Size dateTextSize = textSize("00.00.0000", textTheme.labelMedium!);
+
+    return widget.info == null
+        ? AnimatedBuilder(
+            animation: _gradientAnimation,
+            builder: (context, child) => Container(
+              width: dateTextSize.width,
+              height: dateTextSize.height - 5,
+              decoration: BoxDecoration(
+                gradient: _gradientAnimation.value,
+                borderRadius:
+                    BorderRadius.circular(NumericConstants.borderRadius),
+              ),
+            ),
+          )
+        : Text(
+            "${widget.info!.dateTimeOpened.day.toString().padLeft(2, '0')}.${widget.info!.dateTimeOpened.month.toString().padLeft(2, '0')}.${widget.info!.dateTimeOpened.year}",
+            style: textTheme.labelMedium!.copyWith(
+              color: Colors.white.withValues(alpha: 0.5),
+            ),
+          );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 4000),
+    );
+
+    _gradientAnimation = _gradientTween.animate(_animationController);
+
+    if (widget.info == null) {
+      _animationController.repeat();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    final ThemeData theme = Theme.of(context);
+    colorScheme = theme.colorScheme;
+    textTheme = theme.textTheme;
+
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: 2,
+                    color: Colors.white,
+                  ),
+                ),
+                height: NumericConstants.listElementHeight,
+                width: NumericConstants.listElementHeight,
+                alignment: Alignment.center,
+                child: _effectiveCountryIcon,
+              ),
+              const BlankSpacer(horizontal: true),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  _effectiveCountryName,
+                  _effectiveIp,
+                ],
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _effectiveDuration,
+              _effectiveDate,
+            ],
+          )
+        ],
+      );
 }
