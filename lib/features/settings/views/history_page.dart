@@ -1,17 +1,21 @@
+import 'package:flutter/material.dart';
+
+import 'package:country_flags/country_flags.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:Helios/common/constants/literals.dart';
 import 'package:Helios/common/constants/multipliers.dart';
 import 'package:Helios/common/constants/numeric_constants.dart';
 import 'package:Helios/common/enums/enums.dart';
 import 'package:Helios/common/ui/utils/blank_spacer.dart';
 import 'package:Helios/common/ui/utils/text_size.dart';
+
 import 'package:Helios/features/register_sign_in/widgets/snackbar.dart';
 import 'package:Helios/features/settings/domain/bloc/history_bloc/bloc.dart';
 import 'package:Helios/features/vpn_app/widgets/helios_vpn_card.dart';
+
 import 'package:Helios/repositories/local_repository/vpn_connection/models/ip.dart';
 import 'package:Helios/repositories/session_repository/entities/get_history_server_entity.dart';
-import 'package:country_flags/country_flags.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
